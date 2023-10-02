@@ -1,0 +1,16 @@
+FROM eclipse-temurin:17-jdk-alpine as build
+
+WORKDIR /tmp/tamctf
+
+COPY gradle ./gradle
+COPY build.gradle ./
+COPY settings.gradle ./
+COPY gradlew ./
+COPY src ./src
+RUN ./gradlew --no-daemon build -x test
+
+
+FROM eclipse-temurin:17-jdk-alpine
+COPY --from=0 /tmp/tamctf/build/libs/tamctf-*.jar /app.jar
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod","/app.jar"]
+

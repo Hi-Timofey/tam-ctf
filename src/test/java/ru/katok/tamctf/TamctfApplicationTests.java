@@ -8,6 +8,7 @@ class TamctfApplicationTests {
 
     @Test
     void contextLoads() {
+        assert true;
     }
 
 }

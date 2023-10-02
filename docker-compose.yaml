@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  tamctf:
+    container_name: tamctf
+    image: ctf/tamctf
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME:-ctf}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctf}
+      POSTGRES_DB: "ctf"
+    ports:
+      - "80:8080"
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_app
+    depends_on:
+      - postgres
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+  postgres:
+    container_name: postgres
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME:-ctf}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctf}
+      POSTGRES_DB: "ctf"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-ctf}" ]
+      interval: 10s
+      timeout: 2s
+      retries: 5
