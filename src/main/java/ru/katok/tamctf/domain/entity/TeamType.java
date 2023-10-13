@@ -1,4 +1,4 @@
-package ru.katok.tamctf.entity;
+package ru.katok.tamctf.domain.entity;
 
 public enum TeamType {
     ACADEMIC, MIXED

@@ -1,4 +1,4 @@
-package ru.katok.tamctf.entity;
+package ru.katok.tamctf.domain.entity;
 
 
 import jakarta.persistence.Entity;
