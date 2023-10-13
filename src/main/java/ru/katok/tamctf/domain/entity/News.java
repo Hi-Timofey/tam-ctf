@@ -9,8 +9,7 @@ import lombok.*;
 @Table(name = "News")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class News extends TimeStampMixin {
+public class News {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
@@ -19,6 +18,4 @@ public class News extends TimeStampMixin {
     private String relatedTask;
     private String relatedHint;
     private String text;
-    private int createdAt;
-    private int modifiedAt;
 }

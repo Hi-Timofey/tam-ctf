@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Hint extends TimeStampMixin{
+public class Hint{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;

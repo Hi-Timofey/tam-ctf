@@ -1,23 +1,20 @@
 package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
-@Table(name = "Submissions")
+@Table(name = "submissions")
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Submission extends TimeStampMixin {
+public class Submission{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
 
-    private String user;
     private String task;
     private boolean is_successful;
     private int solverIp;

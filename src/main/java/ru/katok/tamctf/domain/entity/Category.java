@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Category extends TimeStampMixin {
+public class Category {
     @Id
     private String name;
 

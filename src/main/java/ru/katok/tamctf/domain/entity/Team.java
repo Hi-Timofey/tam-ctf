@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "File")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Team {
 
     @Id

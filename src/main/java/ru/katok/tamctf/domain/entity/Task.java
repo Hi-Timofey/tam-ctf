@@ -10,8 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "Task")
 @AllArgsConstructor
-@Builder
-public class Task extends Category {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

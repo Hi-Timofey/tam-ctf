@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "File")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class File {
 
     //TODO: Придумать что делать с файлом
