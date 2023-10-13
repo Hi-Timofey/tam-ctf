@@ -2,7 +2,6 @@ package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +18,7 @@ public class Team {
     private Long id;
 
     private String name;
+
 
     @Enumerated(EnumType.STRING)
     private  TeamType teamType;
