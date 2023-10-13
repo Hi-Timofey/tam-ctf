@@ -28,23 +28,4 @@ public class Task extends Category {
     private double scoreDelay;
     private double scoreMinimum;
 
-    public Task(String name, String description, String adminDescription, String flag, boolean active, double scoreInitial, double scoreDellay, double scoreMinimum) {
-        this.name = name;
-        this.description = description;
-        this.adminDescription = adminDescription;
-        this.flag = flag;
-        this.active = active;
-        this.scoreInitial = scoreInitial;
-        this.scoreDelay = scoreDellay;
-        this.scoreMinimum = scoreMinimum;
-    }
-
-    public String toString() {
-        return String.format("<Task id=%d name=%s>", id, name);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }
