@@ -1,13 +1,11 @@
 package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "News")
 @NoArgsConstructor
 @AllArgsConstructor

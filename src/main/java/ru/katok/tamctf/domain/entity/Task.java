@@ -7,15 +7,17 @@ import lombok.*;
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
 @Table(name = "Task")
 @AllArgsConstructor
 @Builder
 public class Task extends Category {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Getter
     private String name;
     private String description;
     private String adminDescription;
@@ -25,8 +27,6 @@ public class Task extends Category {
     private double scoreInitial;
     private double scoreDelay;
     private double scoreMinimum;
-
-    protected Task() {}
 
     public Task(String name, String description, String adminDescription, String flag, boolean active, double scoreInitial, double scoreDellay, double scoreMinimum) {
         this.name = name;
@@ -43,75 +43,8 @@ public class Task extends Category {
         return String.format("<Task id=%d name=%s>", id, name);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAdminDescription() {
-        return adminDescription;
-    }
-
-    public void setAdminDescription(String adminDescription) {
-        this.adminDescription = adminDescription;
-    }
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
-
-    public boolean GetUsActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public double getScoreInitial() {
-        return scoreInitial;
-    }
-
-    public void setScoreInitial(double scoreInitial) {
-        this.scoreInitial = scoreInitial;
-    }
-
-    public double getScoreDelay() {
-        return scoreDelay;
-    }
-
-    public void setScoreDelay(double scoreDelay) {
-        this.scoreDelay = scoreDelay;
-    }
-
-    public double getScoreMinimum() {
-        return scoreMinimum;
-    }
-
-    public void setScoreMinimum(double scoreMinimum) {
-        this.scoreMinimum = scoreMinimum;
-    }
 }
