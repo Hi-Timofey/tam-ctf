@@ -1,16 +1,23 @@
 package ru.katok.tamctf.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-public class Hint {
+@Setter
+@Getter
+@Table(name = "Hint")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Hint extends TimeStampMixin{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
+    private String task;
+    private String taskWrite;
+    private String text;
+    private String createdBy;
+    private String modifiedBy;
 
-    public Hint() {
-    }
 }

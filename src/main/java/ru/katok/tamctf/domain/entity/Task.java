@@ -1,13 +1,16 @@
 package ru.katok.tamctf.domain.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-public class Task {
+@Setter
+@Getter
+@Table(name = "Task")
+@AllArgsConstructor
+@Builder
+public class Task extends Category {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
@@ -80,7 +83,7 @@ public class Task {
         this.flag = flag;
     }
 
-    public boolean isActive() {
+    public boolean GetUsActive() {
         return active;
     }
 

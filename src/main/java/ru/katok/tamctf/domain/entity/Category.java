@@ -2,12 +2,18 @@ package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
 
 @Entity
-public class Category {
-
+@Setter
+@Getter
+@Table(name = "Category")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Category extends TimeStampMixin {
     @Id
     private String name;
 
-    public Category() {}
 }
