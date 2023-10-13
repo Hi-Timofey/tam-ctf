@@ -6,15 +6,16 @@ import org.springframework.security.core.GrantedAuthority;
 import  java.util.Set;
 
 @Entity
-public class Role implements GrantedAuthority {
+public class Role {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE )
+    @GeneratedValue(strategy= GenerationType.AUTO )
     private Long id;
     private String name;
 
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
+
     public Role() {
     }
 
@@ -51,8 +52,4 @@ public class Role implements GrantedAuthority {
         this.users = users;
     }
 
-    @Override
-    public String getAuthority() {
-        return getName();
-    }
 }

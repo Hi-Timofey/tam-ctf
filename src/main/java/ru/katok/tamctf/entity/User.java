@@ -7,11 +7,12 @@ import java.util.Set;
 
 import java.util.Collection;
 
+@Table(name = "users")
 @Entity
-public class User implements UserDetails {
+public class User {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE )
+    @GeneratedValue(strategy= GenerationType.AUTO )
     private Long id;
 
     private String username;
@@ -22,6 +23,12 @@ public class User implements UserDetails {
     private boolean isActive;
 
     @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "users_roles",
+//            joinColumns = @JoinColumn(
+//                    name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
     private String telegram;
 
@@ -31,45 +38,9 @@ public class User implements UserDetails {
 
     public User(){    }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
