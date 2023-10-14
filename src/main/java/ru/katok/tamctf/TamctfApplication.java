@@ -13,9 +13,9 @@ public class TamctfApplication {
         SpringApplication.run(TamctfApplication.class, args);
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/healthcheck")
     public String hello(){
-        return "Hello world";
+        return "healthy service cool mood!";
     }
 
 }

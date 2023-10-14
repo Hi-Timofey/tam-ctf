@@ -7,7 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.UserDto;
+import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.repository.UserRepository;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +21,9 @@ public class UserService implements UserDetailsService {
         return UserDto.fromApplicationUser(
                 userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"))
         );
+    }
+
+    public List<UserEntity> getAll() {
+        return this.userRepository.findAll();
     }
 }
