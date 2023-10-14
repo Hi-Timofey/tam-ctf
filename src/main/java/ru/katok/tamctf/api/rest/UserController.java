@@ -3,9 +3,7 @@ package ru.katok.tamctf.api.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.service.UserService;
 
@@ -21,5 +19,11 @@ public class UserController {
     public @ResponseBody List<UserEntity> getAll() {
         return this.userService.getAll();
     }
+
+    @PostMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody UserEntity newEmployee(@RequestBody UserEntity newUser) {
+        return this.userService.save(newUser);
+    }
+
 
 }

@@ -26,4 +26,8 @@ public class UserService implements UserDetailsService {
     public List<UserEntity> getAll() {
         return this.userRepository.findAll();
     }
+
+    public UserEntity save(UserEntity newUser) {
+        return this.userRepository.save(newUser);
+    }
 }
