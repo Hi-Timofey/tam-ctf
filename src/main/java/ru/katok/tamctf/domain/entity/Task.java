@@ -21,6 +21,8 @@ public class Task {
     private String description;
     private String adminDescription;
     private String flag;
+    private String createdBy;
+    private String modifiedBy;
     private boolean active;
 
     private double scoreInitial;

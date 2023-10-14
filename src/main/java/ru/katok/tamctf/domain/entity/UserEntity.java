@@ -1,10 +1,7 @@
 package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "users")
 @Entity
@@ -25,7 +22,14 @@ public class UserEntity {
     private String email;
 
 
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    private boolean isActive;
+    private String team;
+    private String atRegisterIp;
+    private String lastLoginIp;
+
 }
