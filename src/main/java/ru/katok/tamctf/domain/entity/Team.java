@@ -24,6 +24,4 @@ public class Team {
 
     private String university;
     private String inviteCode;
-
-
 }

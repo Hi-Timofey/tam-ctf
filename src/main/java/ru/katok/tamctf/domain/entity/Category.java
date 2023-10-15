@@ -18,6 +18,5 @@ public class Category {
     @Id
     @Column(unique = true)
     private String name; //Название категорий
-    private int quantity; //кол-во тасков
-
+    private int tasksQuantity; //кол-во тасков
 }

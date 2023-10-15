@@ -16,14 +16,13 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Getter
     private String name;
     private String description;
     private String adminDescription;
     private String flag;
     private String createdBy;
     private String modifiedBy;
-    private boolean active;
+    private boolean isActive;
 
     private double scoreInitial;
     private double scoreDelay;
