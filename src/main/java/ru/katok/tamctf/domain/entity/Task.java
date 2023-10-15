@@ -16,10 +16,11 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Getter
+    @Column(unique = true)
     private String name;
-    private String description;
-    private String adminDescription;
+    private String description;//(description != adminDescription)?
+    //private String adminDescription;
+    @Column(unique = true)
     private String flag;
     private String createdBy;
     private String modifiedBy;
