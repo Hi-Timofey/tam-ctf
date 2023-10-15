@@ -12,6 +12,7 @@ import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Role;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.repository.UserRepository;
+import ru.katok.tamctf.service.error.UserAlreadyExistException;
 import ru.katok.tamctf.service.interfaces.IUserService;
 
 import java.util.List;
@@ -39,11 +40,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserEntity registerNewUserAccount(final UserRestDto newUser) throws Exception{
+    public UserEntity registerNewUserAccount(final UserRestDto newUser){
         String username = newUser.getUsername();
         if (this.userRepository.existsByUsername(username)) {
-            throw new Exception(
-                    "There is an account with that email adress:" + username);
+            throw new UserAlreadyExistException(
+                    "There is an account with that nickname: " + username);
         }
         UserEntity user = UserEntity.builder()
                 .username(username)
