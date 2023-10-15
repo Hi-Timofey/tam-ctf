@@ -12,7 +12,7 @@ import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Role;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.repository.UserRepository;
-import ru.katok.tamctf.service.error.UserAlreadyExistException;
+import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.service.interfaces.IUserService;
 
 import java.util.List;

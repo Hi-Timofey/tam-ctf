@@ -1,6 +1,7 @@
 package ru.katok.tamctf.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
 
 import java.util.List;
@@ -11,6 +12,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
     boolean existsByUsername(String username);
-
-
 }

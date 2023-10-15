@@ -1,4 +1,4 @@
-package ru.katok.tamctf.service.error;
+package ru.katok.tamctf.domain.error;
 public final class UserAlreadyExistException extends RuntimeException {
 
     public UserAlreadyExistException() {

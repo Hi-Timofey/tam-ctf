@@ -27,4 +27,15 @@ public class AuthController {
 
         return new GenericResponse("success");
     }
+
+    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse loginUser(@RequestBody UserRestDto userRestDto) {
+
+        LOGGER.debug("Registering user account with information: {}", userRestDto);
+
+        // TODO: handle errors
+        final UserEntity registred = userService.registerNewUserAccount(userRestDto);
+
+        return new GenericResponse("success");
+    }
 }
