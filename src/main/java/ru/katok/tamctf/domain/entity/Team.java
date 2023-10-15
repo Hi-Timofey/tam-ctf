@@ -24,6 +24,5 @@ public class Team {
 
     private String university;
     @Column(unique = true)
-
     private String inviteCode;
 }
