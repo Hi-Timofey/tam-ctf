@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+import java.util.Set;
+
 
 @Entity
 @Data
@@ -14,14 +17,24 @@ import lombok.NoArgsConstructor;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, length = 128)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private  TeamType teamType;
+    private TeamType teamType;
 
-    @Column(unique = true)
+
+    @Column(unique = true, length = 128)
+    private String university;
+
+    @Column(unique = true, length = 32)
     private String inviteCode;
+
+    @OneToMany(mappedBy = "team")
+    private Set<UserEntity> users;
+
+    @OneToMany(mappedBy = "team")
+    private Collection<Submission> submissions;
 }

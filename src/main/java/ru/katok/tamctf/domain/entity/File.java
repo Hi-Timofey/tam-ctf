@@ -1,22 +1,27 @@
 package ru.katok.tamctf.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Data
-@Table(name = "File")
+@Table(name = "file")
 @NoArgsConstructor
 @AllArgsConstructor
 public class File {
 
     //TODO: Придумать что делать с файлом
     @Id
-    private String uuid;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
+
+    @ManyToOne(optional = false)
+    private Task task;
+
 }
 
 

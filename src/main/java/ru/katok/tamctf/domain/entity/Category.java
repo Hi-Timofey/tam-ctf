@@ -9,14 +9,12 @@ import lombok.*;
 @Entity
 @Setter
 @Getter
-@Table(name = "Category")
+@Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Category {
-    //TODO: стоит ли добавить генерацию айди и если да то как?
     @Id
-    @Column(unique = true)
-    private String name; //Название категорий
-    private int tasksQuantity; //кол-во тасков
+    @Column(unique = true, length = 16)
+    private String name;
 }

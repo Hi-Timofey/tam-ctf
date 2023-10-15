@@ -10,14 +10,24 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Submission{
+public class Submission {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String user;
-    private String team;
-    private String task;
+
+    @Column(columnDefinition = "boolean default false")
     private boolean is_successful;
-    private int solverIp;
+
+    @Column
+    private String solverIp;
+
+    @ManyToOne()
+    private Task task;
+
+    @ManyToOne()
+    private UserEntity user;
+
+    @ManyToOne()
+    private Team team;
 
 }

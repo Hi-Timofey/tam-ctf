@@ -10,14 +10,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Hint{
+public class Hint extends TimeStampMixin {
     //TODO: стоит ли добавить генерацию айди и если да то как?
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String task;
     private String text;
-    private String createdBy;
-    private String modifiedBy;
+
+    @ManyToOne()
+    private Task task;
 
 }

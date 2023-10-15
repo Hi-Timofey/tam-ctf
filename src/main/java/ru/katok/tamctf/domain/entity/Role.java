@@ -1,9 +1,11 @@
 package ru.katok.tamctf.domain.entity;
 
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Set;
+
 import static java.util.stream.Collectors.toSet;
 
 @Getter

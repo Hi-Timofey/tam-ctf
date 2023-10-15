@@ -1,23 +1,20 @@
 package ru.katok.tamctf.domain.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.Instant;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-@Entity
-@Data
-@Table(name = "TimeStampMixin")
-@NoArgsConstructor
-@AllArgsConstructor
-public class TimeStampMixin {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-    @CreatedDate
-    private Instant createdAt;
-    @LastModifiedDate
-    private Instant modifiedAt;
+import java.time.LocalDateTime;
+
+@MappedSuperclass
+public abstract class TimeStampMixin {
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
