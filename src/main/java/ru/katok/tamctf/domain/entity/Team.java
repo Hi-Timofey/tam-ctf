@@ -16,13 +16,15 @@ public class Team {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE )
     private Long id;
-
+    @Column(unique = true)
     private String name;
 
     @Enumerated(EnumType.STRING)
     private  TeamType teamType;
 
     private String university;
+    @Column(unique = true)
+
     private String inviteCode;
 
 
