@@ -9,11 +9,14 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -30,21 +33,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
+                .csrf(AbstractHttpConfigurer::disable)
+//                        .csrfTokenRepository(new CookieCsrfTokenRepository()))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/users").permitAll()//.hasRole("ADMIN")
-                        .requestMatchers("/**", "/healthcheck").permitAll()
-                        .anyRequest().authenticated()
-                )
-
-                .formLogin((form) -> form
-                        .loginPage("/login").permitAll()
-                )
-                .logout(logout -> logout
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true)
-                        .permitAll()
+//                        .requestMatchers("/users").hasRole("ADMIN")
+//                        .requestMatchers("/**", "/healthcheck", "/signup").permitAll()
+                        .anyRequest().permitAll() // .authenticated()
                 );
-
         return http.build();
     }
 
