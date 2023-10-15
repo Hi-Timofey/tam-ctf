@@ -14,9 +14,6 @@ public class Submission{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
-    private String user;
-    private String team;
-    private String task;
     private boolean is_successful;
     private int solverIp;
 
