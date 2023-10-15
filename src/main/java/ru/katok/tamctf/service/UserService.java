@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.katok.tamctf.api.dto.UserRestDto;
+import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Role;
 import ru.katok.tamctf.domain.entity.UserEntity;
@@ -16,6 +16,7 @@ import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.service.interfaces.IUserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,12 +36,22 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public void saveRegistredUser(final UserEntity user){
+        userRepository.save(user);
+    }
+
+    @Override
     public void deleteUser(final UserEntity user) {
         this.userRepository.delete(user);
     }
 
     @Override
-    public UserEntity registerNewUserAccount(final UserRestDto newUser){
+    public Optional<UserEntity> findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public UserEntity registerNewUserAccount(final SignUpDto newUser){
         String username = newUser.getUsername();
         if (this.userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException(

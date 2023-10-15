@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class TamctfApplication {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
         SpringApplication.run(TamctfApplication.class, args);
