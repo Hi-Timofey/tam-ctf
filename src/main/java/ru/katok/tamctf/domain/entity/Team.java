@@ -22,7 +22,6 @@ public class Team {
     @Enumerated(EnumType.STRING)
     private  TeamType teamType;
 
-    private String university;
     @Column(unique = true)
     private String inviteCode;
 }

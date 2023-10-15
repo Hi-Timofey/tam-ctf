@@ -18,8 +18,8 @@ public class Task {
 
     @Column(unique = true)
     private String name;
-    private String description;
-    private String adminDescription;
+    private String description;//(description != adminDescription)?
+    //private String adminDescription;
     @Column(unique = true)
     private String flag;
     private String createdBy;
