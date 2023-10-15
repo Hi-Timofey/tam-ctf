@@ -19,7 +19,6 @@ public class Team {
 
     private String name;
 
-
     @Enumerated(EnumType.STRING)
     private  TeamType teamType;
 

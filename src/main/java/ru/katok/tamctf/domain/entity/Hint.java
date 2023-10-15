@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Hint{
+    //TODO: стоит ли добавить генерацию айди и если да то как?
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;

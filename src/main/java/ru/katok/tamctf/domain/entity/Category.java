@@ -1,5 +1,6 @@
 package ru.katok.tamctf.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -13,7 +14,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Category {
+    //TODO: стоит ли добавить генерацию айди и если да то как?
     @Id
-    private String name;
+    @Column(unique = true)
+    private String name; //Название категорий
+    private int quantity; //кол-во тасков
 
 }
