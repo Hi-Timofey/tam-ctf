@@ -26,6 +26,4 @@ public class Team {
     @Column(unique = true)
 
     private String inviteCode;
-
-
 }
