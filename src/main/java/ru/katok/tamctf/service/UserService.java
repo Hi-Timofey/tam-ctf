@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -67,7 +68,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void saveRegistredUser(final UserEntity user){
+    public void saveRegisteredUser(final UserEntity user){
         userRepository.save(user);
     }
 

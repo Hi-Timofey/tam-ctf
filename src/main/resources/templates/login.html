@@ -11,13 +11,16 @@
     You have been logged out.</div>
 <form th:action="@{/login}" method="post">
     <div>
-        <input type="text" name="username" placeholder="Username"/>
+        <label>
+            <input type="text" name="username" placeholder="Username"/>
+        </label>
     </div>
     <div>
-        <input type="password" name="password" placeholder="Password"/>
+        <label>
+            <input type="password" name="password" placeholder="Password"/>
+        </label>
     </div>
     <input type="submit" value="Log in" />
-<!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
 </form>
 </body>
 </html>

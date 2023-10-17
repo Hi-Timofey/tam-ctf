@@ -14,6 +14,7 @@ import ru.katok.tamctf.repository.UserRepository;
 
 import java.util.*;
 
+@SuppressWarnings("ALL")
 @Component
 public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {

@@ -8,16 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 
-//@Getter
-//@AllArgsConstructor
-//public enum Permission {
-//    READ("read"),
-//    MODIFICATION("modification");
-//
-//    private final String permission;
-//}
-
-
 @Entity
 @Data
 @AllArgsConstructor
