@@ -1,5 +1,6 @@
 package ru.katok.tamctf.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,13 +33,16 @@ public class UserEntity extends TimeStampMixin {
     private Set<Submission> submissions;
 
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonManagedReference
+    private Set<RoleEntity> roles;
 
 
     @Column(columnDefinition = "boolean default false")
-    private boolean isActive;
+    private boolean active;
 
     @Column()
     private String atRegisterIp;
