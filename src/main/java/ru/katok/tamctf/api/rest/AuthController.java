@@ -45,15 +45,4 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new GenericResponse("User login successfully!...");
     }
-
-    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse loginUser(@RequestBody SignUpDto signUpDto) {
-
-        LOGGER.debug("Registering user account with information: {}", signUpDto);
-
-        // TODO: handle errors
-        final UserEntity registred = userService.registerNewUserAccount(signUpDto);
-
-        return new GenericResponse("success");
-    }
 }

@@ -8,7 +8,8 @@ import ru.katok.tamctf.service.UserService;
 
 import java.util.List;
 
-@RestController
+@RestController()
+@RequestMapping("/api/v1/admin")
 public class UserController {
 
     @Autowired

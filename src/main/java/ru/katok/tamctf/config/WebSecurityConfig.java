@@ -37,7 +37,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 //                        .csrfTokenRepository(new CookieCsrfTokenRepository()))
                 .authorizeHttpRequests(requests -> requests
-//                        .requestMatchers("/users").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/**", "/healthcheck", "/signup").permitAll()
                         .anyRequest().permitAll() // .authenticated()
                 );
