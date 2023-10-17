@@ -20,6 +20,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.postgresql:postgresql'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly('org.projectlombok:lombok')
     annotationProcessor('org.projectlombok:lombok')
     testCompileOnly('org.projectlombok:lombok')
@@ -36,4 +40,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.named("bootRun") {
+    mainClass = "ru.katok.tamctf.TamctfApplication"
 }

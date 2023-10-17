@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.katok.tamctf.api.util.GenericResponse;
 
 @RestController
+@RequestMapping("/api/v1")
 public class AuthController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
