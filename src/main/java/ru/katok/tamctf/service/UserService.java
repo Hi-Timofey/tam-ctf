@@ -22,17 +22,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class UserService implements IUserService {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return UserDto.fromApplicationUser(
-                userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"))
-        );
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        return UserDto.fromApplicationUser(user);
     }
 
     @Override
