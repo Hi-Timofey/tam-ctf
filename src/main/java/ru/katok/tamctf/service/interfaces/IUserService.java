@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface IUserService extends UserDetailsService {
     List<UserEntity> getAll();
-    UserEntity registerNewUserAccount(SignUpDto accountDto) throws Exception;
+    UserEntity registerNewUserAccount(SignUpDto accountDto);
 
-    void saveRegistredUser(UserEntity user);
+    void saveRegisteredUser(UserEntity user);
 
     void deleteUser(UserEntity user);
 

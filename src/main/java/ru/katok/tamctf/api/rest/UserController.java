@@ -8,6 +8,7 @@ import ru.katok.tamctf.service.UserService;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @RestController()
 @RequestMapping("/api/v1/admin")
 public class UserController {

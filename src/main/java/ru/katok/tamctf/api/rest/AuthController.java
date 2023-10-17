@@ -15,6 +15,7 @@ import ru.katok.tamctf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.katok.tamctf.api.util.GenericResponse;
 
+@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api/v1")
 public class AuthController {
