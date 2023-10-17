@@ -35,16 +35,20 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
 
-                .csrf(AbstractHttpConfigurer::disable)
-//                        .csrfTokenRepository(new CookieCsrfTokenRepository()))
-                .authorizeHttpRequests(requests -> requests
+                .csrf( (csrf) -> csrf
+                        .csrfTokenRepository(new CookieCsrfTokenRepository())
+                ).authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/v1/admin/**").authenticated()
                         .requestMatchers("/", "/index", "/signup").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/api/v1/admin/users")
-                ).logout(LogoutConfigurer::permitAll);
+                ).logout((logout) -> logout
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
+                        .permitAll()
+                );
         return http.build();
     }
 
