@@ -7,15 +7,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.LoginDto;
 import ru.katok.tamctf.api.dto.SignUpDto;
+import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.katok.tamctf.api.util.GenericResponse;
+
+import java.security.Principal;
+import java.util.List;
 
 @SuppressWarnings("ALL")
 @RestController
@@ -53,6 +59,15 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new GenericResponse("User login successfully!...");
+        return new GenericResponse("User log in successfully!...");
     }
+
+    @GetMapping(path = "/me",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody UserDetails getMyInfo(@AuthenticationPrincipal UserDetails user) {
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        UserDetails userDetails = userService.findUserByUsername(authentication.getName());
+        return user;
+    }
+
 }
