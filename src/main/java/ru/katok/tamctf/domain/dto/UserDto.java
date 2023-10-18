@@ -45,11 +45,10 @@ public class UserDto implements UserDetails {
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .disabled(user.isActive())
+                .disabled(!user.isActive())
                 .accountExpired(false)
                 .credentialsExpired(false)
                 .accountLocked(false)
-                .disabled(false)
                 .authorities(authorities)
                 .build();
     }

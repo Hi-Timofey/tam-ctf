@@ -14,20 +14,20 @@ import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Permission;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.UserEntity;
+import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
+import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @SuppressWarnings("ALL")
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserService implements IUserService {
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
     @Autowired
@@ -83,16 +83,22 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserEntity registerNewUserAccount(final SignUpDto newUser){
+    public UserEntity registerNewUserAccount(final SignUpDto newUser) throws EmailExistsException{
         String username = newUser.getUsername();
         if (this.userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException(
                     "There is an account with that nickname: " + username);
         }
+        if (this.userRepository.existsByEmail(newUser.getEmail())){
+            throw new EmailExistsException("There is an account with that email: " + username);
+
+        }
+
         UserEntity user = UserEntity.builder()
                 .username(username)
                 .email(newUser.getEmail())
                 .password(newUser.getPassword())
+                .roles(Collections.singleton(roleRepository.findByName("ROLE_USER")))
                 .build();
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
