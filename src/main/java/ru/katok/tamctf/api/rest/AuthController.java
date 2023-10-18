@@ -1,5 +1,6 @@
 package ru.katok.tamctf.api.rest;
 
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.LoginDto;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.entity.UserEntity;
+import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.katok.tamctf.api.util.GenericResponse;
@@ -27,13 +29,19 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(path = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse addUser(@RequestBody SignUpDto signUpDto) {
+    @PostMapping(path = "/signup",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse addUser(@Valid SignUpDto signUpDto) {
 
         LOGGER.debug("Registering user account with information: {}", signUpDto);
 
         // TODO: handle errors
-        final UserEntity registred = userService.registerNewUserAccount(signUpDto);
+        try {
+            userService.registerNewUserAccount(signUpDto);
+        } catch (EmailExistsException e) {
+            return new GenericResponse(String.valueOf(e), e.getMessage());
+        }
 
         return new GenericResponse("success");
     }

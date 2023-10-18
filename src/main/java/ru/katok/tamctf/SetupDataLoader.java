@@ -42,6 +42,7 @@ public class SetupDataLoader implements
         final List<Permission> adminPrivileges = new ArrayList<>(Arrays.asList(read, modify));
         final List<Permission> userPrivileges = new ArrayList<>(List.of(read));
         final RoleEntity adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
+        createRoleIfNotFound("ROLE_MODERATOR", adminPrivileges);
         createRoleIfNotFound("ROLE_USER", userPrivileges);
 
         // == create initial user

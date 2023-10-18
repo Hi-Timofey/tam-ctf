@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>Log In TAM-CTF</h1>
-<form th:action="@{/signup}" method="post">
+<form th:action="@{/api/v1/signup}" method="post">
     <div>
         <label>
             <input type="text" name="username" placeholder="Username"/>
@@ -17,8 +17,13 @@
         </label>
     </div>
     <div>
-        <label>
-            <input type="password" name="password" placeholder="Password"/>
+        <label for="password">
+            <input id="password"  name="password"  value="" type="password" required="required" placeholder="Password"/>
+        </label>
+    </div>
+    <div>
+        <label for="matchPassword">
+            <input id="matchPassword" name="matchingPassword" value="" type="password" required="required" placeholder="Confirm password"/>
         </label>
     </div>
     <input type="submit" value="Sign Up" />

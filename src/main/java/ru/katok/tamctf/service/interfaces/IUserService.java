@@ -1,15 +1,17 @@
 package ru.katok.tamctf.service.interfaces;
 
+import jakarta.validation.constraints.Email;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.entity.UserEntity;
+import ru.katok.tamctf.domain.error.EmailExistsException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService extends UserDetailsService {
     List<UserEntity> getAll();
-    UserEntity registerNewUserAccount(SignUpDto accountDto);
+    UserEntity registerNewUserAccount(SignUpDto accountDto) throws EmailExistsException;
 
     void saveRegisteredUser(UserEntity user);
 
