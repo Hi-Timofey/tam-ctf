@@ -42,8 +42,8 @@ public class WebSecurityConfig {
                 ).authorizeHttpRequests(requests -> requests
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
-                        .requestMatchers("/", "/index", "/signup", "/api/v1/*").hasRole("USER")
-                        .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers( "/api/v1/*").hasRole("USER")
+                        .requestMatchers("/favicon.ico","/", "/index", "/signup").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()
