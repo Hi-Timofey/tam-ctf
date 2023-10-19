@@ -1,7 +1,9 @@
 package ru.katok.tamctf.domain.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,11 +14,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
+@Getter
 @AllArgsConstructor
 public class UserDto implements UserDetails {
 
     private final String username;
     private final String password;
+    private final String email;
     private final List<SimpleGrantedAuthority> authorities;
     private final boolean isActive;
 
