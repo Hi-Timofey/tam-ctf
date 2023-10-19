@@ -11,7 +11,7 @@ import java.util.List;
 @SuppressWarnings("ALL")
 @RestController()
 @RequestMapping("/api/v1/admin")
-public class UserController {
+public class UserAdminController {
 
     @Autowired
     private UserService userService;

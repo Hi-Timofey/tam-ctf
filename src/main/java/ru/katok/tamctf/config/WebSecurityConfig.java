@@ -40,12 +40,14 @@ public class WebSecurityConfig {
                         .csrfTokenRepository(new CookieCsrfTokenRepository())
                         .disable()
                 ).authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
-                        .requestMatchers("/", "/index", "/signup", "/api/v1/**").permitAll()
+                        .requestMatchers("/", "/index", "/signup", "/api/v1/*").hasRole("USER")
+                        .requestMatchers("/favicon.ico").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/api/v1/admin/users")
+                        .defaultSuccessUrl("/api/v1/me")
                 ).logout((logout) -> logout
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
