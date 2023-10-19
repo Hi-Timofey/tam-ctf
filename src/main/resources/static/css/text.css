@@ -1,13 +1,32 @@
-#center-text {
-    padding: 20px;
-    font-size: 40px;
-    color: black;
-    /*background: #ddd;*/
-    /*border: 10px solid black;*/
-    width: 100%;
-    text-align: center;
+#body {
+   background-color: #202124
 }
-body {
-    background-color: green;
+
+
+.nav-links {
+     float: right;
+     margin-top: 1rem;
+
+ }
+.nav-item {
+    padding: 0.5rem;
+    color: #fff;
+    float: left;
+    text-decoration: none;
+    /*transition: background-color .2s*/
+}
+
+.fixed {
+    position: fixed
+}
+
+#text-center {
+    position: absolute;
+    top: 40%;
+    left: 0;
     text-align: center;
+    width: 100%;
+    /*z-index: 1;*/
+    font-size: 3.5em;
+    color: #fff
 }
