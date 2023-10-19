@@ -13,10 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @SuppressWarnings("ALL")
@@ -43,7 +41,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
                         .requestMatchers( "/api/v1/*").hasRole("USER")
-                        .requestMatchers("/favicon.ico","/", "/index", "/signup").permitAll()
+                        .requestMatchers("/favicon.ico","/", "/index", "/signup", "/resources/**").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()

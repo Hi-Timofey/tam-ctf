@@ -1,15 +1,13 @@
 package ru.katok.tamctf.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
-import java.util.Collections;
+import java.time.Duration;
 
 //@Controller
 @Configuration
@@ -22,5 +20,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/index").setViewName("index");
         registry.addViewController("/login").setViewName("login");
 
+    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("classpath:/static/")
+                .setCacheControl(CacheControl.maxAge(Duration.ofDays(365)));
     }
 }
