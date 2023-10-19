@@ -1,0 +1,13 @@
+#center-text {
+    padding: 20px;
+    font-size: 40px;
+    color: black;
+    /*background: #ddd;*/
+    /*border: 10px solid black;*/
+    width: 100%;
+    text-align: center;
+}
+body {
+    background-color: green;
+    text-align: center;
+}
