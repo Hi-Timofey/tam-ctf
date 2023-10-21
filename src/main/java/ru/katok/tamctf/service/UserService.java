@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +24,7 @@ import ru.katok.tamctf.service.interfaces.IUserService;
 import java.util.*;
 
 @SuppressWarnings("ALL")
-@Service
+@Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
 public class UserService implements IUserService {
@@ -36,7 +37,16 @@ public class UserService implements IUserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        return UserDto.fromApplicationUser(user, getAuthorities(user.getRoles()));
+//        return UserDto.fromApplicationUser(user, getAuthorities(user.getRoles()));
+        return User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .disabled(!user.isActive())
+                .accountExpired(false)
+                .credentialsExpired(false)
+                .accountLocked(false)
+                .authorities(getAuthorities(user.getRoles()))
+                .build();
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(

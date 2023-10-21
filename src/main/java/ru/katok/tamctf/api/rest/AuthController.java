@@ -10,12 +10,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.LoginDto;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.EmailExistsException;
+import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.katok.tamctf.api.util.GenericResponse;
@@ -64,10 +66,11 @@ public class AuthController {
 
     @GetMapping(path = "/me",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody UserDetails getMyInfo(@AuthenticationPrincipal UserDetails user) {
+    public @ResponseBody UserDto getMyInfo(@AuthenticationPrincipal UserDetails user) {
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        UserDetails userDetails = userService.findUserByUsername(authentication.getName());
-        return user;
+        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!")) ;
+        var userDto = MappingUtil.mapToUserDto(userEntity);
+        return userDto;
     }
 
 }
