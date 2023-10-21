@@ -29,5 +29,9 @@ public class UserAdminController {
         return this.userService.save(newUser);
     }
 
+    @GetMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody UserEntity newEmployee(@PathVariable Long id) {
+        return this.userService.getById(id);
+    }
 
 }

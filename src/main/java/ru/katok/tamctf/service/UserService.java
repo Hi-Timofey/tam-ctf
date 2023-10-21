@@ -17,6 +17,7 @@ import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
+import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
@@ -128,5 +129,9 @@ public class UserService implements IUserService {
 
     public UserEntity save(UserEntity newUser) {
         return this.userRepository.save(newUser);
+    }
+
+    public UserEntity getById(final Long id){
+        return  this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: "+Long.toString(id)));
     }
 }
