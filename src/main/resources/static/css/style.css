@@ -1,0 +1,33 @@
+#body {
+   background-color: #202124
+}
+.right-nav{
+    float: right;
+}
+
+.nav-links {
+     float: right;
+     margin-top: 0.5rem;
+ }
+.nav-item {
+    padding: 1rem;
+    color: #fff;
+    float: left;
+    text-decoration: none;
+    /*transition: background-color .2s*/
+}
+
+.fixed {
+    position: fixed
+}
+
+#text-center {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    /*z-index: 1;*/
+    font-size: 3rem;
+    color: #fff
+}
