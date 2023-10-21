@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly('org.projectlombok:lombok')
     annotationProcessor('org.projectlombok:lombok')
@@ -42,7 +42,12 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
     testCompileOnly('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
+
+
+
 }
+
+
 
 tasks.named("bootRun") {
     mainClass = "ru.katok.tamctf.TamctfApplication"
