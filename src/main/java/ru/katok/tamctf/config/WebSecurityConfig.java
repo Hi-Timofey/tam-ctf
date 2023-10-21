@@ -41,7 +41,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
                         .requestMatchers( "/api/v1/*").hasRole("USER")
-                        .requestMatchers("/favicon.ico","/", "/index", "/signup", "/resources/**").permitAll()
+                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/resources/**").permitAll() //css & js
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()

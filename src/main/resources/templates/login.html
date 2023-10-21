@@ -2,9 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <title>Log In</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{/favicon.ico}"/>
+    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
+    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
 </head>
 <body>
+<nav>
+    <div class = "nav-links"><a class="nav-item" href="login.html">Login</a></div>
+    <div class="nav-links"><a class="nav-item" href="signup.html">Sign Up</a></div>
+
+</nav>
 <h1>Log In TAM-CTF</h1>
 <div th:if="${param.error}">
     Invalid username and password.</div>

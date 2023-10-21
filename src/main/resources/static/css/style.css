@@ -1,15 +1,16 @@
 #body {
    background-color: #202124
 }
-
+.right-nav{
+    float: right;
+}
 
 .nav-links {
      float: right;
-     margin-top: 1rem;
-
+     margin-top: 0.5rem;
  }
 .nav-item {
-    padding: 0.5rem;
+    padding: 1rem;
     color: #fff;
     float: left;
     text-decoration: none;
@@ -27,6 +28,6 @@
     text-align: center;
     width: 100%;
     /*z-index: 1;*/
-    font-size: 3.5em;
+    font-size: 3rem;
     color: #fff
 }

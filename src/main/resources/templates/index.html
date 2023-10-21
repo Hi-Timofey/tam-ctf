@@ -1,34 +1,26 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"  lang="en">
 <head>
     <title>Index</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{/favicon.ico}"/>
-   <!--<link rel="stylesheet" type="text/css" href="../static/style.css">-->
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
-<!--    <link th:href="@{../css/style.css}" rel="stylesheet" />-->
+    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
+    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
-<!--    <style>
 
-    </style>-->
+
 </head>
 <body id = "body">
     <nav>
-        <ul>
-            <li>
-                h
-            </li>
-            <li>
-                h
-            </li>
-        </ul>
-        <div class = "nav-links"><a class="nav-item" href="login.html">Login</a></div>
-        <div class="nav-links"><a class="nav-item" href="login.html">Sign Up</a></div>
-
+        <div class = "nav-links"><a></a></div>
+        <div class = "nav-links"><a class = "nav-item" th:href = "@{/login}">Login</a></div>
+        <div class = "nav-links"><a class = "nav-item" th:href = "@{/signup}">Sign Up</a></div>
+        <div class = "nav-links"><a class = "nav-item">|</a></div>
+        <div class = "nav-links"><a class = "nav-item" th:href = "@{/about}">About</a></div>
+        <div class = "nav-links"><a class = "nav-item" th:href = "@{/scoreboard}">Scoreboard</a></div>
     </nav>
     <div id="text-center">
-        Welcome to CTF main screen!
+        Welcome to TAM-CTF main screen!
     </div>
 
 </body>
