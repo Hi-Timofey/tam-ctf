@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @SuppressWarnings("ALL")
 @Configuration
@@ -33,7 +34,6 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .csrf( (csrf) -> csrf
                         .csrfTokenRepository(new CookieCsrfTokenRepository())
                         .disable()
@@ -46,11 +46,13 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/api/v1/me")
+                        .defaultSuccessUrl("/index")
+                //TODO: сделать переход при разлогировании в индекс.хтмл
                 ).logout((logout) -> logout
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .permitAll()
+                        
                 );
         return http.build();
     }
@@ -81,5 +83,10 @@ public class WebSecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(userDetailsService);
         return new ProviderManager(authenticationProvider);
+    }
+
+    @Bean
+    public SpringSecurityDialect springSecurityDialect() {
+        return new SpringSecurityDialect();
     }
 }

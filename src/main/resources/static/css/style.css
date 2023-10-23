@@ -1,5 +1,7 @@
 #body {
-   background-color: #202124
+    /*background-color: #fff*/
+   background-color: #202124;
+    color: #fff;
 }
 .right-nav{
     float: right;

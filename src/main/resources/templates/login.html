@@ -4,12 +4,13 @@
     <title>Log In</title>
     <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
     <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <meta charset="utf-8">
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 </head>
-<body>
+<body id ="body">
 <nav>
-    <div class = "nav-links"><a class="nav-item" href="login.html">Login</a></div>
+    <div class = "nav-links"><a class="nav-item" th:href="login.html">Login</a></div>
     <div class="nav-links"><a class="nav-item" href="signup.html">Sign Up</a></div>
-
 </nav>
 <h1>Log In TAM-CTF</h1>
 <div th:if="${param.error}">
