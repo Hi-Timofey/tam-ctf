@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "File")
+@Table(name = "teams")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Team {

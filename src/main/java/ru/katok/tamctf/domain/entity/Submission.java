@@ -19,6 +19,9 @@ public class Submission {
     private boolean is_successful;
 
     @Column
+    private String flag;
+
+    @Column
     private String solverIp;
 
     @ManyToOne()
