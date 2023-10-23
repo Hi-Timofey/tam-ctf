@@ -35,7 +35,7 @@ public class UserAdminController {
         return this.userService.getById(id);
     }
 
-    @GetMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteUser(@PathVariable Long id) {
         this.userService.deleteUser(this.userService.getById(id));
         return new GenericResponse("ok");
