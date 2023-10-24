@@ -1,4 +1,4 @@
-package ru.katok.tamctf.api.rest;
+package ru.katok.tamctf.api.rest.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,15 +17,12 @@ public class UserAdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(path = "users",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<UserEntity> getAllUsers() {
         return this.userService.getAll();
     }
 
-    @PostMapping(path = "users",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody UserEntity newUser(@RequestBody UserEntity newUser) {
         return this.userService.save(newUser);
     }
@@ -38,7 +35,7 @@ public class UserAdminController {
     @DeleteMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteUser(@PathVariable Long id) {
         this.userService.deleteUser(this.userService.getById(id));
-        return new GenericResponse("ok");
+        return new GenericResponse(true, "ok");
     }
 
 }

@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Hint extends TimeStampMixin {
-    //TODO: стоит ли добавить генерацию айди и если да то как?
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

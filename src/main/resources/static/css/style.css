@@ -1,14 +1,16 @@
 #body {
-   background-color: #202124
+    background-color: #202124
 }
-.right-nav{
+
+.right-nav {
     float: right;
 }
 
 .nav-links {
-     float: right;
-     margin-top: 0.5rem;
- }
+    float: right;
+    margin-top: 0.5rem;
+}
+
 .nav-item {
     padding: 1rem;
     color: #fff;

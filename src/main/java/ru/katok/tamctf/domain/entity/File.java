@@ -14,7 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class File {
 
-    //TODO: Придумать что делать с файлом
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;

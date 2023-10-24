@@ -34,24 +34,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
 
-                .csrf( (csrf) -> csrf
-                        .csrfTokenRepository(new CookieCsrfTokenRepository())
-                        .disable()
-                ).authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/actuator/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
-                        .requestMatchers( "/api/v1/*").hasRole("USER")
-                        .requestMatchers("/*").permitAll()
-                        .requestMatchers("/resources/**").permitAll() //css & js
-                        .anyRequest().authenticated()
-                ).formLogin((form) -> form
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/api/v1/me")
-                ).logout((logout) -> logout
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true)
-                        .permitAll()
-                );
+                .csrf((csrf) -> csrf.csrfTokenRepository(new CookieCsrfTokenRepository()).disable()).authorizeHttpRequests(requests -> requests.requestMatchers("/actuator/**").hasRole("ADMIN").requestMatchers("/api/v1/admin/**").hasRole("MODERATOR").requestMatchers("/api/v1/*").hasRole("USER").requestMatchers("/*").permitAll().requestMatchers("/resources/**").permitAll() //css & js
+                        .anyRequest().authenticated()).formLogin((form) -> form.loginPage("/login").permitAll().defaultSuccessUrl("/api/v1/me")).logout((logout) -> logout.clearAuthentication(true).invalidateHttpSession(true).permitAll());
         return http.build();
     }
 
