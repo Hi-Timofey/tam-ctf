@@ -1,15 +1,10 @@
 package ru.katok.tamctf.domain.dto;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.Team;
-import ru.katok.tamctf.domain.entity.UserEntity;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 

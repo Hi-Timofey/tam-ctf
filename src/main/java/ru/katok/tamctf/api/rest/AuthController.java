@@ -11,18 +11,22 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import ru.katok.tamctf.api.dto.ChangePasswordDto;
 import ru.katok.tamctf.api.dto.LoginDto;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.EmailExistsException;
+import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.katok.tamctf.api.util.GenericResponse;
 
-import java.security.Principal;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("ALL")
@@ -47,11 +51,11 @@ public class AuthController {
         // TODO: handle errors
         try {
             userService.registerNewUserAccount(signUpDto);
-        } catch (EmailExistsException e) {
-            return new GenericResponse(String.valueOf(e), e.getMessage());
+        } catch (UserAlreadyExistException | EmailExistsException e) {
+            return new GenericResponse(e);
         }
 
-        return new GenericResponse("success");
+        return new GenericResponse(true,"success");
     }
 
 
@@ -61,7 +65,28 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new GenericResponse("User log in successfully!...");
+        return new GenericResponse(true ,"User log in successfully!...");
+    }
+
+    /**
+     * Changes user password if and only old password matches one stored in db.
+     * TODO: Test if working correctly
+     * @param changePasswordDto old user password with new password provided
+     * @param user auth principal
+     * @return GenericResponse
+     */
+    @PostMapping("/change-password")
+    public @ResponseBody GenericResponse  changeUserPassword(@RequestBody ChangePasswordDto changePasswordDto,@AuthenticationPrincipal UserDetails user ) {
+        final String oldPass = changePasswordDto.getOldPassword();
+        final String newPass = changePasswordDto.getNewPassword();
+
+        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!")) ;
+
+        if (userService.checkIfValidPassword(userEntity, oldPass) ) {
+            userService.changeUserPassword(userEntity, newPass);
+            return new GenericResponse(true ,"ok");
+        }
+        return new GenericResponse(false ,"Incorrect password");
     }
 
     @GetMapping(path = "/me",

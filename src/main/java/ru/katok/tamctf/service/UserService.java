@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.api.dto.SignUpDto;
-import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Permission;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.UserEntity;
@@ -91,6 +90,17 @@ public class UserService implements IUserService {
     @Override
     public Optional<UserEntity> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public boolean checkIfValidPassword(UserEntity user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
+    @Override
+    public void changeUserPassword(UserEntity user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     @Override
