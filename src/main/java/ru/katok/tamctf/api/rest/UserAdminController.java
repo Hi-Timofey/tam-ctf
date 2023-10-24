@@ -17,15 +17,12 @@ public class UserAdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(path = "users",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<UserEntity> getAllUsers() {
         return this.userService.getAll();
     }
 
-    @PostMapping(path = "users",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody UserEntity newUser(@RequestBody UserEntity newUser) {
         return this.userService.save(newUser);
     }
