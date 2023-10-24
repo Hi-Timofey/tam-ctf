@@ -1,4 +1,4 @@
-package ru.katok.tamctf.api.rest;
+package ru.katok.tamctf.api.rest.admin;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
