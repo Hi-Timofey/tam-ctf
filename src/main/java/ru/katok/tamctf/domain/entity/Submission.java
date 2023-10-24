@@ -16,7 +16,7 @@ public class Submission {
     private Long id;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean is_successful;
+    private boolean isSuccessful;
 
     @Column
     private String flag;

@@ -1,6 +1,9 @@
 package ru.katok.tamctf.domain.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.Team;

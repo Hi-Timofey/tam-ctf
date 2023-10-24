@@ -1,6 +1,6 @@
 package ru.katok.tamctf.domain.error;
 
-public class UserNotFoundException  extends RuntimeException{
+public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
         super();
     }

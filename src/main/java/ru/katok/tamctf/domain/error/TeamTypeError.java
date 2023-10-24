@@ -1,6 +1,6 @@
 package ru.katok.tamctf.domain.error;
 
-public class TeamTypeError extends RuntimeException{
+public class TeamTypeError extends RuntimeException {
 
     public TeamTypeError() {
         super();

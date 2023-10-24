@@ -27,7 +27,7 @@ import ru.katok.tamctf.service.UserService;
 @RestController
 @RequestMapping("/api/v1")
 public class AuthController {
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,7 +38,7 @@ public class AuthController {
     @PostMapping(path = "/signup", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse addUser(@Valid SignUpDto signUpDto) {
 
-        LOGGER.debug("Registering user account with information: {}", signUpDto);
+        log.debug("Registering user account with information: {}", signUpDto);
 
         // TODO: handle errors
         try {
@@ -82,10 +82,8 @@ public class AuthController {
 
     @GetMapping(path = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody UserDto getMyInfo(@AuthenticationPrincipal UserDetails user) {
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        var userDto = MappingUtil.mapToUserDto(userEntity);
-        return userDto;
+        return MappingUtil.mapToUserDto(userEntity);
     }
 
 }

@@ -10,7 +10,7 @@ public class SignUpDto {
 
     @NotNull
     @Size(min = 1)
-    private  String username;
+    private String username;
 
     @NotNull
     @Size(min = 1)

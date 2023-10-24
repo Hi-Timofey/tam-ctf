@@ -16,8 +16,7 @@ import java.util.*;
 
 @SuppressWarnings("ALL")
 @Component
-public class SetupDataLoader implements
-        ApplicationListener<ContextRefreshedEvent> {
+public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -30,8 +29,7 @@ public class SetupDataLoader implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (alreadySetup)
-            return;
+        if (alreadySetup) return;
 
         //TODO: Tooo big rewrite with no existence check
         // == create initial privileges
@@ -61,8 +59,7 @@ public class SetupDataLoader implements
         return privilege;
     }
 
-    private RoleEntity createRoleIfNotFound(
-            String name, Collection<Permission> privileges) {
+    private RoleEntity createRoleIfNotFound(String name, Collection<Permission> privileges) {
 
         RoleEntity role = roleRepository.findByName(name);
         if (role == null) {

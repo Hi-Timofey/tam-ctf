@@ -1,8 +1,8 @@
 package ru.katok.tamctf.api.rest;
 
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,23 +14,20 @@ import ru.katok.tamctf.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1")
+@AllArgsConstructor
 public class TeamController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
 
-    @PostMapping(path = "/create-team",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/create-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse createTeam(@AuthenticationPrincipal UserDetails user) {
-        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(()
-                -> new UsernameNotFoundException("User not found!"));
+        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
         if (userEntity.getTeam() != null) {
-            LOGGER.debug("User tried to create team while he is already on the team.");
+            log.debug("User tried to create team while he is already on the team.");
             return new GenericResponse(false, "You are already on the team");
         }
 
@@ -38,25 +35,19 @@ public class TeamController {
     }
 
 
-    @PostMapping(path = "/join-team",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/join-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse joinTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse(false, "not implemented");
+        return new GenericResponse();
     }
 
-    @GetMapping(path = "/list-team",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/list-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse listTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse(false, "not implemented");
+        return new GenericResponse();
     }
 
 
-    @PostMapping(path = "/remove-user-from-team",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/remove-user-from-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse(false, "not implemented");
+        return new GenericResponse();
     }
 }

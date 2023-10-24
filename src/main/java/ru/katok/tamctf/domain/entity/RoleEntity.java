@@ -28,12 +28,7 @@ public class RoleEntity {
     private Collection<UserEntity> users;
 
     @ManyToMany
-    @JoinTable(
-            name = "roles_permissions",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "permission_id", referencedColumnName = "id"))
+    @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
     @JsonManagedReference
     private Collection<Permission> permissions;
 

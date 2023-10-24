@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface IUserService extends UserDetailsService {
     List<UserEntity> getAll();
+
     UserEntity registerNewUserAccount(SignUpDto accountDto) throws EmailExistsException;
 
     void saveRegisteredUser(UserEntity user);
@@ -19,5 +20,6 @@ public interface IUserService extends UserDetailsService {
     Optional<UserEntity> findUserByUsername(String username);
 
     boolean checkIfValidPassword(UserEntity user, String oldPassword);
+
     void changeUserPassword(UserEntity user, String password);
 }

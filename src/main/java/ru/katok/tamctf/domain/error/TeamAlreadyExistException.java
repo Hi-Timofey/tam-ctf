@@ -1,6 +1,6 @@
 package ru.katok.tamctf.domain.error;
 
-public class TeamAlreadyExistException extends RuntimeException{
+public class TeamAlreadyExistException extends RuntimeException {
     public TeamAlreadyExistException() {
         super();
     }

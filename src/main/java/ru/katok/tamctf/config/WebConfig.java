@@ -23,10 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/about").setViewName("about");
         registry.addViewController("/scoreboard").setViewName("scoreboard");
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:/static/")
-                .setCacheControl(CacheControl.maxAge(Duration.ofDays(365)));
+        registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/static/").setCacheControl(CacheControl.maxAge(Duration.ofDays(365)));
     }
 }
