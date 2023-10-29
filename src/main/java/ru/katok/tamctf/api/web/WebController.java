@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebController {
     @RequestMapping("/404")
     public String render404(Model model) {
-        // Add model attributes
         return "404";
     }
 }

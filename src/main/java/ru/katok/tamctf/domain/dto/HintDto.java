@@ -4,14 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-
+import ru.katok.tamctf.domain.entity.Task;
 @Data
 @Builder
 @Getter
 @AllArgsConstructor
-public class TaskDto {
+public class HintDto{
 
-    private String name;
+    private String text;
 
-    private String description;
+    private Task task;
+
 }

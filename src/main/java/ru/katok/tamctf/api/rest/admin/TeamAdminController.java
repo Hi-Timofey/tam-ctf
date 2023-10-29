@@ -1,6 +1,6 @@
-package ru.katok.tamctf.api.rest;
+package ru.katok.tamctf.api.rest.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
+@AllArgsConstructor
 public class TeamAdminController {
-    @Autowired
-    private TeamService teamService;
+    private final TeamService teamService;
 
     @ResponseBody
     @GetMapping(path = "teams", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -30,10 +30,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/tasks").setViewName("tasks");
         registry.addViewController("/teams").setViewName("teams");
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:/static/")
-                .setCacheControl(CacheControl.maxAge(Duration.ofDays(365)));
+        registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/static/").setCacheControl(CacheControl.maxAge(Duration.ofDays(365)));
     }
 }

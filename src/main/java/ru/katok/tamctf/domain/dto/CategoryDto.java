@@ -1,17 +1,12 @@
 package ru.katok.tamctf.domain.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-
-@Data
-@Builder
-@Getter
-@AllArgsConstructor
-public class TaskDto {
-
+import jakarta.persistence.Column;
+public class CategoryDto {
+    @Column(unique = true, length=16)
     private String name;
-
-    private String description;
 }
