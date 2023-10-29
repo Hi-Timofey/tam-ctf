@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                 ).formLogin((form) -> form
                         .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/index")
-                //TODO: сделать переход при разлогировании в индекс.хтмл
+                //TODO: сделать переход при разлогировании в index.html
                 ).logout((logout) -> logout
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)

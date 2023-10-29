@@ -8,7 +8,7 @@
 </head>
 <body id="body">
             <nav th:fragment="navigation">
-
+                <a th:href="@{/index}"><img class="nav-img" th:src="@{/resources/img/CTF_EXAMPLE.png}" alt="TAM-CTF"/></a>
                 <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/logout}">Logout</a></div></div>
                 <div class = "nav-links"> <div sec:authorize="isAnonymous()"><a class = "nav-item" th:href = "@{/login}">Login</a></div></div>
                 <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/profile}"><div sec:authentication="name"></div></a></div></div>
@@ -19,6 +19,9 @@
 
             </nav>
 
+<footer>
+
+</footer>
 
 
 </body>
