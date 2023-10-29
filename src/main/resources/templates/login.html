@@ -4,14 +4,16 @@
     <title>Log In</title>
     <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
     <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <meta charset="utf-8">
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 </head>
-<body>
-<nav>
-    <div class = "nav-links"><a class="nav-item" href="login.html">Login</a></div>
-    <div class="nav-links"><a class="nav-item" href="signup.html">Sign Up</a></div>
+<body id ="body">
 
-</nav>
-<h1>Log In TAM-CTF</h1>
+<div th:insert="~{general :: navigation}"></div>
+
+<div class="content-center">
+
+    <div id="card">Log In TAM-CTF
 <div th:if="${param.error}">
     Invalid username and password.</div>
 <div th:if="${param.logout}">
@@ -19,15 +21,17 @@
 <form th:action="@{/login}" method="post">
     <div>
         <label>
-            <input type="text" name="username" placeholder="Username"/>
+            <input class="form-control" type="text" name="username" placeholder="Username"/>
         </label>
     </div>
     <div>
         <label>
-            <input type="password" name="password" placeholder="Password"/>
+            <input class="form-control" type="password" name="password" placeholder="Password"/>
         </label>
     </div>
     <input type="submit" value="Log in" />
 </form>
+</div>
+</div>
 </body>
 </html>
