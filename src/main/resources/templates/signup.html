@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
+    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <title>Sign up</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
+    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+</head>
+<body id="body">
+
+<div th:insert="~{general :: navigation}"></div>
+
+<div class="content-center">
+<div id="card">Sign up TAM-CTF
+<form th:action="@{/api/v1/signup}" method="post">
+    <div>
+        <label>
+            <input  class="form-control"
+                    type="text" name="username"
+                   placeholder="Username"/>
+        </label>
+    </div>
+    <div>
+        <label>
+            <input class="form-control" type="text" name="email" placeholder="Email"/>
+        </label>
+    </div>
+    <div>
+        <label for="password">
+            <input class="form-control" id="password"  name="password"  value="" type="password" required="required" placeholder="Password"/>
+        </label>
+    </div>
+    <div>
+        <label for="matchPassword">
+            <input class="form-control" id="matchPassword" name="matchingPassword" value="" type="password" required="required" placeholder="Confirm password"/>
+        </label>
+    </div>
+    <input type="submit" value="Sign Up" />
+    <!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+</form>
+</div>
+</div>
+</body>
+</html>

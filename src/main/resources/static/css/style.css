@@ -1,0 +1,103 @@
+#body {
+    /*background-color: #fff*/
+   background-color: #202124;
+    color: #fff;
+/*    position: fixed*/
+}
+
+.right-nav {
+    float: right;
+}
+
+.nav-links {
+    float: right;
+    margin-top: 0.5rem;
+}
+
+.nav-item {
+    padding: 1rem;
+    color: #fff;
+    float: left;
+    text-decoration: none;
+    /*transition: background-color .2s*/
+}
+
+.fixed {
+    position: fixed
+}
+
+.text-center {
+    position: absolute;
+    top: 40%;
+    text-align: center;
+    width: 100%;
+    font-size: 3rem;
+    color: #fff
+}
+
+/*#h1{
+    text-align: center;
+    width: 100%;
+    font-size: 3rem;
+    color: #fff;
+}*/
+.links {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-img{
+    width: 10%;
+    height: 10%;
+}
+
+/*#border{
+    background-color: transparent;
+    border-radius: 1rem;
+    border: 1px solid rgb(189, 193, 198);
+!*    padding: 0px 40% 40%;*!
+    width: 80%;
+    height: 80%;
+    text-align: center;
+}*/
+
+#card{
+    background-color: transparent;
+    border-radius: 1rem;
+    border: 2px solid rgb(189, 193, 198);
+    padding: 0px 3rem 2rem;
+    text-align: center;
+    width: 40%;
+}
+
+.form-control{
+    outline: none;
+    display: block;
+    width: 100%;
+    margin: 0px;
+    font-family: inherit;
+    overflow: visible;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    background-clip: padding-box;
+    border: 1px solid rgb(206, 212, 218);
+    border-radius: 0.25rem;
+    /*transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s, border 0.5s ease 0s, background-color 0.5s ease 0s;*/
+    height: 90%;
+    padding: 3% 0px 3% 3%;
+}
+
+.content-center{
+    position: fixed;
+    top: 40%;
+    left: 25%;
+    text-align: center;
+    width: 100%;
+    font-size: 3rem;
+    color: #fff;
+    justify-content: safe center;
+    align-items: safe center;
+}

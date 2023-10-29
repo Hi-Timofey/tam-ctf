@@ -1,0 +1,33 @@
+package ru.katok.tamctf.api.util;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class GenericResponse {
+    private boolean succsessful;
+    private String message;
+    private Throwable error;
+
+    public GenericResponse() {
+        super();
+        this.message = "WTF";
+        this.succsessful = false;
+    }
+
+    public GenericResponse(final Exception error) {
+        super();
+        this.succsessful = false;
+        this.message = error.getMessage();
+        this.error = error;
+    }
+
+    public GenericResponse(final boolean succsessful, final String message) {
+        super();
+        this.message = message;
+        this.succsessful = succsessful;
+    }
+}
