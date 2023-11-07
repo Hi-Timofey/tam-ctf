@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.katok.tamctf.domain.util.GeneratorUtil;
 
 import java.util.Collection;
 import java.util.Set;
@@ -32,6 +33,7 @@ public class Team {
     private String university;
 
     @Column(unique = true, length = 32)
+    @GeneratedValue(generator = GeneratorUtil.randomValueGenerator)
     private String inviteCode;
 
     @OneToMany(mappedBy = "team")
@@ -39,4 +41,8 @@ public class Team {
 
     @OneToMany(mappedBy = "team")
     private Collection<Submission> submissions;
+
+    public void addUserToTeam(UserEntity user) {
+        this.users.add(user);
+    }
 }

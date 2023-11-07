@@ -7,8 +7,10 @@ import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.TeamType;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.TeamAlreadyExistException;
+import ru.katok.tamctf.domain.error.TeamNotFoundException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
+import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ITeamService;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class TeamService implements ITeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
 
     @Override
@@ -46,11 +49,11 @@ public class TeamService implements ITeamService {
 
         }
 
-
         Team team = createNewTeam(newTeam);
-        //TODO: Set user role "CAPTAIN" AND add user to team
-        //team.setUsers(Set.of(userEntity));
-        return team;
+
+        userEntity.addRole(roleRepository.findByName("ROLE_TEAM_CAPTAIN"));
+        team.addUserToTeam(userRepository.save(userEntity));
+        return teamRepository.save(team);
     }
 
     @Override
@@ -60,5 +63,31 @@ public class TeamService implements ITeamService {
         }
         Team team = Team.builder().teamType(newTeam.getType()).name(newTeam.getName()).university(newTeam.getUniversity()).build();
         return teamRepository.save(team);
+    }
+
+    @Override
+    public void joinTeamWithToken(String inviteCode, String username) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+
+        //TODO: make it with usage of  Optional
+        //user.ifPresent((userEntity -> {
+        //}));
+
+        if (userEntity.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
+
+        UserEntity user = userEntity.get();
+
+        if (user.getTeam() != null) throw new TeamAlreadyExistException("You are already on the team.");
+
+        Optional<Team> teamEntity = teamRepository.findTeamByInviteCode(inviteCode);
+
+        if (teamEntity.isEmpty()) throw new TeamNotFoundException("Invalid invite code.");
+        Team team = teamEntity.get();
+        team.addUserToTeam(user);
+        teamRepository.save(team);
+    }
+
+    @Override
+    public void removeUserFromTeam() {
     }
 }

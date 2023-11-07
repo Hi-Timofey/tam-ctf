@@ -41,6 +41,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         final List<Permission> userPrivileges = new ArrayList<>(List.of(read));
         final RoleEntity adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_MODERATOR", adminPrivileges);
+        createRoleIfNotFound("ROLE_TEAM_CAPTAIN", userPrivileges);
         createRoleIfNotFound("ROLE_USER", userPrivileges);
 
         // == create initial user

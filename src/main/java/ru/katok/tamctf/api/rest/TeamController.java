@@ -9,7 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
+import ru.katok.tamctf.domain.dto.TeamDto;
+import ru.katok.tamctf.domain.entity.Team;
+import ru.katok.tamctf.service.TeamService;
 import ru.katok.tamctf.service.UserService;
+
+import java.util.List;
 
 
 @RestController
@@ -20,18 +25,15 @@ public class TeamController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final UserService userService;
+    private final TeamService teamService;
 
 
     @PostMapping(path = "/create-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse createTeam(@AuthenticationPrincipal UserDetails user) {
-        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-
-        if (userEntity.getTeam() != null) {
-            log.debug("User tried to create team while he is already on the team.");
-            return new GenericResponse(false, "You are already on the team");
-        }
-
-        return new GenericResponse(true, "ok");
+    public @ResponseBody GenericResponse<Team> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
+        String username = user.getUsername();
+        log.warn("TeamDto value: {}", newTeam);
+        teamService.createNewTeamWithCaptainName(newTeam, username);
+        return new GenericResponse<>(true, "ok");
     }
 
 
@@ -41,8 +43,8 @@ public class TeamController {
     }
 
     @GetMapping(path = "/list-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse listTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<List<Team>> listTeam(@AuthenticationPrincipal UserDetails user) {
+        return new GenericResponse<>(true, "ok", teamService.getAll());
     }
 
 

@@ -7,10 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GenericResponse {
+public class GenericResponse<T> {
     private boolean succsessful;
     private String message;
     private Throwable error;
+    private T responseObject;
 
     public GenericResponse() {
         super();
@@ -29,5 +30,12 @@ public class GenericResponse {
         super();
         this.message = message;
         this.succsessful = succsessful;
+    }
+
+    public GenericResponse(final boolean succsessful, final String message, final T responseObject) {
+        super();
+        this.message = message;
+        this.succsessful = succsessful;
+        this.responseObject = responseObject;
     }
 }

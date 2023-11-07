@@ -12,7 +12,6 @@ import ru.katok.tamctf.domain.entity.TeamType;
 @Data
 @Builder
 @Getter
-@AllArgsConstructor
 public class TeamDto {
 
     @NotNull

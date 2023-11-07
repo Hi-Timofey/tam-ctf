@@ -13,4 +13,8 @@ public interface ITeamService {
     Team createNewTeamWithCaptainName(TeamDto newTeam, String username) throws TeamTypeError;
 
     Team createNewTeam(TeamDto newTeam) throws TeamAlreadyExistException;
+
+    void joinTeamWithToken(String inviteCode, String username);
+
+    void removeUserFromTeam();
 }

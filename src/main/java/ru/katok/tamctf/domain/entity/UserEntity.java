@@ -48,4 +48,8 @@ public class UserEntity extends TimeStampMixin {
 
     @ManyToOne()
     private Team team;
+
+    public void addRole(RoleEntity role) {
+        this.roles.add(role);
+    }
 }
