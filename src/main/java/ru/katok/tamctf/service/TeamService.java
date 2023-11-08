@@ -50,26 +50,29 @@ public class TeamService implements ITeamService {
 
         }
 
-        Team team = createNewTeam(newTeam, Collections.singleton(userEntity));
-
-        userEntity.addRole(roleRepository.findByName("ROLE_TEAM_CAPTAIN"));
-        userRepository.save(userEntity);
-        return teamRepository.save(team);
-//        return team;
-    }
-
-    @Override
-    public Team createNewTeam(TeamDto newTeam, Set<UserEntity> users) throws TeamAlreadyExistException {
         if (teamRepository.existsByName(newTeam.getName())) {
             throw new TeamAlreadyExistException("A team with that name already exists.");
         }
+
+        // TODO: Fix bidirectional adding
         Team team = Team.builder()
                 .teamType(newTeam.getType())
                 .name(newTeam.getName())
                 .university(newTeam.getUniversity())
-                .users(users)
                 .build();
-        return teamRepository.save(team);
+        team = teamRepository.save(team);
+
+        userEntity.setTeam(team);
+
+
+        userEntity.addRole(roleRepository.findByName("ROLE_TEAM_CAPTAIN"));
+        userRepository.save(userEntity);
+
+        Set<UserEntity> members = new HashSet<>();
+        members.add(userEntity);
+        team.setUsers(members);
+
+        return team;
     }
 
     @Override
@@ -96,5 +99,13 @@ public class TeamService implements ITeamService {
 
     @Override
     public void removeUserFromTeam() {
+    }
+
+    public Team getById(final Long id) {
+        return this.teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + Long.toString(id)));
+    }
+
+    public void deleteTeamById(Long id) {
+        this.teamRepository.delete(getById(id));
     }
 }

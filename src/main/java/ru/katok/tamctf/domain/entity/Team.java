@@ -1,5 +1,7 @@
 package ru.katok.tamctf.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.katok.tamctf.domain.util.GeneratorUtil;
@@ -34,7 +36,8 @@ public class Team {
     @GeneratedValue(generator = GeneratorUtil.randomValueGenerator)
     private String inviteCode;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, targetEntity = UserEntity.class, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, targetEntity = UserEntity.class)
+    @JsonManagedReference
     private Set<UserEntity> users;
 
     @OneToMany(mappedBy = "team")

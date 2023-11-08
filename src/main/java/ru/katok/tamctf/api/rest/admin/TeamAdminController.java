@@ -2,10 +2,8 @@ package ru.katok.tamctf.api.rest.admin;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.service.TeamService;
 
@@ -19,7 +17,14 @@ public class TeamAdminController {
 
     @ResponseBody
     @GetMapping(path = "teams", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Team> getAllTeams() {
-        return teamService.getAll();
+    public GenericResponse<List<Team>> getAllTeams() {
+        return new GenericResponse<>(true, "ok", teamService.getAll()) ;
+    }
+
+
+    @DeleteMapping(path = "teams/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse deleteUser(@PathVariable Long id) {
+        this.teamService.deleteTeamById(id);
+        return new GenericResponse<>(true, "ok");
     }
 }

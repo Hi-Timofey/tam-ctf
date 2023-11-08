@@ -32,8 +32,8 @@ public class TeamController {
     public @ResponseBody GenericResponse<Team> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
         String username = user.getUsername();
         log.warn("TeamDto value: {}", newTeam);
-        teamService.createNewTeamWithCaptainName(newTeam, username);
-        return new GenericResponse<>(true, "ok");
+        Team team = teamService.createNewTeamWithCaptainName(newTeam, username);
+        return new GenericResponse<>(true, "ok", team);
     }
 
 
