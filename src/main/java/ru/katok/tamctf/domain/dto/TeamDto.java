@@ -3,15 +3,12 @@ package ru.katok.tamctf.domain.dto;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import ru.katok.tamctf.domain.entity.TeamType;
 
 @Data
-@Builder
 @Getter
+@NoArgsConstructor
 public class TeamDto {
 
     @NotNull

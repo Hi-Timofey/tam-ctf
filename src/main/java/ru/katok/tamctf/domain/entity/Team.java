@@ -1,13 +1,11 @@
 package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.katok.tamctf.domain.util.GeneratorUtil;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -36,13 +34,10 @@ public class Team {
     @GeneratedValue(generator = GeneratorUtil.randomValueGenerator)
     private String inviteCode;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, targetEntity = UserEntity.class, fetch = FetchType.EAGER)
     private Set<UserEntity> users;
 
     @OneToMany(mappedBy = "team")
     private Collection<Submission> submissions;
 
-    public void addUserToTeam(UserEntity user) {
-        this.users.add(user);
-    }
 }

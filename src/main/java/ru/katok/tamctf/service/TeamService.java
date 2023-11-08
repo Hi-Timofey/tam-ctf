@@ -1,5 +1,6 @@
 package ru.katok.tamctf.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.TeamDto;
@@ -15,8 +16,7 @@ import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ITeamService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service("teamService")
@@ -32,6 +32,7 @@ public class TeamService implements ITeamService {
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public Team createNewTeamWithCaptainName(TeamDto newTeam, String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
 
@@ -49,19 +50,25 @@ public class TeamService implements ITeamService {
 
         }
 
-        Team team = createNewTeam(newTeam);
+        Team team = createNewTeam(newTeam, Collections.singleton(userEntity));
 
         userEntity.addRole(roleRepository.findByName("ROLE_TEAM_CAPTAIN"));
-        team.addUserToTeam(userRepository.save(userEntity));
+        userRepository.save(userEntity);
         return teamRepository.save(team);
+//        return team;
     }
 
     @Override
-    public Team createNewTeam(TeamDto newTeam) throws TeamAlreadyExistException {
+    public Team createNewTeam(TeamDto newTeam, Set<UserEntity> users) throws TeamAlreadyExistException {
         if (teamRepository.existsByName(newTeam.getName())) {
             throw new TeamAlreadyExistException("A team with that name already exists.");
         }
-        Team team = Team.builder().teamType(newTeam.getType()).name(newTeam.getName()).university(newTeam.getUniversity()).build();
+        Team team = Team.builder()
+                .teamType(newTeam.getType())
+                .name(newTeam.getName())
+                .university(newTeam.getUniversity())
+                .users(users)
+                .build();
         return teamRepository.save(team);
     }
 
@@ -83,7 +90,7 @@ public class TeamService implements ITeamService {
 
         if (teamEntity.isEmpty()) throw new TeamNotFoundException("Invalid invite code.");
         Team team = teamEntity.get();
-        team.addUserToTeam(user);
+        //TODO: team.addUserToTeam(user);
         teamRepository.save(team);
     }
 
