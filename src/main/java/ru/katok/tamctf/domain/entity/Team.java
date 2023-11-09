@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
 import ru.katok.tamctf.domain.util.GeneratorUtil;
 
 import java.util.Collection;
@@ -36,7 +37,12 @@ public class Team {
     @GeneratedValue(generator = GeneratorUtil.randomValueGenerator)
     private String inviteCode;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, targetEntity = UserEntity.class)
+    @OneToMany(
+            mappedBy = "team",
+            fetch = FetchType.LAZY,
+            targetEntity = UserEntity.class,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
+    )
     @JsonManagedReference
     private Set<UserEntity> users;
 

@@ -10,6 +10,7 @@ import ru.katok.tamctf.service.UserService;
 import java.util.List;
 
 @SuppressWarnings("ALL")
+//TODO: UserEntity to DTO
 @RestController()
 @RequestMapping("/api/v1/admin")
 public class UserAdminController {
@@ -18,8 +19,8 @@ public class UserAdminController {
     private UserService userService;
 
     @GetMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<UserEntity> getAllUsers() {
-        return this.userService.getAll();
+    public @ResponseBody GenericResponse<List<UserEntity>> getAllUsers() {
+        return new GenericResponse<>(true, "ok", this.userService.getAll());
     }
 
     @PostMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
