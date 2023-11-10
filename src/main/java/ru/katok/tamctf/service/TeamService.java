@@ -12,6 +12,7 @@ import ru.katok.tamctf.domain.error.TeamNotFoundException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.repository.RoleRepository;
+import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ITeamService;
@@ -27,13 +28,14 @@ public class TeamService implements ITeamService {
 
 
     @Override
-    public List<Team> getAll() {
-        return teamRepository.findAll();
+    public List<TeamDto> getAll() {
+        return teamRepository.findAll().stream()
+                .map(MappingUtil::mapToTeamDto).toList();
     }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public Team createNewTeamWithCaptainName(TeamDto newTeam, String username) {
+    public TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
 
         //TODO: make it with usage of  Optional
@@ -72,7 +74,12 @@ public class TeamService implements ITeamService {
         members.add(userEntity);
         team.setUsers(members);
 
-        return team;
+        return  MappingUtil.mapToTeamDto(team);
+    }
+
+    @Override
+    public TeamDto getTeamById(Long id) throws TeamNotFoundException {
+        return MappingUtil.mapToTeamDto( teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id)));
     }
 
     @Override
@@ -95,17 +102,5 @@ public class TeamService implements ITeamService {
         Team team = teamEntity.get();
         //TODO: team.addUserToTeam(user);
         teamRepository.save(team);
-    }
-
-    @Override
-    public void removeUserFromTeam() {
-    }
-
-    public Team getById(final Long id) {
-        return this.teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + Long.toString(id)));
-    }
-
-    public void deleteTeamById(Long id) {
-        this.teamRepository.delete(getById(id));
     }
 }

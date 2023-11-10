@@ -29,10 +29,10 @@ public class TeamController {
 
 
     @PostMapping(path = "/create-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<Team> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
+    public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
         String username = user.getUsername();
         log.debug("TeamDto value: {}", newTeam);
-        Team team = teamService.createNewTeamWithCaptainName(newTeam, username);
+        TeamDto team = teamService.createNewTeamWithCaptainName(newTeam, username);
         return new GenericResponse<>(true, "ok", team);
     }
 
@@ -43,7 +43,7 @@ public class TeamController {
     }
 
     @GetMapping(path = "/list-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<List<Team>> listTeam(@AuthenticationPrincipal UserDetails user) {
+    public @ResponseBody GenericResponse<List<TeamDto>> listTeam(@AuthenticationPrincipal UserDetails user) {
         return new GenericResponse<>(true, "ok", teamService.getAll());
     }
 
