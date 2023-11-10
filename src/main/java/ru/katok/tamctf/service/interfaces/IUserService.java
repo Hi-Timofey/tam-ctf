@@ -2,24 +2,22 @@ package ru.katok.tamctf.service.interfaces;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.katok.tamctf.api.dto.SignUpDto;
+import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.EmailExistsException;
+import ru.katok.tamctf.domain.error.UserNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService extends UserDetailsService {
-    List<UserEntity> getAll();
+    List<UserDto> getAll();
 
-    UserEntity registerNewUserAccount(SignUpDto accountDto) throws EmailExistsException;
+    UserDto registerNewUserAccount(SignUpDto accountDto) throws EmailExistsException;
 
-    void saveRegisteredUser(UserEntity user);
+    void deleteUserById(Long id);
 
-    void deleteUser(UserEntity user);
+    UserDto findUserByUsername(String username) throws UserNotFoundException;
 
-    Optional<UserEntity> findUserByUsername(String username);
-
-    boolean checkIfValidPassword(UserEntity user, String oldPassword);
-
-    void changeUserPassword(UserEntity user, String password);
+    UserDto getUserById(Long id) throws UserNotFoundException;
 }

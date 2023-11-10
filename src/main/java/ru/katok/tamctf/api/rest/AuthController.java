@@ -1,6 +1,7 @@
 package ru.katok.tamctf.api.rest;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +27,28 @@ import ru.katok.tamctf.service.UserService;
 @SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/api/v1")
+@AllArgsConstructor
 public class AuthController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping(path = "/signup", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse addUser(@Valid SignUpDto signUpDto) {
+    public @ResponseBody GenericResponse<UserDto> addUser(@Valid SignUpDto signUpDto) {
 
         log.debug("Registering user account with information: {}", signUpDto);
 
         // TODO: handle errors
+        UserDto userDto;
         try {
-            userService.registerNewUserAccount(signUpDto);
+            userDto = userService.registerNewUserAccount(signUpDto);
         } catch (UserAlreadyExistException | EmailExistsException e) {
             return new GenericResponse(e);
         }
 
-        return new GenericResponse(true, "success");
+        return new GenericResponse(true, "success", userDto);
     }
 
 
@@ -60,7 +61,6 @@ public class AuthController {
 
     /**
      * Changes user password if and only old password matches one stored in db.
-     * TODO: Test if working correctly
      *
      * @param changePasswordDto old user password with new password provided
      * @param user              auth principal
@@ -71,19 +71,20 @@ public class AuthController {
         final String oldPass = changePasswordDto.getOldPassword();
         final String newPass = changePasswordDto.getNewPassword();
 
-        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-
-        if (userService.checkIfValidPassword(userEntity, oldPass)) {
-            userService.changeUserPassword(userEntity, newPass);
-            return new GenericResponse(true, "ok");
-        }
-        return new GenericResponse(false, "Incorrect password");
+        //TODO: Implement via 1 simple call to service
+//        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+//
+//        if (userService.checkIfValidPassword(userEntity, oldPass)) {
+//            userService.changeUserPassword(userEntity, newPass);
+//            return new GenericResponse(true, "ok");
+//        }
+//        return new GenericResponse(false, "Incorrect password");
+        return new GenericResponse(false, "not implemented");
     }
 
     @GetMapping(path = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody UserDto getMyInfo(@AuthenticationPrincipal UserDetails user) {
-        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        return MappingUtil.mapToUserDto(userEntity);
+    public @ResponseBody GenericResponse<UserDto> getMyInfo(@AuthenticationPrincipal UserDetails user) {
+        return new GenericResponse<>(true, "ok", userService.findUserByUsername(user.getUsername()));
     }
 
 }
