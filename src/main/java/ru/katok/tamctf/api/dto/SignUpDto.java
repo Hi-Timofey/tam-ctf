@@ -3,9 +3,11 @@ package ru.katok.tamctf.api.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import ru.katok.tamctf.validation.PasswordMatches;
 import ru.katok.tamctf.validation.ValidEmail;
 
 @Data
+@PasswordMatches
 public class SignUpDto {
 
     @NotNull

@@ -22,6 +22,7 @@ import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
+import ru.katok.tamctf.validation.PasswordMatches;
 
 import java.util.*;
 
@@ -32,9 +33,7 @@ import java.util.*;
 public class UserService implements IUserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -91,7 +90,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto registerNewUserAccount(final SignUpDto newUser) throws EmailExistsException {
+    public UserDto registerNewUserAccount( final SignUpDto newUser) throws EmailExistsException {
         String username = newUser.getUsername();
         if (userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException("There is an account with that nickname: " + username);

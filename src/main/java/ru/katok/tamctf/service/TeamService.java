@@ -2,6 +2,7 @@ package ru.katok.tamctf.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.entity.Team;
@@ -11,6 +12,7 @@ import ru.katok.tamctf.domain.error.TeamAlreadyExistException;
 import ru.katok.tamctf.domain.error.TeamNotFoundException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
+import ru.katok.tamctf.domain.util.GeneratorUtil;
 import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TeamRepository;
@@ -60,6 +62,7 @@ public class TeamService implements ITeamService {
         Team team = Team.builder()
                 .teamType(newTeam.getType())
                 .name(newTeam.getName())
+                .inviteCode(GeneratorUtil.generateCleanUuid())
                 .university(newTeam.getUniversity())
                 .build();
         team = teamRepository.save(team);
@@ -83,12 +86,9 @@ public class TeamService implements ITeamService {
     }
 
     @Override
-    public void joinTeamWithToken(String inviteCode, String username) {
+    public boolean joinTeamWithToken(String inviteCode, String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
 
-        //TODO: make it with usage of  Optional
-        //user.ifPresent((userEntity -> {
-        //}));
 
         if (userEntity.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
 
@@ -98,9 +98,11 @@ public class TeamService implements ITeamService {
 
         Optional<Team> teamEntity = teamRepository.findTeamByInviteCode(inviteCode);
 
-        if (teamEntity.isEmpty()) throw new TeamNotFoundException("Invalid invite code.");
+        if (teamEntity.isEmpty()) {
+            throw new TeamNotFoundException("Invalid invite code.");
+        };
         Team team = teamEntity.get();
-        //TODO: team.addUserToTeam(user);
-        teamRepository.save(team);
+        user.setTeam(team);
+        return true;
     }
 }

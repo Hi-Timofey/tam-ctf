@@ -23,4 +23,8 @@ public class TeamDto {
     @Nullable
     @Size(min = 1)
     private String university;
+
+    @NotNull
+    @Size(min = 1)
+    private String inviteCode;
 }

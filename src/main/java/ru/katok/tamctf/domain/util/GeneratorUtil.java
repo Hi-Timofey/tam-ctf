@@ -11,6 +11,10 @@ public class GeneratorUtil implements IdentifierGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) {
+        return GeneratorUtil.generateCleanUuid();
+    }
+
+    public static String generateCleanUuid(){
         return UUID.randomUUID().toString().replace("-", "");
     }
 }

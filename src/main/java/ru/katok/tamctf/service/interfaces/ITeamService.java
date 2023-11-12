@@ -19,5 +19,5 @@ public interface ITeamService {
 
     TeamDto getTeamById(Long id) throws TeamNotFoundException;
 
-    void joinTeamWithToken(String inviteCode, String username);
+    boolean joinTeamWithToken(String inviteCode, String username);
 }

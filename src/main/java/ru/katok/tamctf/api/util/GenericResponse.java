@@ -11,7 +11,7 @@ public class GenericResponse<T> {
     private boolean succsessful;
     private String message;
     private Throwable error;
-    private T responseObject;
+    private T data;
 
     public GenericResponse() {
         super();
@@ -36,6 +36,6 @@ public class GenericResponse<T> {
         super();
         this.message = message;
         this.succsessful = succsessful;
-        this.responseObject = responseObject;
+        this.data = responseObject;
     }
 }

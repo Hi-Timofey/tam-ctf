@@ -33,8 +33,8 @@ public class Team {
     @Column(unique = true, length = 128)
     private String university;
 
-    @Column(unique = true, length = 32)
-    @GeneratedValue(generator = GeneratorUtil.randomValueGenerator)
+    //TODO private String inviteCode = GeneratorUtil.generateCleanUuid();
+    @Column(unique = true)
     private String inviteCode;
 
     @OneToMany(

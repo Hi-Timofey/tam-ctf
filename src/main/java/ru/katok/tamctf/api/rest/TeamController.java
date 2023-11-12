@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import ru.katok.tamctf.api.dto.InviteCodeDto;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.entity.Team;
@@ -38,8 +39,11 @@ public class TeamController {
 
 
     @PostMapping(path = "/join-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse joinTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<Boolean> joinTeam(@RequestBody InviteCodeDto inviteCodeDto, @AuthenticationPrincipal UserDetails user) {
+        String username = user.getUsername();
+        String inviteCode = inviteCodeDto.getInviteCode();
+        boolean done = teamService.joinTeamWithToken(inviteCode, username);
+        return new GenericResponse<>(true, "ok", done);
     }
 
     @GetMapping(path = "/list-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

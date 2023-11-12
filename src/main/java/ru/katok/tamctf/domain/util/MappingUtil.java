@@ -22,6 +22,7 @@ public class MappingUtil {
         return TeamDto.builder()
                 .name(team.getName())
                 .type(team.getTeamType())
+                .inviteCode(team.getInviteCode())
                 .university(team.getUniversity())
                 .build();
     }

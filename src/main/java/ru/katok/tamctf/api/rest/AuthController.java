@@ -35,10 +35,8 @@ public class AuthController {
 
     private final UserService userService;
 
-    @PostMapping(path = "/signup", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<UserDto> addUser(@Valid SignUpDto signUpDto) {
-
-        log.debug("Registering user account with information: {}", signUpDto);
+    @PostMapping(path = "/signup", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public @ResponseBody GenericResponse<UserDto> addUserUsingForm(@Valid SignUpDto signUpDto) {
 
         // TODO: handle errors
         UserDto userDto;
@@ -47,7 +45,22 @@ public class AuthController {
         } catch (UserAlreadyExistException | EmailExistsException e) {
             return new GenericResponse(e);
         }
+        log.debug("Registered user account with information: {}", signUpDto);
+        return new GenericResponse(true, "success", userDto);
+    }
+    @PostMapping(path = "/signup",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody GenericResponse<UserDto> addUserUsingJSON(@RequestBody @Valid SignUpDto signUpDto) {
 
+        // TODO: handle errors
+        UserDto userDto;
+        try {
+            userDto = userService.registerNewUserAccount(signUpDto);
+        } catch (UserAlreadyExistException | EmailExistsException e) {
+            return new GenericResponse(e);
+        }
+        log.debug("Registered user account with information: {}", signUpDto);
         return new GenericResponse(true, "success", userDto);
     }
 
