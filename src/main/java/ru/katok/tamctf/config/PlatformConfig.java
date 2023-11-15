@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PlatformConfig {
 
-    private String ctfTitle;
+    private String ctfTitle = "TAM-CTF Event";
 
-    private String flagWrapper;
+    private String flagWrapper = "CTF";
 
     //TODO: swap to DateTime
     private LocalDateTime gameStartTime;
