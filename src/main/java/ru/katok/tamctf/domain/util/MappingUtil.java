@@ -2,8 +2,10 @@ package ru.katok.tamctf.domain.util;
 
 import lombok.experimental.UtilityClass;
 import ru.katok.tamctf.api.dto.SignUpDto;
+import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.dto.UserDto;
+import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
 
@@ -27,4 +29,10 @@ public class MappingUtil {
                 .build();
     }
 
+    public static TaskDto mapToTaskDto(Task task) {
+        return TaskDto.builder()
+                .name(task.getName())
+                .description(task.getDescription())
+                .build();
+    }
 }

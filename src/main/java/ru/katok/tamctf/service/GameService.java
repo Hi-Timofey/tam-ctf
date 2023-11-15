@@ -1,10 +1,12 @@
 package ru.katok.tamctf.service;
 
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.entity.Task;
+import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.IGameService;
 
@@ -36,7 +38,9 @@ public class GameService implements IGameService {
     @Override
     public List<TaskDto> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
-        return ;
+        ModelMapper mm = new ModelMapper();
+        return tasks.stream()
+                .map(MappingUtil::mapToTaskDto).toList();
     }
 
 }
