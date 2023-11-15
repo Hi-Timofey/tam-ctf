@@ -28,6 +28,7 @@ public class Submission {
     private Task task;
 
     @ManyToOne()
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne()

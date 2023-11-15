@@ -29,3 +29,13 @@ services:
       interval: 10s
       timeout: 2s
       retries: 5
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    command: redis-server --save 20 1 --loglevel warning --requirepass ctf
+    healthcheck:
+      test: [ "CMD-SHELL", "ping=\"$$(redis-cli -h \"127.0.0.1\" ping)\" && [ \"$$ping\" = 'PONG' ]" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
