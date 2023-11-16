@@ -2,7 +2,11 @@ package ru.katok.tamctf.domain.util;
 
 import lombok.experimental.UtilityClass;
 import ru.katok.tamctf.api.dto.SignUpDto;
+import ru.katok.tamctf.domain.dto.TaskDto;
+import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.dto.UserDto;
+import ru.katok.tamctf.domain.entity.Task;
+import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
 
 @UtilityClass
@@ -14,5 +18,21 @@ public class MappingUtil {
 
     public static UserEntity mapToUserFromSignUp(SignUpDto request) {
         return UserEntity.builder().username(request.getUsername()).password(request.getPassword()).email(request.getEmail()).build();
+    }
+
+    public static TeamDto mapToTeamDto(Team team) {
+        return TeamDto.builder()
+                .name(team.getName())
+                .type(team.getTeamType())
+                .inviteCode(team.getInviteCode())
+                .university(team.getUniversity())
+                .build();
+    }
+
+    public static TaskDto mapToTaskDto(Task task) {
+        return TaskDto.builder()
+                .name(task.getName())
+                .description(task.getDescription())
+                .build();
     }
 }
