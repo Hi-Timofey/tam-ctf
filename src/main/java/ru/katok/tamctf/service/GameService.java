@@ -32,7 +32,7 @@ public class GameService implements IGameService {
 
     @Override
     public void setFlagWrapper(String flagWrapper) {
-        platformConfig.setCtfTitle(flagWrapper);
+        platformConfig.setFlagWrapper(flagWrapper);
     }
 
     @Override
