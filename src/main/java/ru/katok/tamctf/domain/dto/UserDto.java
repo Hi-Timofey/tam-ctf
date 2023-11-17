@@ -1,10 +1,7 @@
 package ru.katok.tamctf.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.Team;
@@ -15,18 +12,20 @@ import java.util.Set;
 @Data
 @Builder
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {//implements UserDetails {
 
-    private final String username;
+    private String username;
     @JsonIgnore
-    private final String password;
-    private final String email;
-    private final List<SimpleGrantedAuthority> authorities;
-    private final Set<RoleEntity> roles;
+    private String password;
+    private String email;
+    private List<SimpleGrantedAuthority> authorities;
+    private Set<RoleEntity> roles;
     @JsonIgnore
-    private final Team team;
-    private final boolean isActive;
+    private Team team;
+    private boolean isActive;
 
 //    @Override
 //    public boolean isAccountNonExpired() {

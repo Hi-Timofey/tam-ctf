@@ -1,6 +1,8 @@
 package ru.katok.tamctf.domain.util;
 
 import lombok.experimental.UtilityClass;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.dto.TeamDto;
@@ -11,28 +13,31 @@ import ru.katok.tamctf.domain.entity.UserEntity;
 
 @UtilityClass
 public class MappingUtil {
+    private final ModelMapper modelMapper = new ModelMapper();
+
+    private TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
+
 
     public static UserDto mapToUserDto(UserEntity user) {
-        return UserDto.builder().username(user.getUsername()).email(user.getEmail()).roles(user.getRoles()).team(user.getTeam()).build();
+        return userDtoMapper.map(user);
     }
+
+    private TypeMap<SignUpDto, UserEntity> userEntityMapper = modelMapper.createTypeMap(SignUpDto.class, UserEntity.class);
 
     public static UserEntity mapToUserFromSignUp(SignUpDto request) {
-        return UserEntity.builder().username(request.getUsername()).password(request.getPassword()).email(request.getEmail()).build();
+        return userEntityMapper.map(request);
     }
+
+    private TypeMap<Team, TeamDto> teamDtoMapper = modelMapper.createTypeMap(Team.class, TeamDto.class);
 
     public static TeamDto mapToTeamDto(Team team) {
-        return TeamDto.builder()
-                .name(team.getName())
-                .type(team.getTeamType())
-                .inviteCode(team.getInviteCode())
-                .university(team.getUniversity())
-                .build();
+        return teamDtoMapper.map(team);
     }
 
+    private TypeMap<Task, TaskDto> taskDtoMapper = modelMapper.createTypeMap(Task.class, TaskDto.class);
+
     public static TaskDto mapToTaskDto(Task task) {
-        return TaskDto.builder()
-                .name(task.getName())
-                .description(task.getDescription())
-                .build();
+        return taskDtoMapper.map(task);
     }
+
 }
