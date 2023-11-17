@@ -2,6 +2,7 @@ package ru.katok.tamctf.domain.util;
 
 import lombok.experimental.UtilityClass;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.dto.TeamDto;
@@ -12,12 +13,13 @@ import ru.katok.tamctf.domain.entity.UserEntity;
 
 @UtilityClass
 public class MappingUtil {
-    ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
+
+    private TypeMap<UserEntity, UserDto> propertyMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
 
 
     public static UserDto mapToUserDto(UserEntity user) {
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        return userDto;
+        return propertyMapper.map(user);
     }
 
     /*
@@ -27,8 +29,7 @@ public class MappingUtil {
     */
 
     public static UserEntity mapToUserFromSignUp(SignUpDto request) {
-        UserEntity userEntity = modelMapper.map(request, UserEntity.class);
-        return userEntity;
+        return modelMapper.map(request, UserEntity.class);
     }
 
 /*
@@ -38,8 +39,7 @@ public class MappingUtil {
 */
 
     public static TeamDto mapToTeamDto(Team team) {
-      TeamDto teamDto = modelMapper.map(team, TeamDto.class);
-      return teamDto;
+        return modelMapper.map(team, TeamDto.class);
     }
 
     /*public static TeamDto mapToTeamDto(Team team) {
@@ -51,8 +51,7 @@ public class MappingUtil {
                 .build();
     }*/
     public static TaskDto mapToTaskDto(Task task) {
-        TaskDto taskDto = modelMapper.map(task, TaskDto.class);
-        return taskDto;
+        return modelMapper.map(task, TaskDto.class);
     }
 
     /*public static TaskDto mapToTaskDto(Task task) {

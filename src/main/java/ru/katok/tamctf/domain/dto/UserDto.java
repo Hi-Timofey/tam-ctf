@@ -12,19 +12,20 @@ import java.util.Set;
 @Data
 @Builder
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
 public class UserDto {//implements UserDetails {
 
-    private final String username;
+    private String username;
     @JsonIgnore
-    private final String password;
-    private final String email;
-    private final List<SimpleGrantedAuthority> authorities;
-    private final Set<RoleEntity> roles;
+    private String password;
+    private String email;
+    private List<SimpleGrantedAuthority> authorities;
+    private Set<RoleEntity> roles;
     @JsonIgnore
-    private final Team team;
-    private final boolean isActive;
+    private Team team;
+    private boolean isActive;
 
 //    @Override
 //    public boolean isAccountNonExpired() {
