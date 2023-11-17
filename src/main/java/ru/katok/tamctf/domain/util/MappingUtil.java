@@ -15,49 +15,29 @@ import ru.katok.tamctf.domain.entity.UserEntity;
 public class MappingUtil {
     private final ModelMapper modelMapper = new ModelMapper();
 
-    private TypeMap<UserEntity, UserDto> propertyMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
+    private TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
 
 
     public static UserDto mapToUserDto(UserEntity user) {
-        return propertyMapper.map(user);
+        return userDtoMapper.map(user);
     }
 
-    /*
-    public static UserDto mapToUserDto(UserEntity user) {
-        return UserDto.builder().username(user.getUsername()).email(user.getEmail()).roles(user.getRoles()).team(user.getTeam()).build();
-    }
-    */
+    private TypeMap<SignUpDto, UserEntity> userEntityMapper = modelMapper.createTypeMap(SignUpDto.class, UserEntity.class);
 
     public static UserEntity mapToUserFromSignUp(SignUpDto request) {
-        return modelMapper.map(request, UserEntity.class);
+        return userEntityMapper.map(request);
     }
 
-/*
-    public static UserEntity mapToUserFromSignUp(SignUpDto request) {
-        return UserEntity.builder().username(request.getUsername()).password(request.getPassword()).email(request.getEmail()).build();
-    }
-*/
+    private TypeMap<Team, TeamDto> teamDtoMapper = modelMapper.createTypeMap(Team.class, TeamDto.class);
 
     public static TeamDto mapToTeamDto(Team team) {
-        return modelMapper.map(team, TeamDto.class);
+        return teamDtoMapper.map(team);
     }
 
-    /*public static TeamDto mapToTeamDto(Team team) {
-        return TeamDto.builder()
-                .name(team.getName())
-                .type(team.getTeamType())
-                .inviteCode(team.getInviteCode())
-                .university(team.getUniversity())
-                .build();
-    }*/
+    private TypeMap<Task, TaskDto> taskDtoMapper = modelMapper.createTypeMap(Task.class, TaskDto.class);
+
     public static TaskDto mapToTaskDto(Task task) {
-        return modelMapper.map(task, TaskDto.class);
+        return taskDtoMapper.map(task);
     }
 
-    /*public static TaskDto mapToTaskDto(Task task) {
-        return TaskDto.builder()
-                .name(task.getName())
-                .description(task.getDescription())
-                .build();
-    }*/
 }
