@@ -19,6 +19,9 @@ public class TaskDto {
     @Nullable
     @Size(min = 1)
     private String description;
+    @Nullable
+    @Size(min = 1)
+    private String adminDescription;
     private boolean active;
     @NotNull
     @Size(min = 1)

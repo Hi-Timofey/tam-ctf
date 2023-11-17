@@ -14,11 +14,5 @@ public interface ITaskService {
 
     Optional<Task> findTaskByName(String name);
 
-    void deleteTask(Task task);
-
-    void changeTaskName(Task task, String name);
-
-    void changeTaskDescription(Task task, String description);
-
-    void changeTaskFlag(Task task, String flag);
+    void deleteTask(Long id);
 }

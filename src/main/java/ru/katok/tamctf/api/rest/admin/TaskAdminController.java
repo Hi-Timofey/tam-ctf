@@ -32,7 +32,7 @@ public class TaskAdminController {
 
     @DeleteMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteTask(@PathVariable Long id) {
-        this.taskService.deleteTask(this.taskService.getById(id));
+        this.taskService.deleteTask(id);
         return new GenericResponse(true, "ok");
     }
 }
