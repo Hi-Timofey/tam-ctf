@@ -18,6 +18,7 @@
                 <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/tasks}">Tasks</a></div></div>
                 <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/teams}">Teams</a></div></div>
                 <div class = "nav-links"><a class = "nav-item" th:href = "@{/scoreboard}">Scoreboard</a></div>
+                <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/admin}">Panel</a></div></div>
 
             </nav>
 

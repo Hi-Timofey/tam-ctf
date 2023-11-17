@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"  lang="en">
+<head>
+    <title>Panel</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
+    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <link th:href="@{resources/css/adminstyle.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{resources/js/tablegen.js}"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body id = "body" onload="tableCreate()">
+
+<div th:insert="~{general :: navigation}"></div>
+
+
+
+</body>
+</html>
+
+<!--<table>
+    <thead>
+    <tr>
+        <th colspan="5">ADMINPANEL</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>name</td>
+        <td>team</td>
+        <td>role</td>
+        <td>mail</td>
+    </tr>
+    <tr>
+        <td>name</td>
+        <td>team</td>
+        <td>role</td>
+        <td>mail</td>
+    </tr>
+    </tbody>
+</table>-->
