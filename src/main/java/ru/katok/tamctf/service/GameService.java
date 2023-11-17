@@ -13,11 +13,15 @@ import ru.katok.tamctf.service.interfaces.IGameService;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class GameService implements IGameService {
 
     private final TaskRepository taskRepository;
-    private final PlatformConfig platformConfig = new PlatformConfig();
+    private PlatformConfig platformConfig;
+
+    GameService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+        this.platformConfig =  new PlatformConfig();
+    }
 
 
     @Override
