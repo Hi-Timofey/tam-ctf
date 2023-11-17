@@ -1,5 +1,6 @@
 package ru.katok.tamctf.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,10 +19,12 @@ import java.util.Set;
 public class UserDto {//implements UserDetails {
 
     private final String username;
+    @JsonIgnore
     private final String password;
     private final String email;
     private final List<SimpleGrantedAuthority> authorities;
     private final Set<RoleEntity> roles;
+    @JsonIgnore
     private final Team team;
     private final boolean isActive;
 

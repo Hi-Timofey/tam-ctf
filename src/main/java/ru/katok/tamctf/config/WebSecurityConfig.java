@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @SuppressWarnings("ALL")
 @Configuration
@@ -33,9 +34,26 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
-                .csrf((csrf) -> csrf.csrfTokenRepository(new CookieCsrfTokenRepository()).disable()).authorizeHttpRequests(requests -> requests.requestMatchers("/actuator/**").hasRole("ADMIN").requestMatchers("/api/v1/admin/**").hasRole("MODERATOR").requestMatchers("/api/v1/*").hasRole("USER").requestMatchers("/*").permitAll().requestMatchers("/resources/**").permitAll() //css & js
-                        .anyRequest().authenticated()).formLogin((form) -> form.loginPage("/login").permitAll().defaultSuccessUrl("/api/v1/me")).logout((logout) -> logout.clearAuthentication(true).invalidateHttpSession(true).permitAll());
+                .csrf( (csrf) -> csrf
+                        .csrfTokenRepository(new CookieCsrfTokenRepository())
+                        .disable()
+                ).authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/*", "/api/v1/login", "/api/v1/signup").permitAll()
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
+                        .requestMatchers( "/api/v1/*").hasRole("USER")
+                        .requestMatchers("/resources/**").permitAll() //css & js
+                        .anyRequest().authenticated()
+                ).formLogin((form) -> form
+                        .loginPage("/login").permitAll()
+                        .defaultSuccessUrl("/index")
+                //TODO: сделать переход при разлогировании в index.html
+                ).logout((logout) -> logout
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
+                        .permitAll()
+                        
+                );
         return http.build();
     }
 
@@ -65,5 +83,10 @@ public class WebSecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(userDetailsService);
         return new ProviderManager(authenticationProvider);
+    }
+
+    @Bean
+    public SpringSecurityDialect springSecurityDialect() {
+        return new SpringSecurityDialect();
     }
 }

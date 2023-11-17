@@ -30,8 +30,6 @@ public class Task {
 
     @Column(length = 64)
     private String flag;
-    private String createdBy;
-    private String modifiedBy;
     @Column(columnDefinition = "boolean default false")
     private boolean active;
 
