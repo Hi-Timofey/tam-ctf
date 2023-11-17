@@ -12,6 +12,5 @@ public class NewsDto {
 
     private String relatedTask;
     private String relatedHint;
-    @Column()
     private String text;
 }
