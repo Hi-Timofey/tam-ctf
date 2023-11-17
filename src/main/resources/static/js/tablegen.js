@@ -2,6 +2,16 @@ function tableCreate() {
     const body = document.body,
         tbl = document.createElement('table');
     tbl.classList.add('table');
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/v1/admin/users',
+        data: {idGroup: $('#infoGroup').val() },
+        success: function() {
+            alert("success");
+        }
+    });
+
     /**
      input format json wia string or array
      **/

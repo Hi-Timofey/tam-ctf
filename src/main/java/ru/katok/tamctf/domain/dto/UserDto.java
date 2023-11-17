@@ -1,10 +1,7 @@
 package ru.katok.tamctf.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.Team;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class UserDto {//implements UserDetails {
 
     private final String username;
