@@ -6,6 +6,7 @@ import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.entity.Category;
 import ru.katok.tamctf.domain.error.*;
+import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.repository.CategoryRepository;
 import ru.katok.tamctf.service.interfaces.ITaskService;
@@ -18,12 +19,13 @@ public class TaskService implements ITaskService {
     private final TaskRepository taskRepository;
     private final CategoryRepository categoryRepository;
     @Override
-    public List<Task> getAll() {
-        return taskRepository.findAll();
+    public List<TaskDto> getAll() {
+        return taskRepository.findAll().stream()
+                .map(MappingUtil::mapToTaskDto).toList();
     }
 
     @Override
-    public Task createNewTask(TaskDto newTask, String categoryName) throws TaskExistsException {
+    public TaskDto createNewTask(TaskDto newTask, String categoryName) throws TaskExistsException {
         Optional<Category> optionalCategory = categoryRepository.findByName(categoryName);
         Category category;
         if (optionalCategory.isPresent()){
@@ -45,19 +47,19 @@ public class TaskService implements ITaskService {
                 .active(newTask.isActive())
                 .category(category)
                 .build();
-        return taskRepository.save(task);
+        return MappingUtil.mapToTaskDto(taskRepository.save(task));
     }
 
     @Override
-    public Optional<Task> findTaskByName(String name) {
-        return taskRepository.findByName(name);
+    public Optional<TaskDto> findTaskByName(String name) {
+        return taskRepository.findByName(name).map(MappingUtil::mapToTaskDto);
     }
 
-    public Task getById(Long id) {
-        return this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("no such task with id: " + id));
+    public TaskDto getById(Long id) {
+        return MappingUtil.mapToTaskDto(this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("no such task with id: " + id)));
     }
-    public Task save(Task newTask) {
-        return this.taskRepository.save(newTask);
+    public TaskDto save(Task newTask) {
+        return MappingUtil.mapToTaskDto(this.taskRepository.save(newTask));
     }
 //    @Override
 //    public void changeTaskName(Task task, String name){

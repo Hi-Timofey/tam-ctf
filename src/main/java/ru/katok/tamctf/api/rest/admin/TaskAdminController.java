@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
-import ru.katok.tamctf.domain.entity.Task;
+import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.service.TaskService;
 
 import java.util.List;
@@ -16,18 +16,17 @@ public class TaskAdminController {
 
     @ResponseBody
     @GetMapping(path = "tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Task> getAllTasks() {
-        return taskService.getAll();
+    public GenericResponse<List<TaskDto>> getAllTasks() {
+        return new GenericResponse<>(true, "ok", taskService.getAll());
     }
-
-    @PostMapping(path = "tasks", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Task newTask(@RequestBody Task newTask) {
-        return this.taskService.save(newTask);
-    }
+//    @PostMapping(path = "tasks", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody GenericResponse<List<TaskDto>> newTask(@RequestBody TaskDto newTask) {
+//        return this.taskService.save(newTask);
+//    }
 
     @GetMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Task getTaskById(@PathVariable Long id) {
-        return this.taskService.getById(id);
+    public @ResponseBody GenericResponse<TaskDto> getTaskById(@PathVariable Long id) {
+        return new GenericResponse<>( true, "ok", taskService.getById(id));
     }
 
     @DeleteMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

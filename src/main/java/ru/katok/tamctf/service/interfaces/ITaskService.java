@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITaskService {
-    List<Task> getAll();
-    Task createNewTask(TaskDto newTask, String categoryName) throws TaskExistsException;
+    List<TaskDto> getAll();
+    TaskDto createNewTask(TaskDto newTask, String categoryName) throws TaskExistsException;
 
-    Optional<Task> findTaskByName(String name);
+    Optional<TaskDto> findTaskByName(String name);
 
     void deleteTask(Long id);
 }
