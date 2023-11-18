@@ -4,12 +4,8 @@ import lombok.experimental.UtilityClass;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import ru.katok.tamctf.api.dto.SignUpDto;
-import ru.katok.tamctf.domain.dto.TaskDto;
-import ru.katok.tamctf.domain.dto.TeamDto;
-import ru.katok.tamctf.domain.dto.UserDto;
-import ru.katok.tamctf.domain.entity.Task;
-import ru.katok.tamctf.domain.entity.Team;
-import ru.katok.tamctf.domain.entity.UserEntity;
+import ru.katok.tamctf.domain.dto.*;
+import ru.katok.tamctf.domain.entity.*;
 
 @UtilityClass
 public class MappingUtil {
@@ -38,6 +34,18 @@ public class MappingUtil {
 
     public static TaskDto mapToTaskDto(Task task) {
         return taskDtoMapper.map(task);
+    }
+
+    private TypeMap<Hint, HintDto> hintDtoMapper = modelMapper.createTypeMap(Hint.class, HintDto.class);
+
+    public static HintDto mapToHintDto(Hint hint) {
+        return hintDtoMapper.map(hint);
+    }
+
+    private TypeMap<Submission, SubmissionDto> submissionDtoMapper = modelMapper.createTypeMap(Submission.class, SubmissionDto.class);
+
+    public static SubmissionDto mapToSubmissionDto(Submission submission) {
+        return submissionDtoMapper.map(submission);
     }
 
 }
