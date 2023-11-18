@@ -13,15 +13,11 @@ import ru.katok.tamctf.service.interfaces.IGameService;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class GameService implements IGameService {
 
     private final TaskRepository taskRepository;
     private PlatformConfig platformConfig;
-
-    GameService(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-        this.platformConfig =  new PlatformConfig();
-    }
 
 
     @Override
@@ -42,9 +38,12 @@ public class GameService implements IGameService {
     @Override
     public List<TaskDto> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
-        ModelMapper mm = new ModelMapper();
+//        ModelMapper mm = new ModelMapper();
         return tasks.stream()
                 .map(MappingUtil::mapToTaskDto).toList();
     }
 
+    public void setPlatformConfig(PlatformConfig platformConfig) {
+        this.platformConfig =  platformConfig;
+    }
 }
