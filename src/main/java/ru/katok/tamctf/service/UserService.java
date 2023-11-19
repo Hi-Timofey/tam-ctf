@@ -30,7 +30,7 @@ import java.util.*;
 @Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
-public class UserService{
+public class UserService implements IUserService{
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -67,10 +67,12 @@ public class UserService{
         return authorities;
     }
 
+    @Override
     public void deleteUserById(Long id) {
         userRepository.delete(userRepository.getById(id));
     }
 
+    @Override
     public UserDto findUserByUsername(String username) throws UserNotFoundException{
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UserNotFoundException("no such user with username: {}".format(username)));
@@ -86,6 +88,7 @@ public class UserService{
         userRepository.save(user);
     }
 
+    @Override
     public UserDto registerNewUserAccount( final SignUpDto newUser) throws EmailExistsException {
         String username = newUser.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -103,12 +106,24 @@ public class UserService{
     }
 
 
+    @Override
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()
                 .map(MappingUtil::mapToUserDto).toList();
     }
 
+    @Override
     public UserDto getUserById(Long id) throws UserNotFoundException{
         return MappingUtil.mapToUserDto( userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: " + Long.toString(id))));
+    }
+
+    @Override
+    public boolean recoverUser(String email) {
+        return false;
+    }
+
+    @Override
+    public boolean changeUserPassword(String oldPassword, String newPassword) {
+        return false;
     }
 }
