@@ -20,4 +20,6 @@ public interface ITeamService {
     TeamDto getTeamById(Long id) throws TeamNotFoundException;
 
     boolean joinTeamWithToken(String inviteCode, String username);
+
+    boolean removeUserFromTeam(String username, String teamName);
 }

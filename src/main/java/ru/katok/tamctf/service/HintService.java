@@ -13,21 +13,14 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
-@Transactional
 @Service("hintService")
-public class HintService implements IHintService {
+public class HintService {
     private final HintRepository hintRepository;
 
 
-    @Override
     public List<HintDto> getAll() {
         return hintRepository.findAll().stream()
                 .map(MappingUtil::mapToHintDto).toList();
-    }
-
-    @Override
-    public HintDto creatNewHint(HintDto newHint) {
-        return null;
     }
 
 }
