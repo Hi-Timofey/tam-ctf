@@ -23,4 +23,5 @@ public class PlatformConfig {
     private LocalDateTime freezeStartTime; // could be null for no freeze
 
     private LocalDateTime gameEndTime;
+
 }

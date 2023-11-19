@@ -12,6 +12,7 @@ import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.IGameService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,6 +21,20 @@ public class GameService implements IGameService {
 
     private final TaskRepository taskRepository;
     private PlatformConfig platformConfig;
+
+
+    protected boolean isGameEnded(){
+        return LocalDateTime.now().isAfter(platformConfig.getGameEndTime());
+    }
+
+    protected boolean isGameStarted() {
+        return LocalDateTime.now().isAfter(platformConfig.getGameStartTime());
+    }
+
+    protected boolean isFreeze() {
+        return LocalDateTime.now().isAfter(platformConfig.getFreezeStartTime()) &&
+                LocalDateTime.now().isBefore(platformConfig.getGameEndTime());
+    }
 
 
     @Override
@@ -34,6 +49,11 @@ public class GameService implements IGameService {
 
     @Override
     public List<TaskDto> getAllTasks() {
+
+        if (!isGameStarted()){
+            return List.of();
+        }
+
         List<Task> tasks = taskRepository.findAll();
         return tasks.stream()
                 .map(MappingUtil::mapToTaskDto).toList();

@@ -100,6 +100,7 @@ public class UserService implements IUserService {
 
         }
         UserEntity user = MappingUtil.mapToUserFromSignUp(newUser);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(roleRepository.findByName("ROLE_USER")));
         user.setActive(true);
         return MappingUtil.mapToUserDto(userRepository.save(user));
