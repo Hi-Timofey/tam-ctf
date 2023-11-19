@@ -7,11 +7,12 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import ru.katok.tamctf.service.interfaces.IRedisService;
 
-@Service
-@AllArgsConstructor
+//@Service
+//@AllArgsConstructor
+@Deprecated(since = "19.11.2023", forRemoval = false)
 public class RedisService implements IRedisService {
 
-    private final JedisPool jedisPool;
+   private  JedisPool jedisPool;
 
     public void initStateDefaults() {
         try (Jedis jedis = jedisPool.getResource()) {
@@ -23,40 +24,40 @@ public class RedisService implements IRedisService {
     }
 
 
-//    public boolean isFreeze() {
-//        try (Jedis jedis = jedisPool.getResource()) {
-//            return jedis.get("state/freeze").equals("true");
-//        }
-//    }
-//
-//    public void setFreeze(boolean value) {
-//        try (Jedis jedis = jedisPool.getResource()) {
-//            jedis.set("state/freeze", Boolean.toString(value));
-//        }
-//    }
-//
-//    public boolean isGameStarted() {
-//        try (Jedis jedis = jedisPool.getResource()) {
-//            return jedis.get("state/gameStarted").equals("true");
-//        }
-//    }
-//
-//    public void setGameStarted(boolean value) {
-//        try (Jedis jedis = jedisPool.getResource()) {
-//            jedis.set("state/gameStarted", Boolean.toString(value));
-//        }
-//    }
-//
-//    public boolean isGameEnded() {
-//        try (Jedis jedis = jedisPool.getResource()) {
-//            return jedis.get("state/gameEnded").equals("true");
-//        }
-//    }
-//
-//    public void setGameEnded(boolean value) {
-//        try (Jedis jedis = jedisPool.getResource()) {
-//            jedis.set("state/gameEnded", Boolean.toString(value));
-//        }
-//
-//    }
+    public boolean isFreeze() {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.get("state/freeze").equals("true");
+        }
+    }
+
+    public void setFreeze(boolean value) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.set("state/freeze", Boolean.toString(value));
+        }
+    }
+
+    public boolean isGameStarted() {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.get("state/gameStarted").equals("true");
+        }
+    }
+
+    public void setGameStarted(boolean value) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.set("state/gameStarted", Boolean.toString(value));
+        }
+    }
+
+    public boolean isGameEnded() {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.get("state/gameEnded").equals("true");
+        }
+    }
+
+    public void setGameEnded(boolean value) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.set("state/gameEnded", Boolean.toString(value));
+        }
+
+    }
 }
