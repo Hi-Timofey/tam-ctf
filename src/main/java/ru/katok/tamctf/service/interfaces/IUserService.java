@@ -20,4 +20,8 @@ public interface IUserService extends UserDetailsService {
     UserDto findUserByUsername(String username) throws UserNotFoundException;
 
     UserDto getUserById(Long id) throws UserNotFoundException;
+
+    boolean recoverUser(String email);
+
+    boolean changeUserPassword(String oldPassword, String newPassword);
 }

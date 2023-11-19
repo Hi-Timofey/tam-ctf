@@ -30,12 +30,11 @@ import java.util.*;
 @Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
-public class UserService implements IUserService {
+public class UserService{
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         return User.builder().username(user.getUsername()).password(user.getPassword()).disabled(!user.isActive()).accountExpired(false).credentialsExpired(false).accountLocked(false).authorities(getAuthorities(user.getRoles())).build();
@@ -68,12 +67,10 @@ public class UserService implements IUserService {
         return authorities;
     }
 
-    @Override
     public void deleteUserById(Long id) {
         userRepository.delete(userRepository.getById(id));
     }
 
-    @Override
     public UserDto findUserByUsername(String username) throws UserNotFoundException{
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UserNotFoundException("no such user with username: {}".format(username)));
@@ -89,7 +86,6 @@ public class UserService implements IUserService {
         userRepository.save(user);
     }
 
-    @Override
     public UserDto registerNewUserAccount( final SignUpDto newUser) throws EmailExistsException {
         String username = newUser.getUsername();
         if (userRepository.existsByUsername(username)) {
@@ -107,13 +103,11 @@ public class UserService implements IUserService {
     }
 
 
-    @Override
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()
                 .map(MappingUtil::mapToUserDto).toList();
     }
 
-    @Override
     public UserDto getUserById(Long id) throws UserNotFoundException{
         return MappingUtil.mapToUserDto( userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: " + Long.toString(id))));
     }

@@ -11,4 +11,6 @@ public interface IHintService {
     List<HintDto> getAll();
 
     HintDto creatNewHint(HintDto newHint);
+
+    void deleteHintById(Long id);
 }

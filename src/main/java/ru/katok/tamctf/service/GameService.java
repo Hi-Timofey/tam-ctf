@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class GameService implements IGameService {
+public class GameService {
 
     private final TaskRepository taskRepository;
     private PlatformConfig platformConfig;
@@ -35,7 +35,6 @@ public class GameService implements IGameService {
     }
 
 
-    @Override
     public PlatformConfig retriveGameConfig() {
         return platformConfig;
     }
@@ -45,7 +44,6 @@ public class GameService implements IGameService {
         this.platformConfig =  platformConfig;
     }
 
-    @Override
     public List<TaskDto> getAllTasks() {
 
         if (!isGameStarted()){

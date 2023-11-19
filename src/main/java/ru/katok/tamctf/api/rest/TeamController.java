@@ -25,7 +25,6 @@ public class TeamController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final UserService userService;
     private final TeamService teamService;
 
 

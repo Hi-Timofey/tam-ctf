@@ -13,17 +13,13 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
-@Transactional
 @Service("submissionService")
-public class SubmissionService implements ISubmissionService {
+public class SubmissionService {
     private final SubmissionRepository submissionRepository;
 
 
-    @Override
     public List<SubmissionDto> getAll() {
         return submissionRepository.findAll().stream()
                 .map(MappingUtil::mapToSubmissionDto).toList();
     }
-
-
 }

@@ -23,19 +23,17 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service("teamService")
-public class TeamService implements ITeamService {
+public class TeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
 
-    @Override
     public List<TeamDto> getAll() {
         return teamRepository.findAll().stream()
                 .map(MappingUtil::mapToTeamDto).toList();
     }
 
-    @Override
     @Transactional(rollbackOn = Exception.class)
     public TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
@@ -80,12 +78,10 @@ public class TeamService implements ITeamService {
         return  MappingUtil.mapToTeamDto(team);
     }
 
-    @Override
     public TeamDto getTeamById(Long id) throws TeamNotFoundException {
         return MappingUtil.mapToTeamDto( teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id)));
     }
 
-    @Override
     public boolean joinTeamWithToken(String inviteCode, String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
 
