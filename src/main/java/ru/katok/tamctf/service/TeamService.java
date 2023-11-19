@@ -100,7 +100,7 @@ public class TeamService implements ITeamService {
 
         if (teamEntity.isEmpty()) {
             throw new TeamNotFoundException("Invalid invite code.");
-        };
+        }
         Team team = teamEntity.get();
         user.setTeam(team);
         return true;

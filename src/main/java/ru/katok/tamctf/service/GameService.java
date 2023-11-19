@@ -1,12 +1,10 @@
 package ru.katok.tamctf.service;
 
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.TaskDto;
-import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TaskRepository;

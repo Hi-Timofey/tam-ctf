@@ -11,38 +11,38 @@ import ru.katok.tamctf.domain.entity.*;
 public class MappingUtil {
     private final ModelMapper modelMapper = new ModelMapper();
 
-    private TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
+    private final TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
 
 
     public static UserDto mapToUserDto(UserEntity user) {
         return userDtoMapper.map(user);
     }
 
-    private TypeMap<SignUpDto, UserEntity> userEntityMapper = modelMapper.createTypeMap(SignUpDto.class, UserEntity.class);
+    private final TypeMap<SignUpDto, UserEntity> userEntityMapper = modelMapper.createTypeMap(SignUpDto.class, UserEntity.class);
 
     public static UserEntity mapToUserFromSignUp(SignUpDto request) {
         return userEntityMapper.map(request);
     }
 
-    private TypeMap<Team, TeamDto> teamDtoMapper = modelMapper.createTypeMap(Team.class, TeamDto.class);
+    private final TypeMap<Team, TeamDto> teamDtoMapper = modelMapper.createTypeMap(Team.class, TeamDto.class);
 
     public static TeamDto mapToTeamDto(Team team) {
         return teamDtoMapper.map(team);
     }
 
-    private TypeMap<Task, TaskDto> taskDtoMapper = modelMapper.createTypeMap(Task.class, TaskDto.class);
+    private final TypeMap<Task, TaskDto> taskDtoMapper = modelMapper.createTypeMap(Task.class, TaskDto.class);
 
     public static TaskDto mapToTaskDto(Task task) {
         return taskDtoMapper.map(task);
     }
 
-    private TypeMap<Hint, HintDto> hintDtoMapper = modelMapper.createTypeMap(Hint.class, HintDto.class);
+    private final TypeMap<Hint, HintDto> hintDtoMapper = modelMapper.createTypeMap(Hint.class, HintDto.class);
 
     public static HintDto mapToHintDto(Hint hint) {
         return hintDtoMapper.map(hint);
     }
 
-    private TypeMap<Submission, SubmissionDto> submissionDtoMapper = modelMapper.createTypeMap(Submission.class, SubmissionDto.class);
+    private final TypeMap<Submission, SubmissionDto> submissionDtoMapper = modelMapper.createTypeMap(Submission.class, SubmissionDto.class);
 
     public static SubmissionDto mapToSubmissionDto(Submission submission) {
         return submissionDtoMapper.map(submission);
