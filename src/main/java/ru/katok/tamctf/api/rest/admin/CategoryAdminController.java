@@ -18,7 +18,7 @@ public class CategoryAdminController {
         CategoryDto category = gameService.createNewCategory(newCategory);
         return new GenericResponse<>(true, "ok", category);
     }
-    @DeleteMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "category/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteCategory(@PathVariable String name) {
         this.gameService.deleteCategory(name);
         return new GenericResponse<>(true, "ok");
