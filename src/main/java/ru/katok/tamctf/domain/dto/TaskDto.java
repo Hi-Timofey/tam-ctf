@@ -32,5 +32,7 @@ public class TaskDto {
     private double scoreDelay;
     @Nullable
     private double scoreMinimum;
-
+    @NotNull
+    @Size(min = 1)
+    private String category;
 }

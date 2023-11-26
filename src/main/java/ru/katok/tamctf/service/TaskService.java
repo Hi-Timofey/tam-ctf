@@ -25,13 +25,13 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public TaskDto createNewTask(TaskDto newTask, String categoryName) throws TaskExistsException {
-        Optional<Category> optionalCategory = categoryRepository.findByName(categoryName);
+    public TaskDto createNewTask(TaskDto newTask) throws TaskExistsException {
+        Optional<Category> optionalCategory = categoryRepository.findByName(newTask.getCategory());
         Category category;
         if (optionalCategory.isPresent()){
             category = optionalCategory.get();
         } else {
-            throw new CategoryNotFoundException("There is no such category as " + categoryName);
+            throw new CategoryNotFoundException("There is no such category as " + newTask.getCategory());
         }
         if (taskRepository.existsByName(newTask.getName())) {
             throw new TaskExistsException("A task with that name already exists.");
