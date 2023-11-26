@@ -52,7 +52,7 @@ public class TeamController {
 
 
     @PostMapping(path = "/remove-user-from-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<Boolean> removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
+        return new GenericResponse<>(true,"ok");
     }
 }
