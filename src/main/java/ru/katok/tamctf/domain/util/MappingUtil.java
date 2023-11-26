@@ -47,6 +47,10 @@ public class MappingUtil {
     public static SubmissionDto mapToSubmissionDto(Submission submission) {
         return submissionDtoMapper.map(submission);
     }
+    private final TypeMap<Category,CategoryDto> categoryDtoMapper = modelMapper.createTypeMap(Category.class, CategoryDto.class);
+    public static CategoryDto mapToCategoryDto(Category category) {
+        return categoryDtoMapper.map(category);
+    }
 
     private TypeMap<File, FileDto> fileDtoMapper = modelMapper.createTypeMap(File.class, FileDto.class);
     public static  FileDto  mapToFileDto(File file){

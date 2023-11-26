@@ -24,7 +24,7 @@ public class TeamAdminController {
 
 
     @GetMapping(path = "teams/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> deleteUser(@PathVariable Long id) {
+    public @ResponseBody GenericResponse<TeamDto> deleteTeam(@PathVariable Long id) {
         return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
     }
 }

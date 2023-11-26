@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import jakarta.persistence.Column;
+@Data
+@Builder
+@Getter
+@AllArgsConstructor
 public class CategoryDto {
     @NotNull
     private String name;

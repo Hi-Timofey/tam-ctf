@@ -1,6 +1,7 @@
 package ru.katok.tamctf.service.interfaces;
 
 import ru.katok.tamctf.config.PlatformConfig;
+import ru.katok.tamctf.domain.dto.CategoryDto;
 import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.service.dto.Score;
 
@@ -13,4 +14,7 @@ public interface IGameService {
 
     List<Score> getScoreboard();
     boolean submitFlag(String flag);
+
+    CategoryDto createNewCategory(CategoryDto newCategory);
+    void deleteCategory(String name);
 }
