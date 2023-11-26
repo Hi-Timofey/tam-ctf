@@ -1,18 +1,16 @@
 package ru.katok.tamctf.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import ru.katok.tamctf.domain.entity.Task;
+import lombok.*;
+
 @Data
 @Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class HintDto{
 
     private String text;
 
-    private Task task;
+    private Long taskId;
 
 }

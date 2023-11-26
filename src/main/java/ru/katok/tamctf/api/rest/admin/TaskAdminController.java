@@ -23,8 +23,8 @@ public class TaskAdminController {
         return new GenericResponse<>(true, "ok", taskService.getAll());
     }
     @PostMapping(path = "/create-task", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TaskDto> createTask (@RequestBody TaskDto newTask, @RequestBody String category) {
-        TaskDto task = taskService.createNewTask(newTask, category);
+    public @ResponseBody GenericResponse<TaskDto> createTask (@RequestBody TaskDto newTask) {
+        TaskDto task = taskService.createNewTask(newTask);
         return new GenericResponse<>(true, "ok", task);
     }
 

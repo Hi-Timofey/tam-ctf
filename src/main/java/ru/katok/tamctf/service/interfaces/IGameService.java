@@ -17,4 +17,6 @@ public interface IGameService {
 
     CategoryDto createNewCategory(CategoryDto newCategory);
     void deleteCategory(String name);
+
+    List<CategoryDto>getAllCategories();
 }

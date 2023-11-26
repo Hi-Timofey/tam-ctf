@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ITaskService {
     List<TaskDto> getAll();
-    TaskDto createNewTask(TaskDto newTask, String categoryName) throws TaskExistsException;
+    TaskDto createNewTask(TaskDto newTask) throws TaskExistsException;
 
     Optional<TaskDto> findTaskByName(String name);
 
