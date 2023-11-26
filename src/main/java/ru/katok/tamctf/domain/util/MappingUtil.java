@@ -40,6 +40,7 @@ public class MappingUtil {
     private final TypeMap<Hint, HintDto> hintDtoMapper = modelMapper.createTypeMap(Hint.class, HintDto.class);
 
     public static HintDto mapToHintDto(Hint hint) {
+        hintDtoMapper.addMappings(mapper->mapper.map(src->src.getTask().getId(), HintDto::setTaskId));
         return hintDtoMapper.map(hint);
     }
 
