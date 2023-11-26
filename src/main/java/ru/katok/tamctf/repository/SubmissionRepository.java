@@ -7,5 +7,5 @@ import ru.katok.tamctf.domain.entity.UserEntity;
 import java.util.Optional;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
-    Optional<Submission> findByUsername(String username);
+    Optional<Submission> findByUser(UserEntity username);
 }
