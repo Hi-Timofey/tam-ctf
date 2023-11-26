@@ -32,10 +32,7 @@ public class SubmissionAdminController {
         SubmissionDto submission = submissionService.createNewSubmission(newSubmission);
         return new GenericResponse<>(true, "ok", submission);
     }
-    @GetMapping(path = "submissions/{user}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<List<SubmissionDto>> getSubmissionsByUsername(@PathVariable String username){
-        return new GenericResponse<>( true, "ok", submissionService.findAllSubsByUser(username));
-    }
+
 
     @DeleteMapping(path = "submissions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteSubmission(@PathVariable Long id) {
