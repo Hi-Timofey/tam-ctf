@@ -7,7 +7,7 @@ import ru.katok.tamctf.service.dto.Score;
 import java.util.List;
 
 public interface IGameService {
-    PlatformConfig retriveGameConfig();
+    PlatformConfig retrieveGameConfig();
 
     List<TaskDto> getAllTasks();
 

@@ -35,7 +35,7 @@ public class GameService {
     }
 
 
-    public PlatformConfig retriveGameConfig() {
+    public PlatformConfig retrieveGameConfig() {
         return platformConfig;
     }
 
