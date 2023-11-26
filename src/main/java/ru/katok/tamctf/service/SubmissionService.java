@@ -32,7 +32,7 @@ public class SubmissionService implements ISubmissionService{
         return submissionRepository.findByUser(user).stream()
                 .map(MappingUtil::mapToSubmissionDto).toList();
     }
-
+    //TODO: Don't work correctly: need to fix SubmissionDto entities' types
     public SubmissionDto createNewSubmission(SubmissionDto submissionDto){
         Submission submission = Submission.builder()
                 .isSuccessful(submissionDto.isSuccessful())
