@@ -12,7 +12,7 @@ public interface ISubmissionService {
 
     List<SubmissionDto> findAllSubsByUser(String username);
 
-    SubmissionDto creatNewSubmission(SubmissionDto submissionDto);
+    SubmissionDto createNewSubmission(SubmissionDto submissionDto);
 
     void deleteSubmissionById(Long id);
 }

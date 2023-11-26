@@ -23,7 +23,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service("teamService")
-public class TeamService {
+public class TeamService implements ITeamService{
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -38,7 +38,7 @@ public class TeamService {
     public TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
 
-        //TODO: make it with usage of  Optional
+        //TODO: make it with usage of Optional
         //user.ifPresent((userEntity -> {
         //}));
 
@@ -99,6 +99,27 @@ public class TeamService {
         }
         Team team = teamEntity.get();
         user.setTeam(team);
+        return true;
+    }
+
+    public boolean removeUserFromTeam(String username, String teamName){
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+
+        if (userEntity.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
+
+        UserEntity user = userEntity.get();
+
+        if (user.getTeam() == null) throw new TeamNotFoundException("This user already has no team");
+
+        Optional<Team> teamEntity = teamRepository.findByName(teamName);
+        if (teamEntity.isEmpty()) {
+            throw new TeamNotFoundException("There is no such team");
+        }
+        Team team = teamEntity.get();
+        Set<UserEntity> users = team.getUsers();
+        users.remove(user);
+        team.setUsers(users);
+        user.setTeam(null);
         return true;
     }
 }

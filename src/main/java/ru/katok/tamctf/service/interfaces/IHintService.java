@@ -10,7 +10,7 @@ public interface IHintService {
 
     List<HintDto> getAll();
 
-    HintDto creatNewHint(HintDto newHint);
+    HintDto createNewHint(HintDto newHint);
 
     void deleteHintById(Long id);
 }

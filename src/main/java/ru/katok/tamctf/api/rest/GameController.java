@@ -25,7 +25,7 @@ public class GameController {
 
     @GetMapping(path = "/config", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<PlatformConfig> getConfig() {
-        return new GenericResponse<>(true, "ok", gameService.retriveGameConfig());
+        return new GenericResponse<>(true, "ok", gameService.retrieveGameConfig());
     }
 
     @GetMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)

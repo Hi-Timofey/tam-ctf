@@ -33,12 +33,14 @@ public class MappingUtil {
     private final TypeMap<Task, TaskDto> taskDtoMapper = modelMapper.createTypeMap(Task.class, TaskDto.class);
 
     public static TaskDto mapToTaskDto(Task task) {
+        taskDtoMapper.addMappings(mapper -> mapper.map(src -> src.getCategory().getName(), TaskDto::setCategory));
         return taskDtoMapper.map(task);
     }
 
     private final TypeMap<Hint, HintDto> hintDtoMapper = modelMapper.createTypeMap(Hint.class, HintDto.class);
 
     public static HintDto mapToHintDto(Hint hint) {
+        hintDtoMapper.addMappings(mapper->mapper.map(src->src.getTask().getId(), HintDto::setTaskId));
         return hintDtoMapper.map(hint);
     }
 
@@ -46,6 +48,10 @@ public class MappingUtil {
 
     public static SubmissionDto mapToSubmissionDto(Submission submission) {
         return submissionDtoMapper.map(submission);
+    }
+    private final TypeMap<Category,CategoryDto> categoryDtoMapper = modelMapper.createTypeMap(Category.class, CategoryDto.class);
+    public static CategoryDto mapToCategoryDto(Category category) {
+        return categoryDtoMapper.map(category);
     }
 
 }

@@ -1,11 +1,10 @@
 package ru.katok.tamctf.api.rest.admin;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.HintDto;
 import ru.katok.tamctf.service.HintService;
@@ -24,8 +23,14 @@ public class HintAdminController {
         return new GenericResponse<>(true, "ok", hintService.getAll());
     }
 
-/*    @GetMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> deleteHint(@PathVariable Long id) {
-        return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
-    }*/
+    @PostMapping(path = "/create-hint", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<HintDto> createHint(@RequestBody HintDto newHint) {
+        HintDto hint = hintService.createNewHint(newHint);
+        return new GenericResponse<>(true, "ok", hint);
+    }
+    @DeleteMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse deleteHint(@PathVariable Long id) {
+        this.hintService.deleteHintById(id);
+        return new GenericResponse<>(true, "ok");
+    }
 }

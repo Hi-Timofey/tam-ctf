@@ -3,12 +3,15 @@ package ru.katok.tamctf.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.katok.tamctf.config.PlatformConfig;
+import ru.katok.tamctf.domain.dto.CategoryDto;
 import ru.katok.tamctf.domain.dto.TaskDto;
+import ru.katok.tamctf.domain.entity.Category;
 import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.util.MappingUtil;
+import ru.katok.tamctf.repository.CategoryRepository;
 import ru.katok.tamctf.repository.TaskRepository;
-import ru.katok.tamctf.service.interfaces.IGameService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class GameService {
-
+    private final CategoryRepository categoryRepository;
     private final TaskRepository taskRepository;
     private PlatformConfig platformConfig;
 
@@ -35,7 +38,7 @@ public class GameService {
     }
 
 
-    public PlatformConfig retriveGameConfig() {
+    public PlatformConfig retrieveGameConfig() {
         return platformConfig;
     }
 
@@ -53,6 +56,23 @@ public class GameService {
         List<Task> tasks = taskRepository.findAll();
         return tasks.stream()
                 .map(MappingUtil::mapToTaskDto).toList();
+    }
+    public CategoryDto createNewCategory(CategoryDto newCategory){
+        Category category = Category.builder()
+                .name(newCategory.getName())
+                .build();
+        categoryRepository.save(category);
+        return MappingUtil.mapToCategoryDto(category);
+    }
+
+    @Transactional
+    public void deleteCategory(String name){
+        categoryRepository.deleteByName(name);
+    }
+
+    public List<CategoryDto> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(MappingUtil::mapToCategoryDto).toList();
     }
 
 }
