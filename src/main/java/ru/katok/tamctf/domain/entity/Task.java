@@ -2,10 +2,7 @@ package ru.katok.tamctf.domain.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collection;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "tasks")
 @AllArgsConstructor
+@Builder
 public class Task {
 
     @Id
