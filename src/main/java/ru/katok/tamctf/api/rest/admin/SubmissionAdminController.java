@@ -1,13 +1,16 @@
 package ru.katok.tamctf.api.rest.admin;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.SubmissionDto;
+import ru.katok.tamctf.domain.dto.TaskDto;
+import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.service.SubmissionService;
 
 import java.util.List;
@@ -24,8 +27,19 @@ public class SubmissionAdminController {
         return new GenericResponse<>(true, "ok", submissionService.getAll());
     }
 
-/*    @GetMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> deleteHint(@PathVariable Long id) {
-        return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
-    }*/
+    @PostMapping(path = "/create-submission", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<SubmissionDto> createSubmission(@RequestBody SubmissionDto newSubmission) {
+        SubmissionDto submission = submissionService.createNewSubmission(newSubmission);
+        return new GenericResponse<>(true, "ok", submission);
+    }
+    @GetMapping(path = "submissions/{user}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<List<SubmissionDto>> getSubmissionsByUsername(@PathVariable String username){
+        return new GenericResponse<>( true, "ok", submissionService.findAllSubsByUser(username));
+    }
+
+    @DeleteMapping(path = "submissions/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse deleteSubmission(@PathVariable Long id) {
+        this.submissionService.deleteSubmissionById(id);
+        return new GenericResponse<>(true, "ok");
+    }
 }

@@ -34,7 +34,7 @@ public class TaskService implements ITaskService {
             throw new CategoryNotFoundException("There is no such category as " + categoryName);
         }
         if (taskRepository.existsByName(newTask.getName())) {
-            throw new TeamAlreadyExistException("A task with that name already exists.");
+            throw new TaskExistsException("A task with that name already exists.");
         }
         Task task = Task.builder()
                 .name(newTask.getName())
