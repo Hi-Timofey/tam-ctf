@@ -33,6 +33,7 @@ public class MappingUtil {
     private final TypeMap<Task, TaskDto> taskDtoMapper = modelMapper.createTypeMap(Task.class, TaskDto.class);
 
     public static TaskDto mapToTaskDto(Task task) {
+        taskDtoMapper.addMappings(mapper -> mapper.map(src -> src.getCategory().getName(), TaskDto::setCategory));
         return taskDtoMapper.map(task);
     }
 
