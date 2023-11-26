@@ -48,4 +48,8 @@ public class MappingUtil {
         return submissionDtoMapper.map(submission);
     }
 
+    private TypeMap<File, FileDto> fileDtoMapper = modelMapper.createTypeMap(File.class, FileDto.class);
+    public static  FileDto  mapToFileDto(File file){
+        return fileDtoMapper.map(file);
+    }
 }
