@@ -24,10 +24,11 @@ public class HintService implements IHintService {
         return hintRepository.findAll().stream()
                 .map(MappingUtil::mapToHintDto).toList();
     }
+//TODO: Делать создание нового хинта
 
-    @Override
-    public HintDto creatNewHint(HintDto newHint) {
-        return null;
-    }
+/*    @Override
+    public HintDto createNewHint(HintDto newHint) {
+        public List<HintDto>
+    }*/
 
 }

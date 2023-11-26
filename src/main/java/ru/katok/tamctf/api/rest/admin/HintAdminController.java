@@ -23,9 +23,10 @@ public class HintAdminController {
     public GenericResponse<List<HintDto>> getAllHints() {
         return new GenericResponse<>(true, "ok", hintService.getAll());
     }
+//TODO: обавить путь для создания хинта  и прописать логику в сервисе
 
-/*    @GetMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> deleteHint(@PathVariable Long id) {
-        return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
+/*   @GetMapping(path = "newhint", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<HintDto> createNewHint() {
+        return new GenericResponse<>(true, "ok", hintService.createNewHint());
     }*/
 }
