@@ -20,13 +20,13 @@ public class PlatformConfigurationController {
     @ResponseBody
     @GetMapping(path = "config", produces = MediaType.APPLICATION_JSON_VALUE)
     public GenericResponse<PlatformConfig> getPlatformConfig() {
-        return new GenericResponse<>(true, "ok", gameService.retriveGameConfig());
+        return new GenericResponse<>(true, "ok", gameService.retrieveGameConfig());
     }
 
     @ResponseBody
-    @PostMapping(path = "config/flag", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public GenericResponse<PlatformConfig> setFlagWrapper(PlatformConfig platformConfig) {
-        gameService.setFlagWrapper(platformConfig.getFlagWrapper());
-        return new GenericResponse<>(true, "ok", gameService.retriveGameConfig());
+    @PostMapping(path = "config", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public GenericResponse<PlatformConfig> setPlatformConfig(@RequestBody PlatformConfig platformConfig) {
+        gameService.setPlatformConfig(platformConfig);
+        return new GenericResponse<>(true, "ok", gameService.retrieveGameConfig());
     }
 }

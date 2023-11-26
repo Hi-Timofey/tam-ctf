@@ -23,24 +23,22 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service("teamService")
-public class TeamService implements ITeamService {
+public class TeamService implements ITeamService{
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
 
-    @Override
     public List<TeamDto> getAll() {
         return teamRepository.findAll().stream()
                 .map(MappingUtil::mapToTeamDto).toList();
     }
 
-    @Override
     @Transactional(rollbackOn = Exception.class)
     public TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
 
-        //TODO: make it with usage of  Optional
+        //TODO: make it with usage of Optional
         //user.ifPresent((userEntity -> {
         //}));
 
@@ -80,12 +78,10 @@ public class TeamService implements ITeamService {
         return  MappingUtil.mapToTeamDto(team);
     }
 
-    @Override
     public TeamDto getTeamById(Long id) throws TeamNotFoundException {
         return MappingUtil.mapToTeamDto( teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id)));
     }
 
-    @Override
     public boolean joinTeamWithToken(String inviteCode, String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
 
@@ -100,9 +96,30 @@ public class TeamService implements ITeamService {
 
         if (teamEntity.isEmpty()) {
             throw new TeamNotFoundException("Invalid invite code.");
-        };
+        }
         Team team = teamEntity.get();
         user.setTeam(team);
+        return true;
+    }
+
+    public boolean removeUserFromTeam(String username, String teamName){
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+
+        if (userEntity.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
+
+        UserEntity user = userEntity.get();
+
+        if (user.getTeam() == null) throw new TeamNotFoundException("This user already has no team");
+
+        Optional<Team> teamEntity = teamRepository.findByName(teamName);
+        if (teamEntity.isEmpty()) {
+            throw new TeamNotFoundException("There is no such team");
+        }
+        Team team = teamEntity.get();
+        Set<UserEntity> users = team.getUsers();
+        users.remove(user);
+        team.setUsers(users);
+        user.setTeam(null);
         return true;
     }
 }

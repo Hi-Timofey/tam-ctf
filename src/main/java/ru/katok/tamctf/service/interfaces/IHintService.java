@@ -9,7 +9,8 @@ public interface IHintService {
 
 
     List<HintDto> getAll();
-//TODO: разкоментить при написании функции нового хинта
 
-/*    HintDto createNewHint(HintDto newHint);*/
+    HintDto createNewHint(HintDto newHint);
+
+    void deleteHintById(Long id);
 }

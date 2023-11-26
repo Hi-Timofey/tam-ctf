@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.config.PlatformConfig;
+import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.service.GameService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,12 +25,12 @@ public class GameController {
 
     @GetMapping(path = "/config", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<PlatformConfig> getConfig() {
-        return new GenericResponse<>(true, "ok", gameService.retriveGameConfig());
+        return new GenericResponse<>(true, "ok", gameService.retrieveGameConfig());
     }
 
     @GetMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse getActiveTasks() {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<List<TaskDto>> getActiveTasks() {
+        return new GenericResponse<>(true, "ok", gameService.getAllTasks());
     }
 
     @GetMapping(path = "/scoreboard", produces = MediaType.APPLICATION_JSON_VALUE)

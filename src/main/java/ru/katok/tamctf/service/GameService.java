@@ -1,7 +1,7 @@
 package ru.katok.tamctf.service;
 
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.TaskDto;
@@ -10,39 +10,47 @@ import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.IGameService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class GameService implements IGameService {
+@AllArgsConstructor
+public class GameService {
 
     private final TaskRepository taskRepository;
     private PlatformConfig platformConfig;
 
-    GameService(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-        this.platformConfig =  new PlatformConfig();
+
+    protected boolean isGameEnded(){
+        return LocalDateTime.now().isAfter(platformConfig.getGameEndTime());
+    }
+
+    protected boolean isGameStarted() {
+        return LocalDateTime.now().isAfter(platformConfig.getGameStartTime());
+    }
+
+    protected boolean isFreeze() {
+        return LocalDateTime.now().isAfter(platformConfig.getFreezeStartTime()) &&
+                LocalDateTime.now().isBefore(platformConfig.getGameEndTime());
     }
 
 
-    @Override
-    public PlatformConfig retriveGameConfig() {
+    public PlatformConfig retrieveGameConfig() {
         return platformConfig;
     }
 
-    @Override
-    public void setCtfTitle(String ctfTitle) {
-        platformConfig.setCtfTitle(ctfTitle);
+    @Secured("ROLE_ADMIN")
+    public void setPlatformConfig(PlatformConfig platformConfig) {
+        this.platformConfig =  platformConfig;
     }
 
-    @Override
-    public void setFlagWrapper(String flagWrapper) {
-        platformConfig.setFlagWrapper(flagWrapper);
-    }
-
-    @Override
     public List<TaskDto> getAllTasks() {
+
+        if (!isGameStarted()){
+            return List.of();
+        }
+
         List<Task> tasks = taskRepository.findAll();
-        ModelMapper mm = new ModelMapper();
         return tasks.stream()
                 .map(MappingUtil::mapToTaskDto).toList();
     }
