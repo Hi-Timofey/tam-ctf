@@ -2,10 +2,7 @@ package ru.katok.tamctf.api.rest.admin;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.HintDto;
 import ru.katok.tamctf.service.HintService;
@@ -24,8 +21,9 @@ public class HintAdminController {
         return new GenericResponse<>(true, "ok", hintService.getAll());
     }
 
-/*    @GetMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> deleteHint(@PathVariable Long id) {
-        return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
-    }*/
+    @DeleteMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse deleteHint(@PathVariable Long id) {
+        this.hintService.deleteHintById(id);
+        return new GenericResponse(true, "ok");
+    }
 }
