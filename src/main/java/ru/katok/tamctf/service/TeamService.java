@@ -3,7 +3,6 @@ package ru.katok.tamctf.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.dto.UserDto;
@@ -15,13 +14,16 @@ import ru.katok.tamctf.domain.error.TeamNotFoundException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.GeneratorUtil;
-import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.domain.util.MappingUtil;
+import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ITeamService;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service("teamService")
@@ -137,4 +139,10 @@ public class TeamService implements ITeamService{
         user.setTeam(null);
         return true;
     }
+
+    @Override
+    public void deleteTeam(Long id) {
+        teamRepository.delete(teamRepository.getById(id));
+    }
 }
+

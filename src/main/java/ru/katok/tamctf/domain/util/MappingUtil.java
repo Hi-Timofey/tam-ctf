@@ -60,4 +60,8 @@ public class MappingUtil {
         return categoryDtoMapper.map(category);
     }
 
+    private final TypeMap<File, FileDto> fileDtoMapper = modelMapper.createTypeMap(File.class, FileDto.class);
+    public static  FileDto  mapToFileDto(File file){
+        return fileDtoMapper.map(file);
+    }
 }

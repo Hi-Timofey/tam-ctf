@@ -5,7 +5,6 @@ import jakarta.annotation.Nullable;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.katok.tamctf.domain.entity.RoleEntity;
-import ru.katok.tamctf.domain.entity.Team;
 
 import java.util.List;
 import java.util.Set;
