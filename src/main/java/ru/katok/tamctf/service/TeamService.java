@@ -2,9 +2,10 @@ package ru.katok.tamctf.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.TeamDto;
+import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.TeamType;
 import ru.katok.tamctf.domain.entity.UserEntity;
@@ -13,13 +14,16 @@ import ru.katok.tamctf.domain.error.TeamNotFoundException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.GeneratorUtil;
-import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.domain.util.MappingUtil;
+import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ITeamService;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service("teamService")
@@ -29,9 +33,21 @@ public class TeamService implements ITeamService{
     private final RoleRepository roleRepository;
 
 
+    @Override
     public List<TeamDto> getAll() {
         return teamRepository.findAll().stream()
                 .map(MappingUtil::mapToTeamDto).toList();
+    }
+
+
+    @Override
+    @Secured("ROLE_USER")
+    public List<UserDto> getAllTeamUsers(String username) {
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
+        UserEntity userEntity = user.get();
+        Team team = userEntity.getTeam();
+        return team.getUsers().stream().map(MappingUtil::mapToUserDto ).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)
@@ -99,6 +115,7 @@ public class TeamService implements ITeamService{
         }
         Team team = teamEntity.get();
         user.setTeam(team);
+        userRepository.save(user);
         return true;
     }
 
@@ -122,4 +139,10 @@ public class TeamService implements ITeamService{
         user.setTeam(null);
         return true;
     }
+
+    @Override
+    public void deleteTeam(Long id) {
+        teamRepository.delete(teamRepository.getById(id));
+    }
 }
+

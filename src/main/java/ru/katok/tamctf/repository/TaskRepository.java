@@ -10,4 +10,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     boolean existsByName(String name);
 
     Optional<Task> findByName(String name);
+
+    Optional<Task>  findByActiveTrueAndFlag(String flag);
 }

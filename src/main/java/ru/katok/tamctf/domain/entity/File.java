@@ -18,6 +18,8 @@ public class File {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
+    private String filename;
+
     @ManyToOne(optional = false)
     private Task task;
 

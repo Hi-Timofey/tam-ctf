@@ -18,7 +18,7 @@ import java.util.List;
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
 @Service("submissionService")
-public class SubmissionService implements ISubmissionService{
+public class SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
@@ -47,6 +47,7 @@ public class SubmissionService implements ISubmissionService{
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
     @Override
+
     public void deleteSubmissionById(Long id){
         submissionRepository.delete(submissionRepository.getById(id));
     }
