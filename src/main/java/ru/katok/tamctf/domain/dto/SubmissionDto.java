@@ -23,9 +23,9 @@ public class SubmissionDto {
 
     private String solverIp;
 
-    private Task task;
+    private Long taskId;
 
-    private UserEntity user;
+    private Long userId;
 
-    private Team team;
+    private Long teamId;
 }

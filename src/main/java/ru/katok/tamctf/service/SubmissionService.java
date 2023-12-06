@@ -9,6 +9,8 @@ import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.SubmissionRepository;
+import ru.katok.tamctf.repository.TaskRepository;
+import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ISubmissionService;
 
@@ -21,6 +23,8 @@ import java.util.Optional;
 public class SubmissionService implements ISubmissionService{
     private final SubmissionRepository submissionRepository;
     private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
+    private final TeamRepository teamRepository;
 
     public List<SubmissionDto> getAll() {
         return submissionRepository.findAll().stream()
@@ -38,9 +42,9 @@ public class SubmissionService implements ISubmissionService{
                 .isSuccessful(submissionDto.isSuccessful())
                 .flag(submissionDto.getFlag())
                 .solverIp(submissionDto.getSolverIp())
-                .task(submissionDto.getTask())
-                .user(submissionDto.getUser())
-                .team(submissionDto.getTeam())
+                .task(taskRepository.getById(submissionDto.getTaskId()))
+                .user(userRepository.getById(submissionDto.getUserId()))
+                .team(teamRepository.getById(submissionDto.getTeamId()))
                 .build();
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
