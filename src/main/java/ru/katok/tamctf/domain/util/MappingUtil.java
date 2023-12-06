@@ -53,6 +53,9 @@ public class MappingUtil {
     private final TypeMap<Submission, SubmissionDto> submissionDtoMapper = modelMapper.createTypeMap(Submission.class, SubmissionDto.class);
 
     public static SubmissionDto mapToSubmissionDto(Submission submission) {
+        submissionDtoMapper.addMappings(mapper->mapper.map(src->src.getTask().getId(), SubmissionDto::setTaskId));
+        submissionDtoMapper.addMappings(mapper->mapper.map(src->src.getUser().getId(), SubmissionDto::setUserId));
+        submissionDtoMapper.addMappings(mapper->mapper.map(src->src.getTeam().getId(), SubmissionDto::setTeamId));
         return submissionDtoMapper.map(submission);
     }
     private final TypeMap<Category,CategoryDto> categoryDtoMapper = modelMapper.createTypeMap(Category.class, CategoryDto.class);

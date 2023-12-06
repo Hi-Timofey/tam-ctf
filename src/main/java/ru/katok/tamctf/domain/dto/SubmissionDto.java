@@ -1,20 +1,12 @@
 package ru.katok.tamctf.domain.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import ru.katok.tamctf.domain.entity.Task;
-import ru.katok.tamctf.domain.entity.Team;
-import ru.katok.tamctf.domain.entity.UserEntity;
+import lombok.*;
 
 @Data
 @Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SubmissionDto {
 
     private boolean isSuccessful;
@@ -23,9 +15,9 @@ public class SubmissionDto {
 
     private String solverIp;
 
-    private Task task;
+    private Long taskId;
 
-    private UserEntity user;
+    private Long userId;
 
-    private Team team;
+    private Long teamId;
 }

@@ -1,5 +1,6 @@
 package ru.katok.tamctf.domain.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import lombok.*;
@@ -24,6 +25,7 @@ public class UserDto {//implements UserDetails {
     @JsonIgnore
     private List<SimpleGrantedAuthority> authorities;
     private Set<RoleEntity> roles;
+
     @Nullable
     private TeamDto team;
     private boolean isActive;
