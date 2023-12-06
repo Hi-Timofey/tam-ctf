@@ -11,7 +11,7 @@ import ru.katok.tamctf.domain.entity.Task;
 @AllArgsConstructor
 public class FileDto {
 
+
+
     private Task task;
-
-
 }

@@ -26,7 +26,7 @@ public class HintAdminController {
         HintDto hint = hintService.createNewHint(newHint);
         return new GenericResponse<>(true, "ok", hint);
     }
-    @DeleteMapping(path = "hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "delete-hint/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteHint(@PathVariable Long id) {
         this.hintService.deleteHintById(id);
         return new GenericResponse<>(true, "ok");
