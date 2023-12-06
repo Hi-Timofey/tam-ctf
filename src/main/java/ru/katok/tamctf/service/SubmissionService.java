@@ -18,7 +18,7 @@ import java.util.Optional;
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
 @Service("submissionService")
-public class SubmissionService implements ISubmissionService{
+public class SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final UserRepository userRepository;
 
@@ -31,18 +31,6 @@ public class SubmissionService implements ISubmissionService{
                 new UserNotFoundException("no such user with username: {}".format(username)));
         return submissionRepository.findByUser(user).stream()
                 .map(MappingUtil::mapToSubmissionDto).toList();
-    }
-    //TODO: Don't work correctly: need to fix SubmissionDto entities' types
-    public SubmissionDto createNewSubmission(SubmissionDto submissionDto){
-        Submission submission = Submission.builder()
-                .isSuccessful(submissionDto.isSuccessful())
-                .flag(submissionDto.getFlag())
-                .solverIp(submissionDto.getSolverIp())
-                .task(submissionDto.getTask())
-                .user(submissionDto.getUser())
-                .team(submissionDto.getTeam())
-                .build();
-        return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
 
     public void deleteSubmissionById(Long id){
