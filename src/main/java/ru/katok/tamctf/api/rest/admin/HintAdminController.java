@@ -24,11 +24,11 @@ public class HintAdminController {
     @PostMapping(path = "/create-hint", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE )
     public @ResponseBody GenericResponse<HintDto> createHint(@RequestBody HintDto newHint) {
         HintDto hint = hintService.createNewHint(newHint);
-        return new GenericResponse<>(true, "ok", hint);
+        return new GenericResponse<>(true, "Hint has been created", hint);
     }
     @DeleteMapping(path = "delete-hint/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteHint(@PathVariable Long id) {
         this.hintService.deleteHintById(id);
-        return new GenericResponse<>(true, "ok");
+        return new GenericResponse<>(true, "Hint has been deleted");
     }
 }

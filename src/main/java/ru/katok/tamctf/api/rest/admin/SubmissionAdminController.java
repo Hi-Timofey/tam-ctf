@@ -24,13 +24,13 @@ public class SubmissionAdminController {
     @PostMapping(path = "/create-submission", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<SubmissionDto> createSubmission(@RequestBody SubmissionDto newSubmission) {
         SubmissionDto submission = submissionService.createNewSubmission(newSubmission);
-        return new GenericResponse<>(true, "ok", submission);
+        return new GenericResponse<>(true, "Submission has been created", submission);
     }
 
 
     @DeleteMapping(path = "delete-submission/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteSubmission(@PathVariable Long id) {
         this.submissionService.deleteSubmissionById(id);
-        return new GenericResponse<>(true, "ok");
+        return new GenericResponse<>(true, "Submission has been deleted");
     }
 }

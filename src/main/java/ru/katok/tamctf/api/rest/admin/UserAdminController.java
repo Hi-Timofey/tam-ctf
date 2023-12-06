@@ -33,7 +33,7 @@ public class UserAdminController {
     @DeleteMapping(path = "delete-user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
-        return new GenericResponse<>(true, "ok");
+        return new GenericResponse<>(true, "User has been deleted");
     }
 
 }

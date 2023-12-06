@@ -28,12 +28,12 @@ public class TaskAdminController {
 
     @GetMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<TaskDto> getTaskById(@PathVariable Long id) {
-        return new GenericResponse<>( true, "ok", taskService.getById(id));
+        return new GenericResponse<>( true, "Task has been created", taskService.getById(id));
     }
 
     @DeleteMapping(path = "delete-task/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteTask(@PathVariable Long id) {
         this.taskService.deleteTask(id);
-        return new GenericResponse<>(true, "ok");
+        return new GenericResponse<>(true, "Task has been deleted");
     }
 }
