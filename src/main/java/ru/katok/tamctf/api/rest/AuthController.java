@@ -51,7 +51,8 @@ public class AuthController {
     @PostMapping(path = "/signup",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody GenericResponse<UserDto> addUserUsingJSON(@RequestBody @Valid SignUpDto signUpDto) {
+    public @ResponseBody GenericResponse<UserDto> addUserUsingJSON(
+            @RequestBody @Valid SignUpDto signUpDto) {
 
         // TODO: handle errors
         UserDto userDto;
@@ -66,7 +67,8 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public @ResponseBody GenericResponse authenticateUser(@RequestBody LoginDto loginDto) {
+    public @ResponseBody GenericResponse authenticateUser(
+            @RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new GenericResponse(true, "User log in successfully!...");
@@ -80,7 +82,9 @@ public class AuthController {
      * @return GenericResponse
      */
     @PostMapping("/change-password")
-    public @ResponseBody GenericResponse changeUserPassword(@RequestBody ChangePasswordDto changePasswordDto, @AuthenticationPrincipal UserDetails user) {
+    public @ResponseBody GenericResponse changeUserPassword(
+            @RequestBody ChangePasswordDto changePasswordDto,
+            @AuthenticationPrincipal UserDetails user) {
         final String oldPass = changePasswordDto.getOldPassword();
         final String newPass = changePasswordDto.getNewPassword();
 

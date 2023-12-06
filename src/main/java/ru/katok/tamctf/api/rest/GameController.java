@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import ru.katok.tamctf.api.dto.SolveDto;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.TaskDto;
@@ -38,9 +39,15 @@ public class GameController {
         return new GenericResponse();
     }
 
-    @PostMapping(path = "/solve", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse solveTask(@AuthenticationPrincipal UserDetails user) {
+    @PostMapping(path = "/solve",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<Boolean> solveTask(
+            @RequestBody SolveDto solveDto,
+            @AuthenticationPrincipal UserDetails user
+    ) {
         log.debug("Got solve on logger!");
-        return new GenericResponse();
+        boolean result = gameService.solveTask(solveDto.getFlag(), user.getUsername());
+        return new GenericResponse<>(result, "Flag submission result", result);
     }
 }

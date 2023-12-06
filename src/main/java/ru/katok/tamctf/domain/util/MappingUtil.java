@@ -14,8 +14,14 @@ public class MappingUtil {
     private final TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
 
 
+    //TODO: baaaaaaaaaaaaaaaad
     public static UserDto mapToUserDto(UserEntity user) {
-        return userDtoMapper.map(user);
+        //userDtoMapper.addMappings(mapper->mapper.map(src-> mapToTeamDto(src.getTeam()), UserDto::setTeam));
+        UserDto udto = userDtoMapper.map(user);
+        if (user.getTeam() != null){
+            udto.setTeam( mapToTeamDto(user.getTeam()) );
+        }
+        return udto;
     }
 
     private final TypeMap<SignUpDto, UserEntity> userEntityMapper = modelMapper.createTypeMap(SignUpDto.class, UserEntity.class);

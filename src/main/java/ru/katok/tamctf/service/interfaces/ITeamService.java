@@ -15,6 +15,9 @@ import java.util.Set;
 public interface ITeamService {
     List<TeamDto> getAll();
 
+
+    List<UserDto> getAllTeamUsers(String username);
+
     TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) throws TeamTypeError;
 
     TeamDto getTeamById(Long id) throws TeamNotFoundException;
