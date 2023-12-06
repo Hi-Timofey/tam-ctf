@@ -1,16 +1,10 @@
 package ru.katok.tamctf.api.rest.admin;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.SubmissionDto;
-import ru.katok.tamctf.domain.dto.TaskDto;
-import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.service.SubmissionService;
 
 import java.util.List;

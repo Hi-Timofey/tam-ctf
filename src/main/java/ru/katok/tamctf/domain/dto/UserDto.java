@@ -1,6 +1,5 @@
 package ru.katok.tamctf.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.katok.tamctf.domain.entity.RoleEntity;
@@ -18,12 +17,12 @@ import java.util.Set;
 public class UserDto {//implements UserDetails {
 
     private String username;
-    @JsonIgnore
+    /*@JsonIgnore*/
     private String password;
     private String email;
     private List<SimpleGrantedAuthority> authorities;
     private Set<RoleEntity> roles;
-    @JsonIgnore
+    /*@JsonIgnore*/
     private Team team;
     private boolean isActive;
 

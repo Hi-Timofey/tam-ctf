@@ -1,6 +1,5 @@
 package ru.katok.tamctf.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.SubmissionDto;
@@ -15,7 +14,6 @@ import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.ISubmissionService;
 
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
@@ -36,7 +34,7 @@ public class SubmissionService implements ISubmissionService{
         return submissionRepository.findByUser(user).stream()
                 .map(MappingUtil::mapToSubmissionDto).toList();
     }
-    //TODO: Don't work correctly: need to fix SubmissionDto entities' types
+
     public SubmissionDto createNewSubmission(SubmissionDto submissionDto){
         Submission submission = Submission.builder()
                 .isSuccessful(submissionDto.isSuccessful())
@@ -48,7 +46,7 @@ public class SubmissionService implements ISubmissionService{
                 .build();
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
-
+    @Override
     public void deleteSubmissionById(Long id){
         submissionRepository.delete(submissionRepository.getById(id));
     }
