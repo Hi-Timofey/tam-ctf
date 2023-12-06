@@ -1,6 +1,7 @@
 package ru.katok.tamctf.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.katok.tamctf.domain.entity.RoleEntity;
@@ -21,10 +22,11 @@ public class UserDto {//implements UserDetails {
     @JsonIgnore
     private String password;
     private String email;
+    @JsonIgnore
     private List<SimpleGrantedAuthority> authorities;
     private Set<RoleEntity> roles;
-    @JsonIgnore
-    private Team team;
+    @Nullable
+    private TeamDto team;
     private boolean isActive;
 
 //    @Override
