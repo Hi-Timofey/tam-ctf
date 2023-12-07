@@ -18,6 +18,10 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
     private boolean validateEmail(final String email) {
         if (email.length() >= 128) return false;
         Matcher matcher = PATTERN.matcher(email);
+        // newbie1234@       mail.ru
+        // katkov0103@yandex.ru
+        // alskdjflkasdjf@                                       laksdjflkasdjlkf.net
+
         return matcher.matches();
     }
 }

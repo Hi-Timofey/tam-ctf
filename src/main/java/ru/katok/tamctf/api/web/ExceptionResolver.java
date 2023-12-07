@@ -18,7 +18,7 @@ public class ExceptionResolver {
     public Map<String, String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
         //TODO: rewrite in more complex way + error handling
         HashMap<String, String> response = new HashMap<>();
-        response.put("status", "fail");
+        response.put("status", "ERROR404");
         response.put("message", e.getLocalizedMessage());
         return response;
     }

@@ -38,10 +38,10 @@ public class WebSecurityConfig {
                         .csrfTokenRepository(new CookieCsrfTokenRepository())
                         .disable()
                 ).authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/*", "/api/v1/login", "/api/v1/signup", "/api/v1/config").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
                         .requestMatchers( "/api/v1/*").hasRole("USER")
-                        .requestMatchers("/*").permitAll()
                         .requestMatchers("/resources/**").permitAll() //css & js
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form

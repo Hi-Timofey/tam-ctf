@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.api.dto.SignUpDto;
+import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Permission;
 import ru.katok.tamctf.domain.entity.RoleEntity;
 import ru.katok.tamctf.domain.entity.UserEntity;
@@ -21,6 +22,7 @@ import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
+import ru.katok.tamctf.validation.PasswordMatches;
 
 import java.util.*;
 
@@ -28,14 +30,11 @@ import java.util.*;
 @Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
-public class UserService implements IUserService {
+public class UserService implements IUserService{
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         return User.builder().username(user.getUsername()).password(user.getPassword()).disabled(!user.isActive()).accountExpired(false).credentialsExpired(false).accountLocked(false).authorities(getAuthorities(user.getRoles())).build();
@@ -69,57 +68,62 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void saveRegisteredUser(final UserEntity user) {
-        userRepository.save(user);
+    public void deleteUserById(Long id) {
+        userRepository.delete(userRepository.getById(id));
     }
 
     @Override
-    public void deleteUser(final UserEntity user) {
-        this.userRepository.delete(user);
+    public UserDto findUserByUsername(String username) throws UserNotFoundException{
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UserNotFoundException("no such user with username: {}".format(username)));
+        return  MappingUtil.mapToUserDto(user);
     }
 
-    @Override
-    public Optional<UserEntity> findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
-    public boolean checkIfValidPassword(UserEntity user, String password) {
+    private boolean checkIfValidPassword(UserEntity user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    @Override
-    public void changeUserPassword(UserEntity user, String password) {
+    private void changeUserPassword(UserEntity user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
 
     @Override
-    public UserEntity registerNewUserAccount(final SignUpDto newUser) throws EmailExistsException {
+    public UserDto registerNewUserAccount( final SignUpDto newUser) throws EmailExistsException {
         String username = newUser.getUsername();
-        if (this.userRepository.existsByUsername(username)) {
+        if (userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException("There is an account with that nickname: " + username);
         }
-        if (this.userRepository.existsByEmail(newUser.getEmail())) {
+        if (userRepository.existsByEmail(newUser.getEmail())) {
             throw new EmailExistsException("There is an account with that email: " + username);
 
         }
         UserEntity user = MappingUtil.mapToUserFromSignUp(newUser);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(roleRepository.findByName("ROLE_USER")));
         user.setActive(true);
-        return this.userRepository.save(user);
+        return MappingUtil.mapToUserDto(userRepository.save(user));
     }
 
 
-    public List<UserEntity> getAll() {
-        return this.userRepository.findAll();
+    @Override
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(MappingUtil::mapToUserDto).toList();
     }
 
-    public UserEntity save(UserEntity newUser) {
-        return this.userRepository.save(newUser);
+    @Override
+    public UserDto getUserById(Long id) throws UserNotFoundException{
+        return MappingUtil.mapToUserDto( userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: " + Long.toString(id))));
     }
 
-    public UserEntity getById(final Long id) {
-        return this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: " + Long.toString(id)));
+    @Override
+    public boolean recoverUser(String email) {
+        return false;
+    }
+
+    @Override
+    public boolean changeUserPassword(String oldPassword, String newPassword) {
+        return false;
     }
 }

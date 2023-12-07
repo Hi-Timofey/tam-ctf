@@ -1,0 +1,371 @@
+_type: export
+__export_format: 4
+__export_date: 2023-11-16T16:52:39.382Z
+__export_source: insomnia.desktop.app:v8.4.1
+resources:
+  - _id: req_79399d9b1edd41128c044e1d7cbe6cd9
+    parentId: fld_52d3e5c1f7ca4ce9bc5787a61054aac0
+    modified: 1700076489751
+    created: 1700076246830
+    url: http://localhost:8080/api/v1/admin/config
+    name: config
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.4.1
+    authentication: {}
+    metaSortKey: -1700076246830
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_52d3e5c1f7ca4ce9bc5787a61054aac0
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1699383554095
+    created: 1699383554095
+    name: Admin
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1699383554095
+    _type: request_group
+  - _id: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    parentId: null
+    modified: 1699796108190
+    created: 1699796108190
+    name: TAM-CTF
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_0ea06e6952b1484391ede22ee8ede1c5
+    parentId: fld_52d3e5c1f7ca4ce9bc5787a61054aac0
+    modified: 1700076259674
+    created: 1697293671692
+    url: http://localhost:8080/api/v1/admin/users
+    name: users
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1699383562490
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_85869449b883417eb2aea0ca6d1198c6
+    parentId: fld_52d3e5c1f7ca4ce9bc5787a61054aac0
+    modified: 1700076216835
+    created: 1699476203644
+    url: http://localhost:8080/api/v1/admin/teams
+    name: teams
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1699383562440
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_f1abaf2969a4413a8d3437d50b6ab22f
+    parentId: fld_52d3e5c1f7ca4ce9bc5787a61054aac0
+    modified: 1700076222287
+    created: 1699476221352
+    url: http://localhost:8080/api/v1/admin/teams/2
+    name: team
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1699383562415
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_edfa867152664a6390c58a51a43ba6d7
+    parentId: fld_52d3e5c1f7ca4ce9bc5787a61054aac0
+    modified: 1700076226824
+    created: 1697293687887
+    url: http://localhost:8080/users
+    name: new user
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        	{
+        		"id": 2,
+        		"username": "katok",
+        		"password": "$2a$10$FIoD7bXfFdWhIvRwK3XlheHaAyZPDXTJMKkJvlcj5dbSvmO5YQ0CO",
+        		"email": "katok@mail.ru",
+        		"role": "ADMIN",
+        		"team": null,
+        		"atRegisterIp": null,
+        		"lastLoginIp": null,
+        		"active": true
+        	}
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1699383562390
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_3cddf2871fc140a0a754a2ca01a7e762
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1699383809761
+    created: 1699383584947
+    url: http://localhost:8080/api/v1/create-team
+    name: Create Team
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "BinaryBears",
+        	"type": "MIXED",
+        	"university": "MTUCI"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1698338775525.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_82fa8f69f74f4af1b7ebc273445e3a45
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1699389423573
+    created: 1699389360749
+    url: http://localhost:8080/api/v1/list-team
+    name: All teams
+    description: ""
+    method: GET
+    body:
+      mimeType: application/json
+      text: ""
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1698044550089.75
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2a6d5b2a905546b0bd4b09f16a7b6b5e
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1697546589220
+    created: 1697294015675
+    url: http://localhost:8080/actuator/health
+    name: healthcheck
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.2.0
+        id: pair_2ebfe10884d44aecbf095c8cf094147f
+      - id: pair_80fa9acd811a40edb3527203d727df47
+        name: XSRF-TOKEN
+        value: "{% cookie 'XSRF-TOKEN', 'XSRF-TOKEN' %}"
+        description: ""
+        disabled: true
+    authentication: {}
+    metaSortKey: -1697293834324
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_6a142212ab7649af82226fbe8984972a
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1699383874230
+    created: 1699383868131
+    url: http://localhost:8080/api/v1/me
+    name: ME
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.2.0
+        id: pair_2ebfe10884d44aecbf095c8cf094147f
+      - id: pair_80fa9acd811a40edb3527203d727df47
+        name: XSRF-TOKEN
+        value: "{% cookie 'XSRF-TOKEN', 'XSRF-TOKEN' %}"
+        description: ""
+        disabled: true
+    authentication: {}
+    metaSortKey: -1697012112221.25
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2bb89990b49142b594e8be694c481907
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1700076186268
+    created: 1697544308895
+    url: http://localhost:8080/login
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/x-www-form-urlencoded
+      params:
+        - id: pair_cc456046d49a4dee865ee08ff71018f6
+          name: username
+          value: admin
+          description: ""
+        - id: pair_280e74131db84f798922886ea63f18c2
+          name: password
+          value: admin
+          description: ""
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/x-www-form-urlencoded
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1696730390118.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_0d64ef3427c54fe58047e4e24153d873
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1700076177747
+    created: 1697544435190
+    url: http://localhost:8080/api/v1/signup
+    name: Register
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "user",
+        	"password": "user",
+        	"matchingPassword": "user",
+        	"email": "email@mail.ru"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.2.0
+    authentication: {}
+    metaSortKey: -1696448749431.75
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_060a5ea9611b4384bb0d5f118483d06d
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1697293668395
+    created: 1697293668395
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1697293668395
+    _type: environment
+  - _id: jar_49b56b0d28494dd79e474ec9430861db
+    parentId: wrk_38456ae7a6c04a8bb546aa8b26badf3a
+    modified: 1700076188064
+    created: 1697293668396
+    name: Default Jar
+    cookies:
+      - key: XSRF-TOKEN
+        value: ff859275-ded3-4c34-bea3-6b3b76221461
+        domain: localhost
+        path: /
+        hostOnly: true
+        creation: 2023-10-14T14:49:03.469Z
+        lastAccessed: 2023-10-14T14:49:03.469Z
+        id: e46a518d-aba1-4d9c-a130-65981e0e0eb7
+      - key: JSESSIONID
+        value: FA91F37DFE921FAFE3E8F94359FDBF14
+        domain: localhost
+        path: /
+        httpOnly: true
+        hostOnly: true
+        creation: 2023-10-17T12:06:15.453Z
+        lastAccessed: 2023-11-15T19:23:08.064Z
+        id: c6439b38-db28-45c6-b244-eb74b50c3229
+    _type: cookie_jar

@@ -2,10 +2,7 @@ package ru.katok.tamctf.domain.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collection;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "tasks")
 @AllArgsConstructor
+@Builder
 public class Task {
 
     @Id
@@ -32,8 +30,6 @@ public class Task {
 
     @Column(length = 64)
     private String flag;
-    private String createdBy;
-    private String modifiedBy;
     @Column(columnDefinition = "boolean default false")
     private boolean active;
 
@@ -43,7 +39,7 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private Collection<Hint> hints;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Category category;
 
     @OneToMany(mappedBy = "task")

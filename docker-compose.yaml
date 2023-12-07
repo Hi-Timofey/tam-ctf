@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USERNAME:-ctf}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctf}
       POSTGRES_DB: "ctf"
+#      REDIS_PASSWORD: "ctf"
+#      REDIS_HOST: "redis"
     ports:
       - "80:8080"
     build:
@@ -15,6 +17,7 @@ services:
       dockerfile: docker/Dockerfile_app
     depends_on:
       - postgres
+#      - redis
     volumes:
       - "/etc/timezone:/etc/timezone:ro"
   postgres:
@@ -29,3 +32,17 @@ services:
       interval: 10s
       timeout: 2s
       retries: 5
+#  redis:
+#    container_name: redis
+#    image: redis:6.2-alpine
+#    command: redis-server --save 20 1 --loglevel warning --requirepass ctf
+#    environment:
+#      REDIS_PASSWORD: "ctf"
+#    ports:
+#      - 6379:6379
+#    healthcheck:
+#      test: [ "CMD-SHELL", "ping=\"$$(redis-cli -h \"127.0.0.1\" ping)\" && [ \"$$ping\" = 'PONG' ]" ]
+#      interval: 10s
+#      timeout: 2s
+#      retries: 2
+#    restart: always

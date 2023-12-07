@@ -8,8 +8,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import ru.katok.tamctf.api.dto.InviteCodeDto;
 import ru.katok.tamctf.api.util.GenericResponse;
+import ru.katok.tamctf.domain.dto.TeamDto;
+import ru.katok.tamctf.domain.dto.UserDto;
+import ru.katok.tamctf.domain.entity.Team;
+import ru.katok.tamctf.service.TeamService;
 import ru.katok.tamctf.service.UserService;
+
+import java.util.List;
 
 
 @RestController
@@ -19,35 +26,35 @@ public class TeamController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final UserService userService;
+    private final TeamService teamService;
 
 
     @PostMapping(path = "/create-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse createTeam(@AuthenticationPrincipal UserDetails user) {
-        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-
-        if (userEntity.getTeam() != null) {
-            log.debug("User tried to create team while he is already on the team.");
-            return new GenericResponse(false, "You are already on the team");
-        }
-
-        return new GenericResponse(true, "ok");
+    public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
+        String username = user.getUsername();
+        log.debug("TeamDto value: {}", newTeam);
+        TeamDto team = teamService.createNewTeamWithCaptainName(newTeam, username);
+        return new GenericResponse<>(true, "ok", team);
     }
 
 
     @PostMapping(path = "/join-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse joinTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<Boolean> joinTeam(@RequestBody InviteCodeDto inviteCodeDto, @AuthenticationPrincipal UserDetails user) {
+        String username = user.getUsername();
+        String inviteCode = inviteCodeDto.getInviteCode();
+        boolean done = teamService.joinTeamWithToken(inviteCode, username);
+        return new GenericResponse<>(true, "ok", done);
     }
 
-    @GetMapping(path = "/list-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse listTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse();
+    @GetMapping(path = "/list-team-users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<List<UserDto>> listTeam(@AuthenticationPrincipal UserDetails user) {
+        return new GenericResponse<>(true, "ok", teamService.getAllTeamUsers(user.getUsername()));
     }
 
 
+    //TODO: Create option for Captain role to remove users from team
     @PostMapping(path = "/remove-user-from-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<Boolean> removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
+        return new GenericResponse<>(true,"ok");
     }
 }

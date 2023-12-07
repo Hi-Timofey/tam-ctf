@@ -1,12 +1,14 @@
 package ru.katok.tamctf.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import ru.katok.tamctf.domain.util.GeneratorUtil;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -28,15 +30,23 @@ public class Team {
     private TeamType teamType;
 
 
-    @Column(unique = true, length = 128)
+    @Column(length = 128)
     private String university;
 
-    @Column(unique = true, length = 32)
+    //TODO private String inviteCode = GeneratorUtil.generateCleanUuid();
+    @Column(unique = true)
     private String inviteCode;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(
+            mappedBy = "team",
+            fetch = FetchType.LAZY,
+            targetEntity = UserEntity.class,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
+    )
+    @JsonManagedReference
     private Set<UserEntity> users;
 
     @OneToMany(mappedBy = "team")
     private Collection<Submission> submissions;
+
 }
