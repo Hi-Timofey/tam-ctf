@@ -53,6 +53,8 @@ public class TaskService implements ITaskService {
                 .active(newTask.isActive())
                 .category(category)
                 .build();
+
+//        telegramServidce.sendNewTaskNotification(task);
         return MappingUtil.mapToTaskDto(taskRepository.save(task));
     }
 

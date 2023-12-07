@@ -22,12 +22,12 @@ public class TeamAdminController {
     }
 
 
-    @GetMapping(path = "team/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "teams/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<TeamDto> getTeamById(@PathVariable Long id) {
         return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
     }
 
-    @DeleteMapping(path = "delete-team/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "teams/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteTeam(@PathVariable Long id) {
         this.teamService.deleteTeam(id);
         return new GenericResponse<>(true, "Team has been deleted");

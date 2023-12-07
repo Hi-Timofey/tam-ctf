@@ -11,7 +11,6 @@ import ru.katok.tamctf.repository.SubmissionRepository;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
-import ru.katok.tamctf.service.interfaces.ISubmissionService;
 
 import java.util.List;
 
@@ -46,8 +45,6 @@ public class SubmissionService {
                 .build();
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
-    @Override
-
     public void deleteSubmissionById(Long id){
         submissionRepository.delete(submissionRepository.getById(id));
     }

@@ -30,7 +30,7 @@ public class Team {
     private TeamType teamType;
 
 
-    @Column(unique = true, length = 128)
+    @Column(length = 128)
     private String university;
 
     //TODO private String inviteCode = GeneratorUtil.generateCleanUuid();
