@@ -2,7 +2,6 @@ package ru.katok.tamctf.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,15 +13,16 @@ import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Permission;
 import ru.katok.tamctf.domain.entity.RoleEntity;
+import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.RoleRepository;
+import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
-import ru.katok.tamctf.validation.PasswordMatches;
 
 import java.util.*;
 
@@ -34,6 +34,7 @@ public class UserService implements IUserService{
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TeamRepository teamRepository;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
@@ -95,7 +96,7 @@ public class UserService implements IUserService{
             throw new UserAlreadyExistException("There is an account with that nickname: " + username);
         }
         if (userRepository.existsByEmail(newUser.getEmail())) {
-            throw new EmailExistsException("There is an account with that email: " + username);
+            throw new EmailExistsException("There is an account with that email: " + newUser.getEmail());
 
         }
         UserEntity user = MappingUtil.mapToUserFromSignUp(newUser);
@@ -105,7 +106,27 @@ public class UserService implements IUserService{
         return MappingUtil.mapToUserDto(userRepository.save(user));
     }
 
-
+    public UserDto createNewUserAccount(UserDto newUser) {
+        if (userRepository.findByUsername(newUser.getUsername()).isPresent()) {
+            throw new UserAlreadyExistException("A user with that name already exists.");
+        }
+        Optional<Team> optionalTeam = teamRepository.findByName(newUser.getTeam().getName());
+        Team team = null;
+        if(!optionalTeam.isEmpty() && optionalTeam.isPresent()) {
+            team = optionalTeam.get();
+        }
+        /*Optional<RoleEntity> optionalRole = roleRepository.findByName();*/
+        //TODO: ИСПРАВИТЬ
+        UserEntity user = UserEntity.builder()
+                .username(newUser.getUsername())
+                .password(newUser.getPassword())
+                .email(newUser.getEmail())
+                .active(newUser.isActive())
+                .roles(newUser.getRoles()) //USER_ROLE only((
+                .team(team) // NULL
+                .build();
+        return MappingUtil.mapToUserDto(userRepository.save(user));
+    }
     @Override
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()

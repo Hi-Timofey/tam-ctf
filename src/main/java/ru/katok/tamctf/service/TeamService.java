@@ -9,10 +9,7 @@ import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.TeamType;
 import ru.katok.tamctf.domain.entity.UserEntity;
-import ru.katok.tamctf.domain.error.TeamAlreadyExistException;
-import ru.katok.tamctf.domain.error.TeamNotFoundException;
-import ru.katok.tamctf.domain.error.UserAlreadyExistException;
-import ru.katok.tamctf.domain.error.UserNotFoundException;
+import ru.katok.tamctf.domain.error.*;
 import ru.katok.tamctf.domain.util.GeneratorUtil;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.RoleRepository;
@@ -68,6 +65,10 @@ public class TeamService implements ITeamService{
 
         }
 
+        if (userEntity.getTeam() != null) {
+            throw new UserAlreadyInTeamException("You're already on the team: " +  userEntity.getTeam().getName());
+        }
+
         if (teamRepository.existsByName(newTeam.getName())) {
             throw new TeamAlreadyExistException("A team with that name already exists.");
         }
@@ -93,7 +94,16 @@ public class TeamService implements ITeamService{
 
         return  MappingUtil.mapToTeamDto(team);
     }
+    public TeamDto createNewTeam(TeamDto newTeam) {
 
+        Team team = Team.builder()
+                .teamType(newTeam.getType())
+                .name(newTeam.getName())
+                .inviteCode(newTeam.getInviteCode())
+                .university(newTeam.getUniversity())
+                .build();
+        return  MappingUtil.mapToTeamDto(teamRepository.save(team));
+    }
     public TeamDto getTeamById(Long id) throws TeamNotFoundException {
         return MappingUtil.mapToTeamDto( teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id)));
     }

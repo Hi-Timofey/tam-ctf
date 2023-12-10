@@ -10,7 +10,7 @@ import ru.katok.tamctf.service.UserService;
 
 import java.util.List;
 
-@RestController()
+@RestController
 @RequestMapping("/api/v1/admin")
 @AllArgsConstructor
 public class UserAdminController {
@@ -25,6 +25,12 @@ public class UserAdminController {
 //    public @ResponseBody UserEntity newUser(@RequestBody UserEntity newUser) {
 //        return userService.save(newUser);
 //    }
+
+    @PostMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<UserDto>createUser(@RequestBody UserDto newUser){
+        UserDto user = userService.createNewUserAccount(newUser);
+        return new GenericResponse<>(true,"New user has been created", user);
+    }
 
     @PatchMapping(path = "users/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -27,6 +27,11 @@ public class TeamAdminController {
         return new GenericResponse<>(true, "ok", teamService.getTeamById(id));
     }
 
+    @PostMapping(path = "teams", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<TeamDto>createTeam(@RequestBody TeamDto newTeam){
+        TeamDto team = teamService.createNewTeam(newTeam);
+        return new GenericResponse<>(true, "Team has been created");
+    }
     @DeleteMapping(path = "teams/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteTeam(@PathVariable Long id) {
         this.teamService.deleteTeam(id);

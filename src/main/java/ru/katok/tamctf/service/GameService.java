@@ -8,7 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.CategoryDto;
 import ru.katok.tamctf.domain.dto.TaskDto;
-import ru.katok.tamctf.domain.entity.*;
+import ru.katok.tamctf.domain.entity.Category;
+import ru.katok.tamctf.domain.entity.Task;
+import ru.katok.tamctf.domain.entity.Team;
+import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.CategoryRepository;
@@ -77,7 +80,7 @@ public class GameService {
 
     @Secured("ROLE_USER")
     public boolean solveTask(String flag,String username) throws GameError{
-        if (!isGameStarted()){
+        if (!isGameStarted()) {
             log.info("User %s tried to submit flag while game hasn't started".formatted(username));
             return false;
         }
@@ -91,6 +94,7 @@ public class GameService {
             return false;
         }
 
+
         //TODO : here we get the flag value from wrapper and create submission.
         Optional<Task> taskOptional = taskRepository.findByActiveTrueAndFlag(flag);
 
@@ -98,6 +102,7 @@ public class GameService {
             log.info("User %s tried to submit non-existent or inactive task".formatted(username));
             return false;
         }
+
         Task task = taskOptional.get();
 
         if (submissionRepository.findSolvesByTeam(task.getName(), team.getId())  ){
@@ -105,6 +110,15 @@ public class GameService {
             return false;
         }
 
+      /*  Submission submission = Submission.builder()
+                .isSuccessful(task.getFlag() == flag)
+                .flag(task.getFlag())
+                .solverIp(user.get().getLastLoginIp())
+                .task(taskRepository.getById(task.getId()))
+                .user(userRepository.getById(userEntity.getId()))
+                .team(userRepository.getById(userEntity.getTeam().getId())
+                .build();
+        submissionRepository.save(submission)*/
         return true;
     }
 

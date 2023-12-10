@@ -31,7 +31,7 @@ public class TaskAdminController {
         return new GenericResponse<>( true, "Task has been created", taskService.getById(id));
     }
 
-    @DeleteMapping(path = "delete-task/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteTask(@PathVariable Long id) {
         this.taskService.deleteTask(id);
         return new GenericResponse<>(true, "Task has been deleted");
