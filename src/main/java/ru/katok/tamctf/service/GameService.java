@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.CategoryDto;
 import ru.katok.tamctf.domain.dto.TaskDto;
-import ru.katok.tamctf.domain.entity.Category;
-import ru.katok.tamctf.domain.entity.Task;
-import ru.katok.tamctf.domain.entity.Team;
-import ru.katok.tamctf.domain.entity.UserEntity;
+import ru.katok.tamctf.domain.entity.*;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.CategoryRepository;
@@ -22,6 +19,7 @@ import ru.katok.tamctf.service.errors.GameError;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.*;
 import java.util.Optional;
 
 @Service
@@ -35,6 +33,20 @@ public class GameService {
 
     private PlatformConfig platformConfig;
 
+
+    private String extractedFlag(String flag){
+        String[] splitted =  flag.split("\\{");
+        if (splitted.length != 2 ) {
+            throw new RuntimeException("Invalid flag format: len(unpacked) != 2");
+        }
+        if (!splitted[1].endsWith("}")   ) {
+            throw new RuntimeException("Invalid flag format: flag doesn't end with }");
+        }
+        if (splitted[0].toLowerCase() != platformConfig.getFlagWrapper().toLowerCase()){
+            throw new RuntimeException("Invalid flag format: flag doesn't start with flagwrapper");
+        }
+        return splitted[1].substring(0, splitted[1].length() - 1);
+    }
 
     protected boolean isGameEnded(){
         return LocalDateTime.now().isAfter(platformConfig.getGameEndTime());
@@ -88,15 +100,21 @@ public class GameService {
         Optional<UserEntity> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
         UserEntity userEntity = user.get();
-        Team team = userEntity.getTeam();
-        if (team == null) {
+        Team userTeam = userEntity.getTeam();
+        if (userTeam == null) {
             log.info("User %s tried to submit flag without team".formatted(username));
             return false;
         }
 
+        String extractedFlag;
+        try {
+            extractedFlag = extractedFlag(flag);
+        } catch (RuntimeException e) {
+            log.info("User %s tried to submit invalid flag: %s".formatted(username, e.getMessage()));
+            return false;
+        }
 
-        //TODO : here we get the flag value from wrapper and create submission.
-        Optional<Task> taskOptional = taskRepository.findByActiveTrueAndFlag(flag);
+        Optional<Task> taskOptional = taskRepository.findByActiveTrueAndFlagIs(extractedFlag);
 
         if (taskOptional.isEmpty()) {
             log.info("User %s tried to submit non-existent or inactive task".formatted(username));
@@ -105,7 +123,7 @@ public class GameService {
 
         Task task = taskOptional.get();
 
-        if (submissionRepository.findSolvesByTeam(task.getName(), team.getId())  ){
+        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId())  ){
             log.info("User %s tried to submit already solved task %s".formatted(username));
             return false;
         }
