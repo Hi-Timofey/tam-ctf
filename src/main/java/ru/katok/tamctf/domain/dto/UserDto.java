@@ -2,6 +2,7 @@ package ru.katok.tamctf.domain.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +25,8 @@ public class UserDto {//implements UserDetails {
     private String email;
     @JsonIgnore
     private List<SimpleGrantedAuthority> authorities;
+
+    @JsonManagedReference
     private Set<RoleEntity> roles;
 
     @Nullable

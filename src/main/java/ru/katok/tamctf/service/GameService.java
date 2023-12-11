@@ -11,15 +11,11 @@ import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.entity.*;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
-import ru.katok.tamctf.repository.CategoryRepository;
-import ru.katok.tamctf.repository.SubmissionRepository;
-import ru.katok.tamctf.repository.TaskRepository;
-import ru.katok.tamctf.repository.UserRepository;
+import ru.katok.tamctf.repository.*;
 import ru.katok.tamctf.service.errors.GameError;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.*;
 import java.util.Optional;
 
 @Service
@@ -29,6 +25,7 @@ public class GameService {
     private final CategoryRepository categoryRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
     private final SubmissionRepository submissionRepository;
 
     private PlatformConfig platformConfig;
@@ -42,14 +39,10 @@ public class GameService {
         if (!splitted[1].endsWith("}")   ) {
             throw new RuntimeException("Invalid flag format: flag doesn't end with }");
         }
-        if (splitted[0].toLowerCase() != platformConfig.getFlagWrapper().toLowerCase()){
+        if (!splitted[0].toLowerCase().equals(platformConfig.getFlagWrapper().toLowerCase())){
             throw new RuntimeException("Invalid flag format: flag doesn't start with flagwrapper");
         }
         return splitted[1].substring(0, splitted[1].length() - 1);
-    }
-
-    protected boolean isGameEnded(){
-        return LocalDateTime.now().isAfter(platformConfig.getGameEndTime());
     }
 
     protected boolean isGameStarted() {
@@ -92,11 +85,11 @@ public class GameService {
 
     @Secured("ROLE_USER")
     public boolean solveTask(String flag,String username) throws GameError{
+       //TODO: refactoring ->
         if (!isGameStarted()) {
             log.info("User %s tried to submit flag while game hasn't started".formatted(username));
             return false;
         }
-
         Optional<UserEntity> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
         UserEntity userEntity = user.get();
@@ -128,15 +121,15 @@ public class GameService {
             return false;
         }
 
-      /*  Submission submission = Submission.builder()
-                .isSuccessful(task.getFlag() == flag)
-                .flag(task.getFlag())
-                .solverIp(user.get().getLastLoginIp())
-                .task(taskRepository.getById(task.getId()))
-                .user(userRepository.getById(userEntity.getId()))
-                .team(userRepository.getById(userEntity.getTeam().getId())
+        Submission submission = Submission.builder()
+                .isSuccessful(task.getFlag().equals(extractedFlag(flag)))//TODO: <-refactoring
+                .flag(flag)
+                .solverIp(null) //TODO: NEED TO CHECK USER IP BEFORE CREATING SUBMISSIONS
+                .task(task)
+                .user(userEntity)
+                .team((userEntity.getTeam()))
                 .build();
-        submissionRepository.save(submission)*/
+        submissionRepository.save(submission);
         return true;
     }
 

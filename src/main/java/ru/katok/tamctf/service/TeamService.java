@@ -95,7 +95,7 @@ public class TeamService implements ITeamService{
         return  MappingUtil.mapToTeamDto(team);
     }
     public TeamDto createNewTeam(TeamDto newTeam) {
-
+        //TODO:ADD team capiain while creating team!
         Team team = Team.builder()
                 .teamType(newTeam.getType())
                 .name(newTeam.getName())
