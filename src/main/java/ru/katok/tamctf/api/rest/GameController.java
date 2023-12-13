@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.SolveDto;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.config.PlatformConfig;
-import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.service.GameService;
+import ru.katok.tamctf.service.dto.PublicTaskDto;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ public class GameController {
     }
 
     @GetMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<List<TaskDto>> getActiveTasks() {
-        return new GenericResponse<>(true, "ok", gameService.getAllTasks());
+    public @ResponseBody GenericResponse<List<PublicTaskDto>>getPublicTasks(){
+        return new GenericResponse<>(true,"ok", gameService.getAllTasks());
     }
 
     @GetMapping(path = "/scoreboard", produces = MediaType.APPLICATION_JSON_VALUE)

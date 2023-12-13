@@ -54,7 +54,7 @@ public class TaskService implements ITaskService {
                 .category(category)
                 .build();
 
-//        telegramServidce.sendNewTaskNotification(task);
+//        telegramServidce.sendNewTaskNotification(task); //TODO;
         return MappingUtil.mapToTaskDto(taskRepository.save(task));
     }
 
@@ -71,18 +71,20 @@ public class TaskService implements ITaskService {
         return MappingUtil.mapToTaskDto(this.taskRepository.save(newTask));
     }
 
+
+
     //    @Override
-//    public void changeTaskName(Task task, String name){
+//    public void changeTaskName(PublicTaskDto task, String name){
 //        task.setName(name);
 //        taskRepository.save(task);
 //    }
 //    @Override
-//    public void changeTaskDescription(Task task, String description){
+//    public void changeTaskDescription(PublicTaskDto task, String description){
 //        task.setDescription(description);
 //        taskRepository.save(task);
 //    }
 //    @Override
-//    public void changeTaskFlag(Task task, String flag){
+//    public void changeTaskFlag(PublicTaskDto task, String flag){
 //        task.setFlag(flag);
 //        taskRepository.save(task);
 //    }

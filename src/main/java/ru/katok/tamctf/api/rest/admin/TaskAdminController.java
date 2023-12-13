@@ -23,12 +23,12 @@ public class TaskAdminController {
     @PostMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<TaskDto> createTask (@RequestBody TaskDto newTask) {
         TaskDto task = taskService.createNewTask(newTask);
-        return new GenericResponse<>(true, "ok", task);
+        return new GenericResponse<>(true, "PublicTaskDto has been created", task);
     }
 
     @GetMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<TaskDto> getTaskById(@PathVariable Long id) {
-        return new GenericResponse<>( true, "Task has been created", taskService.getById(id));
+        return new GenericResponse<>( true, "ok", taskService.getById(id));
     }
 
     @DeleteMapping(path = "tasks/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -26,7 +26,7 @@ public class TeamController {
     private final TeamService teamService;
 
 
-    @PostMapping(path = "/teams", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/create-teams", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
         String username = user.getUsername();
         log.debug("TeamDto value: {}", newTeam);

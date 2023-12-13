@@ -6,6 +6,7 @@ import org.modelmapper.TypeMap;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.*;
 import ru.katok.tamctf.domain.entity.*;
+import ru.katok.tamctf.service.dto.PublicTaskDto;
 
 @UtilityClass
 public class MappingUtil {
@@ -41,6 +42,15 @@ public class MappingUtil {
     public static TaskDto mapToTaskDto(Task task) {
         taskDtoMapper.addMappings(mapper -> mapper.map(src -> src.getCategory().getName(), TaskDto::setCategory));
         return taskDtoMapper.map(task);
+    }
+
+    private final TypeMap<Task, PublicTaskDto> publicTaskDtoMapper = modelMapper.createTypeMap(Task.class, PublicTaskDto.class);
+    /*private final TypeMap<Submission, PublicTaskDto> submissionToPublicTaskDtoTypeMapper = modelMapper.createTypeMap(Submission.class, PublicTaskDto.class);*/
+    public static PublicTaskDto mapToPublicTaskDto(Task task) {
+        publicTaskDtoMapper.addMappings(mapper -> mapper.map(src -> src.getCategory().getName(), PublicTaskDto::setCategory));
+        /*submissionToPublicTaskDtoTypeMapper.addMappings(mapper->mapper.map(src->src.get))*/
+/*        publicTaskDtoMapper.addMappings(mapper -> mapper.map(src -> src.get, PublicTaskDto::setSolves));*/
+        return publicTaskDtoMapper.map(task);
     }
 
     private final TypeMap<Hint, HintDto> hintDtoMapper = modelMapper.createTypeMap(Hint.class, HintDto.class);

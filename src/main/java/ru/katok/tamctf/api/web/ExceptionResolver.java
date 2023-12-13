@@ -22,4 +22,5 @@ public class ExceptionResolver {
         response.put("message", e.getLocalizedMessage());
         return response;
     }
+
 }

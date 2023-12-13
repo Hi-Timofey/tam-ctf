@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.dto.CategoryDto;
-import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.domain.entity.*;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.*;
+import ru.katok.tamctf.service.dto.PublicTaskDto;
 import ru.katok.tamctf.service.errors.GameError;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 @Service
 @AllArgsConstructor
@@ -64,7 +65,7 @@ public class GameService {
         this.platformConfig =  platformConfig;
     }
 
-    @Deprecated(forRemoval = false)
+   /* @Deprecated(forRemoval = false)
     public List<TaskDto> getAllTasks() {
 
         if (!isGameStarted()){
@@ -74,6 +75,26 @@ public class GameService {
         List<Task> tasks = taskRepository.findAll();
         return tasks.stream()
                 .map(MappingUtil::mapToTaskDto).toList();
+    }*/
+    @Deprecated(forRemoval = false)
+    public List<PublicTaskDto> getAllTasks() {
+
+        if (!isGameStarted()){
+            return List.of();
+        }
+
+
+        List<Task> tasks = taskRepository.findAll();
+        Vector<Integer> v = new Vector<Integer>(0);
+        for (Task t : tasks) {
+            v.addElement(submissionRepository.countAllByIsSuccessfulIsTrueAndTaskId(t.getId()));
+        }
+        List<PublicTaskDto> publicTaskDto = tasks.stream().map(MappingUtil::mapToPublicTaskDto).toList();
+        for (PublicTaskDto t : publicTaskDto) {
+            t.setSolves(v.firstElement());
+            v.remove(0);
+        }
+    return publicTaskDto;
     }
     public CategoryDto createNewCategory(CategoryDto newCategory){
         Category category = Category.builder()
@@ -85,44 +106,53 @@ public class GameService {
 
     @Secured("ROLE_USER")
     public boolean solveTask(String flag,String username) throws GameError{
+
+        boolean successful = true;
+
        //TODO: refactoring ->
         if (!isGameStarted()) {
             log.info("User %s tried to submit flag while game hasn't started".formatted(username));
-            return false;
+            successful = false;
         }
+
+
         Optional<UserEntity> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
         UserEntity userEntity = user.get();
         Team userTeam = userEntity.getTeam();
-        if (userTeam == null) {
+        if (userTeam == null && successful) {
             log.info("User %s tried to submit flag without team".formatted(username));
-            return false;
+            successful = false;
         }
 
-        String extractedFlag;
+        String extractedFlag = null;
         try {
             extractedFlag = extractedFlag(flag);
         } catch (RuntimeException e) {
             log.info("User %s tried to submit invalid flag: %s".formatted(username, e.getMessage()));
-            return false;
+            successful = false;
         }
 
         Optional<Task> taskOptional = taskRepository.findByActiveTrueAndFlagIs(extractedFlag);
 
-        if (taskOptional.isEmpty()) {
+        if (taskOptional.isEmpty() && successful) {
             log.info("User %s tried to submit non-existent or inactive task".formatted(username));
-            return false;
+            successful = false;
         }
-
-        Task task = taskOptional.get();
-
-        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId())  ){
+        Task task = null;
+        if(successful) {
+            task = taskOptional.get(); //TODO Do Something here!!!
+        }
+        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId()) && successful){
             log.info("User %s tried to submit already solved task %s".formatted(username));
-            return false;
+            successful = false;
         }
-
+        if(!task.getFlag().equals(extractedFlag(flag)) && successful){
+            log.info("User %s tried to submit wrong flag".formatted(username));
+            successful = false;
+        }
         Submission submission = Submission.builder()
-                .isSuccessful(task.getFlag().equals(extractedFlag(flag)))//TODO: <-refactoring
+                .isSuccessful(successful)//TODO: <-refactoring
                 .flag(flag)
                 .solverIp(null) //TODO: NEED TO CHECK USER IP BEFORE CREATING SUBMISSIONS
                 .task(task)
@@ -130,7 +160,7 @@ public class GameService {
                 .team((userEntity.getTeam()))
                 .build();
         submissionRepository.save(submission);
-        return true;
+        return successful;
     }
 
     @Transactional

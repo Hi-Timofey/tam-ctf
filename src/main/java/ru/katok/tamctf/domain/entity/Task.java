@@ -39,7 +39,7 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private Collection<Hint> hints;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false )
     private Category category;
 
     @OneToMany(mappedBy = "task")
