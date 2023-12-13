@@ -47,6 +47,8 @@ public class TaskService implements ITaskService {
                 .description(newTask.getDescription())
                 .adminDescription(newTask.getAdminDescription())
                 .flag(newTask.getFlag())
+                .taskDifficulty(newTask.getTaskDifficulty())
+                .author(newTask.getAuthor())
                 .scoreInitial(newTask.getScoreInitial())
                 .scoreDelay(newTask.getScoreDelay())
                 .scoreMinimum(newTask.getScoreMinimum())
@@ -54,7 +56,7 @@ public class TaskService implements ITaskService {
                 .category(category)
                 .build();
 
-//        telegramServidce.sendNewTaskNotification(task);
+//        telegramService.sendNewTaskNotification(task);
         return MappingUtil.mapToTaskDto(taskRepository.save(task));
     }
 

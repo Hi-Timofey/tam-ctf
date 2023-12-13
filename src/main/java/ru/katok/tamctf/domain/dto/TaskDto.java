@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import ru.katok.tamctf.domain.entity.TaskDifficulty;
 
 @Data
 @Builder
@@ -14,20 +15,33 @@ public class TaskDto {
     @NotNull
     @Size(min = 1)
     private String name;
+
     @Nullable
     @Size(min = 1)
     private String description;
+
     @Nullable
     @Size(min = 1)
     private String adminDescription;
+
     private boolean active;
+
     @NotNull
     @Size(min = 1)
     private String flag;
+
+    @NotNull
+    private TaskDifficulty taskDifficulty;
+
+    @NotNull
+    private String author;
+
     @Nullable
     private double scoreInitial;
+
     @Nullable
     private double scoreDelay;
+
     @Nullable
     private double scoreMinimum;
 
