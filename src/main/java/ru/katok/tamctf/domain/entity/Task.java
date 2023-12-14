@@ -45,7 +45,7 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private Collection<File> files;
 
-    private double scoreInitial;
-    private double scoreDelay;
-    private double scoreMinimum;
+    private int scoreInitial;
+    private int scoreDelay;
+    private int scoreMinimum;
 }

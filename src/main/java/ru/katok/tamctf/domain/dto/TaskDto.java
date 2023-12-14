@@ -29,11 +29,11 @@ public class TaskDto {
     @Size(min = 1)
     private String flag;
     @Nullable
-    private double scoreInitial;
+    private int scoreInitial;
     @Nullable
-    private double scoreDelay;
+    private int scoreDelay;
     @Nullable
-    private double scoreMinimum;
+    private int scoreMinimum;
 
     @NotNull
     @Size(min = 1)

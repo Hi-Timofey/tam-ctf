@@ -12,6 +12,7 @@ import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.service.GameService;
 import ru.katok.tamctf.service.dto.PublicTaskDto;
+import ru.katok.tamctf.service.dto.Score;
 
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class GameController {
     }
 
     @GetMapping(path = "/scoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse getScoreboard() {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<List<Score>> getScoreboard() {
+        return new GenericResponse<>(true, "Scoreboard", gameService.getScoreboard());
     }
 
     @PostMapping(path = "/solve",
@@ -47,7 +48,7 @@ public class GameController {
             @AuthenticationPrincipal UserDetails user
     ) {
         log.debug("Got solve on logger!");
-        boolean result = gameService.solveTask(solveDto.getFlag(),solveDto.getTaskId(),  user.getUsername());
+        boolean result = gameService.submitFlag(solveDto.getFlag(),solveDto.getTaskId(),  user.getUsername());
         return new GenericResponse<>(result, "Flag submission result", result);
     }
 }

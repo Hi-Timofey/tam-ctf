@@ -12,18 +12,18 @@ import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.*;
 import ru.katok.tamctf.service.dto.PublicTaskDto;
+import ru.katok.tamctf.service.dto.Score;
 import ru.katok.tamctf.service.errors.FlagUnpackError;
 import ru.katok.tamctf.service.errors.GameError;
+import ru.katok.tamctf.service.interfaces.IGameService;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Vector;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 @Slf4j
-public class GameService {
+public class GameService implements IGameService {
     private final CategoryRepository categoryRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
@@ -56,6 +56,25 @@ public class GameService {
                 LocalDateTime.now().isBefore(platformConfig.getGameEndTime());
     }
 
+    private int countTaskSolves(Long taskId) {
+        return submissionRepository.countAllByIsSuccessfulIsTrueAndTaskId(taskId);
+    }
+
+
+    private int computeTaskScore(Task task, int solves){
+        if (solves != 0) {
+            solves--;
+        }
+        int scoreInitial = task.getScoreInitial();
+        int scoreDecay = task.getScoreDelay();
+        int scoreMinimum = task.getScoreMinimum();
+
+        double value = (((scoreMinimum - scoreInitial) / (scoreDecay* scoreDecay)) * (solves* solves)) + scoreInitial;
+
+        int result = (int) Math.ceil(value);
+        if (result < scoreMinimum) result = scoreMinimum;
+        return result;
+    }
 
     public PlatformConfig retrieveGameConfig() {
         return platformConfig;
@@ -66,16 +85,63 @@ public class GameService {
         this.platformConfig = platformConfig;
     }
 
+
+    @Secured("ROLE_USER")
+    //TODO: Needs refactor
+    public List<Score> getScoreboard(){
+        if (!isGameStarted()) {
+            log.info("User tried to get task list whil game isn't started");
+            return List.of();
+        }
+        List<Team> teams = teamRepository.findAll();
+        List<Score> scores = new ArrayList<>();
+        for (Team team : teams) {
+            Score s = Score.builder()
+                    .teamName(team.getName())
+                    .teamType(team.getTeamType())
+                    .score(0)
+                    .build();
+            scores.add(s);
+        }
+
+        List<Task> tasks = taskRepository.findAll();
+        Map<Task, Integer> scoreMap = new HashMap<>();
+        for (Task task : tasks) {
+            int solves = countTaskSolves(task.getId());
+            int score = computeTaskScore(task, solves);
+            scoreMap.put(task, score);
+        }
+
+        for (Score s : scores) {
+            s.setScore(0);
+            for (Task task : tasks) {
+                for (Submission sub: submissionRepository.findAllSuccsessfulByTask(task))  {
+                    if (sub.getUser().getTeam().getName().equals(  s.getTeamName())) {
+                        s.setScore( s.getScore() + scoreMap.get(task)   );
+                    }
+                }
+            }
+        }
+        return scores;
+    }
+
     @Deprecated(forRemoval = false)
     public List<PublicTaskDto> getAllTasks() {
 
         if (!isGameStarted()) {
+            log.info("User tried to get task list whil game isn't started");
             return List.of();
         }
 
-        List<PublicTaskDto> publicTaskDto = taskRepository.findAll().stream().map(MappingUtil::mapToPublicTaskDto).toList();
-        for (PublicTaskDto task : publicTaskDto) {
-            task.setSolves(submissionRepository.countAllByIsSuccessfulIsTrueAndTaskId(task.getId()));
+        List<Task> tasks = taskRepository.findAll();
+        List<PublicTaskDto> publicTaskDto = tasks.stream().map(MappingUtil::mapToPublicTaskDto).toList();
+        for (int i = 0 ; i < tasks.size(); i++) {
+            PublicTaskDto task = publicTaskDto.get(i);
+
+            int solves = countTaskSolves(task.getId());
+
+            task.setSolves(solves);
+            task.setScore(computeTaskScore(tasks.get(i), solves));
         }
         return publicTaskDto;
     }
@@ -89,7 +155,7 @@ public class GameService {
     }
 
     @Secured("ROLE_USER")
-    public boolean solveTask(String flag,Long taskId, String username) throws GameError {
+    public boolean submitFlag(String flag,Long taskId, String username) throws GameError {
 
 
         if (!isGameStarted()) {

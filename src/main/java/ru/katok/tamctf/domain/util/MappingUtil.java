@@ -1,8 +1,12 @@
 package ru.katok.tamctf.domain.util;
 
 import lombok.experimental.UtilityClass;
+import org.modelmapper.ConfigurationException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.modelmapper.config.Configuration;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.*;
 import ru.katok.tamctf.domain.entity.*;
@@ -10,7 +14,9 @@ import ru.katok.tamctf.service.dto.PublicTaskDto;
 
 @UtilityClass
 public class MappingUtil {
-    private final ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper = new ModelMapper();
+
+    private Configuration cfg  = modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
     private final TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
 

@@ -24,8 +24,8 @@ public class PublicTaskDto {
     @NotNull
     @Size(min = 1)
     private String category;
+
+    private int solves;
     @Nullable
-    private Integer solves;
-/*    @NotNull
-    private UserEntity solver;*/
+    private Integer score;
 }
