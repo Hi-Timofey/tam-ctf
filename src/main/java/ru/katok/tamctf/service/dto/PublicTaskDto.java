@@ -11,6 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PublicTaskDto {
+
+    @NotNull
+    private Long id;
+
     @NotNull
     @Size(min = 1)
     private String name;

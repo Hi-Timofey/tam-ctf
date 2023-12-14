@@ -47,7 +47,7 @@ public class GameController {
             @AuthenticationPrincipal UserDetails user
     ) {
         log.debug("Got solve on logger!");
-        boolean result = gameService.solveTask(solveDto.getFlag(), user.getUsername());
+        boolean result = gameService.solveTask(solveDto.getFlag(),solveDto.getTaskId(),  user.getUsername());
         return new GenericResponse<>(result, "Flag submission result", result);
     }
 }

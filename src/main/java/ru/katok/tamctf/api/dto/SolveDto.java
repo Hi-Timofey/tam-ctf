@@ -13,4 +13,7 @@ public class SolveDto {
     @NotNull
     @Size(min = 2)
     private String flag;
+
+    @NotNull
+    private Long taskId;
 }

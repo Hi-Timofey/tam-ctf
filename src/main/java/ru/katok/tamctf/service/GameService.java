@@ -12,6 +12,7 @@ import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.*;
 import ru.katok.tamctf.service.dto.PublicTaskDto;
+import ru.katok.tamctf.service.errors.FlagUnpackError;
 import ru.katok.tamctf.service.errors.GameError;
 
 import java.time.LocalDateTime;
@@ -32,16 +33,16 @@ public class GameService {
     private PlatformConfig platformConfig;
 
 
-    private String extractedFlag(String flag){
-        String[] splitted =  flag.split("\\{");
-        if (splitted.length != 2 ) {
-            throw new RuntimeException("Invalid flag format: len(unpacked) != 2");
+    private String unpackFlagInFormat(String flag) {
+        String[] splitted = flag.split("\\{");
+        if (splitted.length != 2) {
+            throw new FlagUnpackError("Invalid flag format: len(unpacked) != 2");
         }
-        if (!splitted[1].endsWith("}")   ) {
-            throw new RuntimeException("Invalid flag format: flag doesn't end with }");
+        if (!splitted[1].endsWith("}")) {
+            throw new FlagUnpackError("Invalid flag format: flag doesn't end with }");
         }
-        if (!splitted[0].toLowerCase().equals(platformConfig.getFlagWrapper().toLowerCase())){
-            throw new RuntimeException("Invalid flag format: flag doesn't start with flagwrapper");
+        if (!splitted[0].equalsIgnoreCase(platformConfig.getFlagWrapper())) {
+            throw new FlagUnpackError("Invalid flag format: flag doesn't start with flagwrapper");
         }
         return splitted[1].substring(0, splitted[1].length() - 1);
     }
@@ -62,41 +63,24 @@ public class GameService {
 
     @Secured("ROLE_ADMIN")
     public void setPlatformConfig(PlatformConfig platformConfig) {
-        this.platformConfig =  platformConfig;
+        this.platformConfig = platformConfig;
     }
 
-   /* @Deprecated(forRemoval = false)
-    public List<TaskDto> getAllTasks() {
-
-        if (!isGameStarted()){
-            return List.of();
-        }
-
-        List<Task> tasks = taskRepository.findAll();
-        return tasks.stream()
-                .map(MappingUtil::mapToTaskDto).toList();
-    }*/
     @Deprecated(forRemoval = false)
     public List<PublicTaskDto> getAllTasks() {
 
-        if (!isGameStarted()){
+        if (!isGameStarted()) {
             return List.of();
         }
 
-
-        List<Task> tasks = taskRepository.findAll();
-        Vector<Integer> v = new Vector<Integer>(0);
-        for (Task t : tasks) {
-            v.addElement(submissionRepository.countAllByIsSuccessfulIsTrueAndTaskId(t.getId()));
+        List<PublicTaskDto> publicTaskDto = taskRepository.findAll().stream().map(MappingUtil::mapToPublicTaskDto).toList();
+        for (PublicTaskDto task : publicTaskDto) {
+            task.setSolves(submissionRepository.countAllByIsSuccessfulIsTrueAndTaskId(task.getId()));
         }
-        List<PublicTaskDto> publicTaskDto = tasks.stream().map(MappingUtil::mapToPublicTaskDto).toList();
-        for (PublicTaskDto t : publicTaskDto) {
-            t.setSolves(v.firstElement());
-            v.remove(0);
-        }
-    return publicTaskDto;
+        return publicTaskDto;
     }
-    public CategoryDto createNewCategory(CategoryDto newCategory){
+
+    public CategoryDto createNewCategory(CategoryDto newCategory) {
         Category category = Category.builder()
                 .name(newCategory.getName())
                 .build();
@@ -105,66 +89,67 @@ public class GameService {
     }
 
     @Secured("ROLE_USER")
-    public boolean solveTask(String flag,String username) throws GameError{
+    public boolean solveTask(String flag,Long taskId, String username) throws GameError {
 
-        boolean successful = true;
 
-       //TODO: refactoring ->
         if (!isGameStarted()) {
             log.info("User %s tried to submit flag while game hasn't started".formatted(username));
-            successful = false;
+            return false;
         }
-
 
         Optional<UserEntity> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
         UserEntity userEntity = user.get();
+
         Team userTeam = userEntity.getTeam();
-        if (userTeam == null && successful) {
+        if (userTeam == null) {
             log.info("User %s tried to submit flag without team".formatted(username));
-            successful = false;
+            return false;
         }
 
-        String extractedFlag = null;
-        try {
-            extractedFlag = extractedFlag(flag);
-        } catch (RuntimeException e) {
-            log.info("User %s tried to submit invalid flag: %s".formatted(username, e.getMessage()));
-            successful = false;
-        }
 
-        Optional<Task> taskOptional = taskRepository.findByActiveTrueAndFlagIs(extractedFlag);
 
-        if (taskOptional.isEmpty() && successful) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+
+        if (taskOptional.isEmpty()) {
             log.info("User %s tried to submit non-existent or inactive task".formatted(username));
-            successful = false;
+            return false;
         }
-        Task task = null;
-        if(successful) {
-            task = taskOptional.get(); //TODO Do Something here!!!
-        }
-        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId()) && successful){
-            log.info("User %s tried to submit already solved task %s".formatted(username));
-            successful = false;
-        }
-        if(!task.getFlag().equals(extractedFlag(flag)) && successful){
-            log.info("User %s tried to submit wrong flag".formatted(username));
-            successful = false;
+        Task task = taskOptional.get();
+
+
+
+        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId())  ) {
+            log.info("User %s tried to submit already solved task %d".formatted(username, task.getId()));
+            return false;
         }
         Submission submission = Submission.builder()
-                .isSuccessful(successful)//TODO: <-refactoring
+                .isSuccessful(false) // Make false at start so if correct answer - true
                 .flag(flag)
-                .solverIp(null) //TODO: NEED TO CHECK USER IP BEFORE CREATING SUBMISSIONS
+                .solverIp(null)
                 .task(task)
                 .user(userEntity)
                 .team((userEntity.getTeam()))
                 .build();
+
+        String extractedFlag;
+        try {
+            extractedFlag = unpackFlagInFormat(flag);
+            submission.setSuccessful(task.getFlag().equals(extractedFlag));
+        } catch (FlagUnpackError e) {
+            log.info("User %s tried to submit invalid flag: %s".formatted(username, e.getMessage()));
+            submission.setSuccessful(false);
+        } catch (Exception e){
+            log.error("User %s tried to submit flag, but something went REALLY WRONG: %s".formatted(username, e.getMessage()));
+            submission.setSuccessful(false);
+        }
+
         submissionRepository.save(submission);
-        return successful;
+        return submission.isSuccessful();
     }
 
     @Transactional
-    public void deleteCategory(String name){
+    public void deleteCategory(String name) {
         categoryRepository.deleteByName(name);
     }
 
