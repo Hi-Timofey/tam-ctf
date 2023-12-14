@@ -27,7 +27,7 @@ public class TeamController {
 
 
     @PostMapping(path = "/create-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
+    public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam, @AuthenticationPrincipal UserDetails user) {
         String username = user.getUsername();
         log.debug("TeamDto value: {}", newTeam);
         TeamDto team = teamService.createNewTeamWithCaptainName(newTeam, username);
@@ -52,6 +52,6 @@ public class TeamController {
     //TODO: Create option for Captain role to remove users from team
     @PostMapping(path = "/remove-user-from-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<Boolean> removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse<>(true,"ok");
+        return new GenericResponse<>(true, "ok");
     }
 }

@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"  lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>NAVIGATION</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
-    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <link rel="shortcut icon" th:href="@{resources/favicon.ico}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{resources/css/style.css}"/>
 </head>
 <body id="body">
-            <nav th:fragment="navigation">
-                <a th:href="@{/index}"><img class="nav-img" th:src="@{/resources/img/CTF_EXAMPLE.png}" alt="TAM-CTF"/></a>
-                <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/logout}">Logout</a></div></div>
-                <div class = "nav-links"> <div sec:authorize="isAnonymous()"><a class = "nav-item" th:href = "@{/login}">Login</a></div></div>
-                <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/profile}"><div sec:authentication="name"></div></a></div></div>
-                <div class = "nav-links"><div sec:authorize="isAnonymous()"><a class = "nav-item" th:href = "@{/signup}">Sign Up</a></div></div>
-                <div class = "nav-links"><a class = "nav-item">|</a></div>
-                <div class = "nav-links"><a class = "nav-item" th:href = "@{/about}">About</a></div>
-                <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/tasks}">Tasks</a></div></div>
-                <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/teams}">Teams</a></div></div>
-                <div class = "nav-links"><a class = "nav-item" th:href = "@{/scoreboard}">Scoreboard</a></div>
-                <div class = "nav-links"><div sec:authorize="isAuthenticated()"><a class = "nav-item" th:href = "@{/admin}">Panel</a></div></div>
+<nav th:fragment="navigation">
+    <a th:href="@{/index}"><img alt="TAM-CTF" class="nav-img" th:src="@{/resources/img/CTF_EXAMPLE.png}"/></a>
+    <div class="nav-links">
+        <div sec:authorize="isAuthenticated()"><a class="nav-item" th:href="@{/logout}">Logout</a></div>
+    </div>
+    <div class="nav-links">
+        <div sec:authorize="isAnonymous()"><a class="nav-item" th:href="@{/login}">Login</a></div>
+    </div>
+    <div class="nav-links">
+        <div sec:authorize="isAuthenticated()"><a class="nav-item" th:href="@{/profile}">
+            <div sec:authentication="name"></div>
+        </a></div>
+    </div>
+    <div class="nav-links">
+        <div sec:authorize="isAnonymous()"><a class="nav-item" th:href="@{/signup}">Sign Up</a></div>
+    </div>
+    <div class="nav-links"><a class="nav-item">|</a></div>
+    <div class="nav-links"><a class="nav-item" th:href="@{/about}">About</a></div>
+    <div class="nav-links">
+        <div sec:authorize="isAuthenticated()"><a class="nav-item" th:href="@{/tasks}">Tasks</a></div>
+    </div>
+    <div class="nav-links">
+        <div sec:authorize="isAuthenticated()"><a class="nav-item" th:href="@{/teams}">Teams</a></div>
+    </div>
+    <div class="nav-links"><a class="nav-item" th:href="@{/scoreboard}">Scoreboard</a></div>
+    <div class="nav-links">
+        <div sec:authorize="isAuthenticated()"><a class="nav-item" th:href="@{/admin}">Panel</a></div>
+    </div>
 
-            </nav>
+</nav>
 
 <footer>
     <div>FOOTER MUST BE HERE(WIP)</div>

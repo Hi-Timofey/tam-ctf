@@ -6,8 +6,8 @@ function tableCreate() {
     $.ajax({
         type: 'GET',
         url: '/api/v1/admin/users',
-        data: {idGroup: $('#infoGroup').val() },
-        success: function() {
+        data: {idGroup: $('#infoGroup').val()},
+        success: function () {
             alert("success");
         }
     });

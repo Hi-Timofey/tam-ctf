@@ -1,6 +1,6 @@
 package ru.katok.tamctf.domain.error;
 
-public class TeamNotFoundException extends RuntimeException{
+public class TeamNotFoundException extends RuntimeException {
 
     public TeamNotFoundException() {
         super();

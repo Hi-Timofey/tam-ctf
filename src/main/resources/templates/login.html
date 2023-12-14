@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Log In</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
-    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <link rel="shortcut icon" th:href="@{resources/favicon.ico}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{resources/css/style.css}"/>
     <meta charset="utf-8">
-<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 </head>
-<body id ="body">
+<body id="body">
 
 <div th:insert="~{general :: navigation}"></div>
 
 <div class="content-center">
 
     <div id="card">Log In TAM-CTF
-<div th:if="${param.error}">
-    Invalid username and password.</div>
-<div th:if="${param.logout}">
-    You have been logged out.</div>
-<form th:action="@{/login}" method="post">
-    <div>
-        <label>
-            <input class="form-control" type="text" name="username" placeholder="Username"/>
-        </label>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <form method="post" th:action="@{/login}">
+            <div>
+                <label>
+                    <input class="form-control" name="username" placeholder="Username" type="text"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input class="form-control" name="password" placeholder="Password" type="password"/>
+                </label>
+            </div>
+            <input type="submit" value="Log in"/>
+        </form>
     </div>
-    <div>
-        <label>
-            <input class="form-control" type="password" name="password" placeholder="Password"/>
-        </label>
-    </div>
-    <input type="submit" value="Log in" />
-</form>
-</div>
 </div>
 </body>
 </html>

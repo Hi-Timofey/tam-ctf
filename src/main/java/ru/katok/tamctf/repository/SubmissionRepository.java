@@ -13,11 +13,12 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Optional<Submission> findByUser(UserEntity username);
 
     @Query("select case when (count(s) > 0 ) then true else false end " +
-           "from Submission s where s.task.name = ?1 and s.team.id = ?2 and s.isSuccessful = true")
+            "from Submission s where s.task.name = ?1 and s.team.id = ?2 and s.isSuccessful = true")
     boolean findSolvesByTeam(String taskName, Long teamId);
 
     //findAllBySuccessfulTrueAndTaskIs
     @Query("select s from Submission s where s.isSuccessful = true and s.task = ?1")
     List<Submission> findAllSuccsessfulByTask(Task task);
+
     Integer countAllByIsSuccessfulIsTrueAndTaskId(Long taskId);
 }

@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.ChangePasswordDto;
 import ru.katok.tamctf.api.dto.LoginDto;
@@ -21,7 +19,6 @@ import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
-import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.service.UserService;
 
 @SuppressWarnings("ALL")
@@ -48,6 +45,7 @@ public class AuthController {
         log.debug("Registered user account with information: {}", signUpDto);
         return new GenericResponse(true, "success", userDto);
     }
+
     @PostMapping(path = "/signup",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})

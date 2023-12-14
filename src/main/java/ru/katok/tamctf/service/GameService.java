@@ -61,7 +61,7 @@ public class GameService implements IGameService {
     }
 
 
-    private int computeTaskScore(Task task, int solves){
+    private int computeTaskScore(Task task, int solves) {
         if (solves != 0) {
             solves--;
         }
@@ -69,7 +69,7 @@ public class GameService implements IGameService {
         int scoreDecay = task.getScoreDelay();
         int scoreMinimum = task.getScoreMinimum();
 
-        double value = (((scoreMinimum - scoreInitial) / (scoreDecay* scoreDecay)) * (solves* solves)) + scoreInitial;
+        double value = (((scoreMinimum - scoreInitial) / (scoreDecay * scoreDecay)) * (solves * solves)) + scoreInitial;
 
         int result = (int) Math.ceil(value);
         if (result < scoreMinimum) result = scoreMinimum;
@@ -88,7 +88,7 @@ public class GameService implements IGameService {
 
     @Secured("ROLE_USER")
     //TODO: Needs refactor
-    public List<Score> getScoreboard(){
+    public List<Score> getScoreboard() {
         if (!isGameStarted()) {
             log.info("User tried to get task list whil game isn't started");
             return List.of();
@@ -115,9 +115,9 @@ public class GameService implements IGameService {
         for (Score s : scores) {
             s.setScore(0);
             for (Task task : tasks) {
-                for (Submission sub: submissionRepository.findAllSuccsessfulByTask(task))  {
-                    if (sub.getUser().getTeam().getName().equals(  s.getTeamName())) {
-                        s.setScore( s.getScore() + scoreMap.get(task)   );
+                for (Submission sub : submissionRepository.findAllSuccsessfulByTask(task)) {
+                    if (sub.getUser().getTeam().getName().equals(s.getTeamName())) {
+                        s.setScore(s.getScore() + scoreMap.get(task));
                     }
                 }
             }
@@ -125,7 +125,6 @@ public class GameService implements IGameService {
         return scores;
     }
 
-    @Deprecated(forRemoval = false)
     public List<PublicTaskDto> getAllTasks() {
 
         if (!isGameStarted()) {
@@ -135,7 +134,7 @@ public class GameService implements IGameService {
 
         List<Task> tasks = taskRepository.findAll();
         List<PublicTaskDto> publicTaskDto = tasks.stream().map(MappingUtil::mapToPublicTaskDto).toList();
-        for (int i = 0 ; i < tasks.size(); i++) {
+        for (int i = 0; i < tasks.size(); i++) {
             PublicTaskDto task = publicTaskDto.get(i);
 
             int solves = countTaskSolves(task.getId());
@@ -155,7 +154,7 @@ public class GameService implements IGameService {
     }
 
     @Secured("ROLE_USER")
-    public boolean submitFlag(String flag,Long taskId, String username) throws GameError {
+    public boolean submitFlag(String flag, Long taskId, String username) throws GameError {
 
 
         if (!isGameStarted()) {
@@ -174,7 +173,6 @@ public class GameService implements IGameService {
         }
 
 
-
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isEmpty()) {
@@ -184,8 +182,7 @@ public class GameService implements IGameService {
         Task task = taskOptional.get();
 
 
-
-        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId())  ) {
+        if (submissionRepository.findSolvesByTeam(task.getName(), userTeam.getId())) {
             log.info("User %s tried to submit already solved task %d".formatted(username, task.getId()));
             return false;
         }
@@ -205,7 +202,7 @@ public class GameService implements IGameService {
         } catch (FlagUnpackError e) {
             log.info("User %s tried to submit invalid flag: %s".formatted(username, e.getMessage()));
             submission.setSuccessful(false);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("User %s tried to submit flag, but something went REALLY WRONG: %s".formatted(username, e.getMessage()));
             submission.setSuccessful(false);
         }

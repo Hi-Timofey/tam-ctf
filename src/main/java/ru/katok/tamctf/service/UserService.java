@@ -30,7 +30,7 @@ import java.util.*;
 @Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -74,10 +74,10 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto findUserByUsername(String username) throws UserNotFoundException{
+    public UserDto findUserByUsername(String username) throws UserNotFoundException {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UserNotFoundException("no such user with username: {}".format(username)));
-        return  MappingUtil.mapToUserDto(user);
+        return MappingUtil.mapToUserDto(user);
     }
 
     private boolean checkIfValidPassword(UserEntity user, String password) {
@@ -90,7 +90,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto registerNewUserAccount( final SignUpDto newUser) throws EmailExistsException {
+    public UserDto registerNewUserAccount(final SignUpDto newUser) throws EmailExistsException {
         String username = newUser.getUsername();
         if (userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException("There is an account with that nickname: " + username);
@@ -112,7 +112,7 @@ public class UserService implements IUserService{
         }
         Optional<Team> optionalTeam = teamRepository.findByName(newUser.getTeam().getName());
         Team team = null;
-        if(!optionalTeam.isEmpty() && optionalTeam.isPresent()) {
+        if (!optionalTeam.isEmpty() && optionalTeam.isPresent()) {
             team = optionalTeam.get();
         }
         /*Optional<RoleEntity> optionalRole = roleRepository.findByName();*/
@@ -127,6 +127,7 @@ public class UserService implements IUserService{
                 .build();
         return MappingUtil.mapToUserDto(userRepository.save(user));
     }
+
     @Override
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()
@@ -134,8 +135,8 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto getUserById(Long id) throws UserNotFoundException{
-        return MappingUtil.mapToUserDto( userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: " + Long.toString(id))));
+    public UserDto getUserById(Long id) throws UserNotFoundException {
+        return MappingUtil.mapToUserDto(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("no such user with id: " + Long.toString(id))));
     }
 
     @Override

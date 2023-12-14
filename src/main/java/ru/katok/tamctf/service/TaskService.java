@@ -71,26 +71,10 @@ public class TaskService implements ITaskService {
         return MappingUtil.mapToTaskDto(this.taskRepository.save(newTask));
     }
 
-
-
-    //    @Override
-//    public void changeTaskName(PublicTaskDto task, String name){
-//        task.setName(name);
-//        taskRepository.save(task);
-//    }
-//    @Override
-//    public void changeTaskDescription(PublicTaskDto task, String description){
-//        task.setDescription(description);
-//        taskRepository.save(task);
-//    }
-//    @Override
-//    public void changeTaskFlag(PublicTaskDto task, String flag){
-//        task.setFlag(flag);
-//        taskRepository.save(task);
-//    }
     @Override
     public void deleteTask(Long id) {
-        taskRepository.delete(taskRepository.getById(id));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("no such task with id: " + id));
+        taskRepository.delete(task);
     }
 }
 

@@ -8,6 +8,7 @@ import ru.katok.tamctf.domain.dto.SubmissionDto;
 import ru.katok.tamctf.service.SubmissionService;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/admin")
 @AllArgsConstructor

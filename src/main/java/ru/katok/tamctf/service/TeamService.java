@@ -24,7 +24,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Service("teamService")
-public class TeamService implements ITeamService{
+public class TeamService implements ITeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -44,16 +44,12 @@ public class TeamService implements ITeamService{
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
         UserEntity userEntity = user.get();
         Team team = userEntity.getTeam();
-        return team.getUsers().stream().map(MappingUtil::mapToUserDto ).toList();
+        return team.getUsers().stream().map(MappingUtil::mapToUserDto).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)
     public TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) {
         Optional<UserEntity> user = userRepository.findByUsername(username);
-
-        //TODO: make it with usage of Optional
-        //user.ifPresent((userEntity -> {
-        //}));
 
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
 
@@ -66,7 +62,7 @@ public class TeamService implements ITeamService{
         }
 
         if (userEntity.getTeam() != null) {
-            throw new UserAlreadyInTeamException("You're already on the team: " +  userEntity.getTeam().getName());
+            throw new UserAlreadyInTeamException("You're already on the team: " + userEntity.getTeam().getName());
         }
 
         if (teamRepository.existsByName(newTeam.getName())) {
@@ -92,8 +88,9 @@ public class TeamService implements ITeamService{
         members.add(userEntity);
         team.setUsers(members);
 
-        return  MappingUtil.mapToTeamDto(team);
+        return MappingUtil.mapToTeamDto(team);
     }
+
     public TeamDto createNewTeam(TeamDto newTeam) {
         //TODO:ADD team capiain while creating team!
         Team team = Team.builder()
@@ -102,17 +99,19 @@ public class TeamService implements ITeamService{
                 .inviteCode(newTeam.getInviteCode())
                 .university(newTeam.getUniversity())
                 .build();
-        return  MappingUtil.mapToTeamDto(teamRepository.save(team));
+        return MappingUtil.mapToTeamDto(teamRepository.save(team));
     }
+
     public TeamDto getTeamById(Long id) throws TeamNotFoundException {
-        return MappingUtil.mapToTeamDto( teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id)));
+        return MappingUtil.mapToTeamDto(teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id)));
     }
 
     public boolean joinTeamWithToken(String inviteCode, String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
 
 
-        if (userEntity.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
+        if (userEntity.isEmpty())
+            throw new UserNotFoundException("There is no account with that nickname: " + username);
 
         UserEntity user = userEntity.get();
 
@@ -129,10 +128,11 @@ public class TeamService implements ITeamService{
         return true;
     }
 
-    public boolean removeUserFromTeam(String username, String teamName){
+    public boolean removeUserFromTeam(String username, String teamName) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
 
-        if (userEntity.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
+        if (userEntity.isEmpty())
+            throw new UserNotFoundException("There is no account with that nickname: " + username);
 
         UserEntity user = userEntity.get();
 
@@ -152,7 +152,8 @@ public class TeamService implements ITeamService{
 
     @Override
     public void deleteTeam(Long id) {
-        teamRepository.delete(teamRepository.getById(id));
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id));
+        teamRepository.delete(team);
     }
 }
 

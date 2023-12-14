@@ -12,13 +12,12 @@ import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.IHintService;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
 @Service("hintService")
-public class HintService implements IHintService{
+public class HintService implements IHintService {
     private final HintRepository hintRepository;
     private final TaskRepository taskRepository;
 
@@ -26,7 +25,8 @@ public class HintService implements IHintService{
         return hintRepository.findAll().stream()
                 .map(MappingUtil::mapToHintDto).toList();
     }
-    public HintDto createNewHint(HintDto newHint){
+
+    public HintDto createNewHint(HintDto newHint) {
         Long taskId = newHint.getTaskId();
         Task task = taskRepository.findById(taskId).orElseThrow(() ->
                 new TaskNotFoundException("Can not find task with id %d".formatted(taskId)));
@@ -38,7 +38,7 @@ public class HintService implements IHintService{
         return MappingUtil.mapToHintDto(hintRepository.save(hint));
     }
 
-    public void deleteHintById(Long id){
+    public void deleteHintById(Long id) {
         Hint hint = hintRepository.findById(id).orElseThrow(() -> new RuntimeException("No hint with id %d".formatted(id)));
         hintRepository.delete(hint);
     }

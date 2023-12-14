@@ -8,7 +8,7 @@ public interface ISubmissionService {
 
     List<SubmissionDto> getAll();
 
-/*    List<SubmissionDto> findAllSubsByUser(String username);*/
+    /*    List<SubmissionDto> findAllSubsByUser(String username);*/
 
     SubmissionDto createNewSubmission(SubmissionDto submissionDto);
 

@@ -34,25 +34,25 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf( (csrf) -> csrf
+                .csrf((csrf) -> csrf
                         .csrfTokenRepository(new CookieCsrfTokenRepository())
                         .disable()
                 ).authorizeHttpRequests(requests -> requests
                         .requestMatchers("/*", "/api/v1/login", "/api/v1/signup", "/api/v1/config").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
-                        .requestMatchers( "/api/v1/*").hasRole("USER")
+                        .requestMatchers("/api/v1/*").hasRole("USER")
                         .requestMatchers("/resources/**").permitAll() //css & js
                         .anyRequest().authenticated()
                 ).formLogin((form) -> form
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/index")
-                //TODO: сделать переход при разлогировании в index.html
+                                .loginPage("/login").permitAll()
+                                .defaultSuccessUrl("/index")
+                        //TODO: сделать переход при разлогировании в index.html
                 ).logout((logout) -> logout
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .permitAll()
-                        
+
                 );
         return http.build();
     }

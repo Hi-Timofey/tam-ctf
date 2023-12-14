@@ -1,14 +1,13 @@
 package ru.katok.tamctf.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import ru.katok.tamctf.domain.util.GeneratorUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 

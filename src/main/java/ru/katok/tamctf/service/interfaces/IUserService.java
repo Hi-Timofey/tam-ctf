@@ -14,6 +14,7 @@ public interface IUserService extends UserDetailsService {
     UserDto registerNewUserAccount(SignUpDto accountDto) throws EmailExistsException;
 
     UserDto createNewUserAccount(UserDto userDto);
+
     void deleteUserById(Long id);
 
     UserDto findUserByUsername(String username) throws UserNotFoundException;

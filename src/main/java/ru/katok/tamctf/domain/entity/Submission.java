@@ -2,7 +2,6 @@ package ru.katok.tamctf.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "submissions")

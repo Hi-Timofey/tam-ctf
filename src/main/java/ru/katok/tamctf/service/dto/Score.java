@@ -1,7 +1,9 @@
 package ru.katok.tamctf.service.dto;
 
-import lombok.*;
-import ru.katok.tamctf.domain.dto.TeamDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.katok.tamctf.domain.entity.TeamType;
 
 @Data

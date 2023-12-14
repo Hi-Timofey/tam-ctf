@@ -27,14 +27,15 @@ public class SubmissionService {
         return submissionRepository.findAll().stream()
                 .map(MappingUtil::mapToSubmissionDto).toList();
     }
-    public List<SubmissionDto> findAllSubsByUser(String username){
+
+    public List<SubmissionDto> findAllSubsByUser(String username) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UserNotFoundException("no such user with username: {}".format(username)));
         return submissionRepository.findByUser(user).stream()
                 .map(MappingUtil::mapToSubmissionDto).toList();
     }
 
-    public SubmissionDto createNewSubmission(SubmissionDto submissionDto){
+    public SubmissionDto createNewSubmission(SubmissionDto submissionDto) {
         Submission submission = Submission.builder()
                 .isSuccessful(submissionDto.isSuccessful())
                 .flag(submissionDto.getFlag())
@@ -45,7 +46,8 @@ public class SubmissionService {
                 .build();
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
-    public void deleteSubmissionById(Long id){
+
+    public void deleteSubmissionById(Long id) {
         submissionRepository.delete(submissionRepository.getById(id));
     }
 }

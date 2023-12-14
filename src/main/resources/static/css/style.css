@@ -1,8 +1,8 @@
 #body {
     /*background-color: #fff*/
-   background-color: #202124;
+    background-color: #202124;
     color: #fff;
-/*    position: fixed*/
+    /*    position: fixed*/
 }
 
 .right-nav {
@@ -46,7 +46,7 @@
     text-decoration: none;
 }
 
-.nav-img{
+.nav-img {
     width: 10%;
     height: 10%;
 }
@@ -61,7 +61,7 @@
     text-align: center;
 }*/
 
-#card{
+#card {
     background-color: transparent;
     border-radius: 1rem;
     border: 2px solid rgb(189, 193, 198);
@@ -70,7 +70,7 @@
     width: 40%;
 }
 
-.form-control{
+.form-control {
     outline: none;
     display: block;
     width: 100%;
@@ -90,7 +90,7 @@
     padding: 3% 0px 3% 3%;
 }
 
-.content-center{
+.content-center {
     position: fixed;
     top: 40%;
     left: 25%;

@@ -31,8 +31,8 @@ public class GameController {
     }
 
     @GetMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<List<PublicTaskDto>>getPublicTasks(){
-        return new GenericResponse<>(true,"ok", gameService.getAllTasks());
+    public @ResponseBody GenericResponse<List<PublicTaskDto>> getPublicTasks() {
+        return new GenericResponse<>(true, "ok", gameService.getAllTasks());
     }
 
     @GetMapping(path = "/scoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +48,7 @@ public class GameController {
             @AuthenticationPrincipal UserDetails user
     ) {
         log.debug("Got solve on logger!");
-        boolean result = gameService.submitFlag(solveDto.getFlag(),solveDto.getTaskId(),  user.getUsername());
+        boolean result = gameService.submitFlag(solveDto.getFlag(), solveDto.getTaskId(), user.getUsername());
         return new GenericResponse<>(result, "Flag submission result", result);
     }
 }

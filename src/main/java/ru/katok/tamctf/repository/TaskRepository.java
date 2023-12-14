@@ -10,9 +10,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<Task> findByName(String name);
 
-    Optional<Task>  findByActiveTrueAndFlagIs(String flag);
-
-    Optional<Task> findById(Long id);
-
-
+    Optional<Task> findByActiveTrueAndFlagIs(String flag);
 }

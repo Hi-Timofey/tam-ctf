@@ -23,10 +23,11 @@ public class CategoryAdminController {
     }
 
     @PostMapping(path = "categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<CategoryDto> createCategory (@RequestBody CategoryDto newCategory) {
+    public @ResponseBody GenericResponse<CategoryDto> createCategory(@RequestBody CategoryDto newCategory) {
         CategoryDto category = gameService.createNewCategory(newCategory);
         return new GenericResponse<>(true, "Category has been created", category);
     }
+
     @DeleteMapping(path = "categories/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse deleteCategory(@PathVariable String name) {
         this.gameService.deleteCategory(name);
