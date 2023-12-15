@@ -19,5 +19,4 @@ public class SubmissionDto {
 
     private Long userId;
 
-    private Long teamId;
 }

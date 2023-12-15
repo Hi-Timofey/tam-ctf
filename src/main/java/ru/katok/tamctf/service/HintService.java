@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.HintDto;
 import ru.katok.tamctf.domain.entity.Hint;
 import ru.katok.tamctf.domain.entity.Task;
+import ru.katok.tamctf.domain.error.HintNotFoundException;
 import ru.katok.tamctf.domain.error.TaskNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.HintRepository;
@@ -39,7 +40,7 @@ public class HintService implements IHintService {
     }
 
     public void deleteHintById(Long id) {
-        Hint hint = hintRepository.findById(id).orElseThrow(() -> new RuntimeException("No hint with id %d".formatted(id)));
+        Hint hint = hintRepository.findById(id).orElseThrow(() -> new HintNotFoundException("No hint with an id %d".formatted(id)));
         hintRepository.delete(hint);
     }
 }

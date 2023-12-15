@@ -128,7 +128,7 @@ public class GameService implements IGameService {
     public List<PublicTaskDto> getAllTasks() {
 
         if (!isGameStarted()) {
-            log.info("User tried to get task list whil game isn't started");
+            log.info("User tried to get task list while game isn't started");
             return List.of();
         }
 
@@ -192,7 +192,6 @@ public class GameService implements IGameService {
                 .solverIp(null)
                 .task(task)
                 .user(userEntity)
-                .team((userEntity.getTeam()))
                 .build();
 
         String extractedFlag;

@@ -31,7 +31,4 @@ public class Submission {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne()
-    private Team team;
-
 }
