@@ -12,6 +12,7 @@ import ru.katok.tamctf.service.dto.PublicTaskDto;
 @UtilityClass
 public class MappingUtil {
     private final ModelMapper modelMapper = new ModelMapper();
+    private final Configuration cfg = modelMapper.getConfiguration().setAmbiguityIgnored(true);
     private final TypeMap<UserEntity, UserDto> userDtoMapper = modelMapper.createTypeMap(UserEntity.class, UserDto.class);
     private final TypeMap<SignUpDto, UserEntity> userEntityMapper = modelMapper.createTypeMap(SignUpDto.class, UserEntity.class);
     private final TypeMap<Team, TeamDto> teamDtoMapper = modelMapper.createTypeMap(Team.class, TeamDto.class);
@@ -21,7 +22,6 @@ public class MappingUtil {
     private final TypeMap<Submission, SubmissionDto> submissionDtoMapper = modelMapper.createTypeMap(Submission.class, SubmissionDto.class);
     private final TypeMap<Category, CategoryDto> categoryDtoMapper = modelMapper.createTypeMap(Category.class, CategoryDto.class);
     private final TypeMap<File, FileDto> fileDtoMapper = modelMapper.createTypeMap(File.class, FileDto.class);
-    private final Configuration cfg = modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
     //TODO: baaaaaaaaaaaaaaaad
     public static UserDto mapToUserDto(UserEntity user) {
