@@ -47,6 +47,8 @@ public class TaskService implements ITaskService {
                 .description(newTask.getDescription())
                 .adminDescription(newTask.getAdminDescription())
                 .flag(newTask.getFlag())
+                .taskDifficulty(newTask.getTaskDifficulty())
+                .author(newTask.getAuthor())
                 .scoreInitial(newTask.getScoreInitial())
                 .scoreDelay(newTask.getScoreDelay())
                 .scoreMinimum(newTask.getScoreMinimum())
@@ -71,6 +73,21 @@ public class TaskService implements ITaskService {
         return MappingUtil.mapToTaskDto(this.taskRepository.save(newTask));
     }
 
+    //    @Override
+//    public void changeTaskName(Task task, String name){
+//        task.setName(name);
+//        taskRepository.save(task);
+//    }
+//    @Override
+//    public void changeTaskDescription(Task task, String description){
+//        task.setDescription(description);
+//        taskRepository.save(task);
+//    }
+//    @Override
+//    public void changeTaskFlag(Task task, String flag){
+//        task.setFlag(flag);
+//        taskRepository.save(task);
+//    }
     @Override
     public void deleteTask(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("no such task with id: " + id));

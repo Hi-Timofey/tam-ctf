@@ -25,13 +25,21 @@ public class Task {
 
     @Column()
     private String description;
+
     @Column()
     private String adminDescription;
 
     @Column(length = 64)
     private String flag;
+
     @Column(columnDefinition = "boolean default false")
     private boolean active;
+
+    @Enumerated(EnumType.STRING)
+    private TaskDifficulty taskDifficulty;
+
+    @Column()
+    private String author;
 
     @OneToMany(mappedBy = "task")
     private Set<Submission> submissions;
