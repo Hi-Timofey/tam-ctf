@@ -13,6 +13,8 @@ import ru.katok.tamctf.domain.entity.TeamType;
 @AllArgsConstructor
 public class TeamDto {
 
+    private Long id;
+
     @NotNull
     @Size(min = 1)
     private String name;

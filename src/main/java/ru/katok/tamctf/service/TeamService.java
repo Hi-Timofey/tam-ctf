@@ -44,6 +44,9 @@ public class TeamService implements ITeamService {
         if (user.isEmpty()) throw new UserNotFoundException("There is no account with that nickname: " + username);
         UserEntity userEntity = user.get();
         Team team = userEntity.getTeam();
+        if (team == null) {
+            throw new TeamNotFoundException("You're not a part of the team!");
+        }
         return team.getUsers().stream().map(MappingUtil::mapToUserDto).toList();
     }
 
