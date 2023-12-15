@@ -64,12 +64,16 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login")
-    public @ResponseBody GenericResponse authenticateUser(
+    @PostMapping(path = "/login",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody GenericResponse<UserDto> authenticateUser(
             @RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new GenericResponse(true, "User log in successfully!...");
+        return new GenericResponse<>(true, "User log in successfully!...", userService.findUserByUsername(loginDto.getUsername()));
     }
 
     /**
