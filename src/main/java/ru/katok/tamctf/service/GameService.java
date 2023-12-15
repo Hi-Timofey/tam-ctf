@@ -115,7 +115,7 @@ public class GameService implements IGameService {
         for (Score s : scores) {
             s.setScore(0);
             for (Task task : tasks) {
-                for (Submission sub : submissionRepository.findAllSuccsessfulByTask(task)) {
+                for (Submission sub : submissionRepository.findAllSuccessfulByTask(task)) {
                     if (sub.getUser().getTeam().getName().equals(s.getTeamName())) {
                         s.setScore(s.getScore() + scoreMap.get(task));
                     }

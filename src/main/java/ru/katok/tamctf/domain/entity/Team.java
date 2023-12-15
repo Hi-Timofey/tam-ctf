@@ -45,7 +45,5 @@ public class Team {
     @JsonManagedReference
     private Set<UserEntity> users;
 
-    @OneToMany(mappedBy = "team")
-    private Collection<Submission> submissions;
 
 }
