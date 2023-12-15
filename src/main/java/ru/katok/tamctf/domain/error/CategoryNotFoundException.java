@@ -1,6 +1,6 @@
 package ru.katok.tamctf.domain.error;
 
-public class CategoryNotFoundException extends RuntimeException{
+public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException() {
         super();
     }

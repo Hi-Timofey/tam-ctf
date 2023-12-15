@@ -6,15 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.InviteCodeDto;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.dto.UserDto;
-import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.service.TeamService;
-import ru.katok.tamctf.service.UserService;
 
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class TeamController {
 
 
     @PostMapping(path = "/create-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam ,@AuthenticationPrincipal UserDetails user) {
+    public @ResponseBody GenericResponse<TeamDto> createTeam(@RequestBody TeamDto newTeam, @AuthenticationPrincipal UserDetails user) {
         String username = user.getUsername();
         log.debug("TeamDto value: {}", newTeam);
         TeamDto team = teamService.createNewTeamWithCaptainName(newTeam, username);
@@ -55,6 +52,6 @@ public class TeamController {
     //TODO: Create option for Captain role to remove users from team
     @PostMapping(path = "/remove-user-from-team", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<Boolean> removeUserFromTeam(@AuthenticationPrincipal UserDetails user) {
-        return new GenericResponse<>(true,"ok");
+        return new GenericResponse<>(true, "ok");
     }
 }

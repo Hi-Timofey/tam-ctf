@@ -1,26 +1,28 @@
 .table {
     width: 90%;
-    border : 1px solid black;
+    border: 1px solid black;
     position: absolute;
 }
+
 td {
-    border : 1px solid black;
+    border: 1px solid black;
 }
+
 /*thead,
 tfoot {
     background-color: #000;
     color: #fff;
 }*/
-.content{
+.content {
     position: absolute;
     text-align: center;
-/*    width: 100%;*/
+    /*    width: 100%;*/
     align-content: center;
     width: 70%;
     height: 70%;
-/*    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;*/
+    /*    top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;*/
     margin: auto;
 }

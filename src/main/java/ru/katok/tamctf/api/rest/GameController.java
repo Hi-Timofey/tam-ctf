@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.SolveDto;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.config.PlatformConfig;
-import ru.katok.tamctf.domain.dto.TaskDto;
 import ru.katok.tamctf.service.GameService;
+import ru.katok.tamctf.service.dto.PublicTaskDto;
+import ru.katok.tamctf.service.dto.Score;
 
 import java.util.List;
 
@@ -30,13 +31,13 @@ public class GameController {
     }
 
     @GetMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse<List<TaskDto>> getActiveTasks() {
+    public @ResponseBody GenericResponse<List<PublicTaskDto>> getPublicTasks() {
         return new GenericResponse<>(true, "ok", gameService.getAllTasks());
     }
 
     @GetMapping(path = "/scoreboard", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody GenericResponse getScoreboard() {
-        return new GenericResponse();
+    public @ResponseBody GenericResponse<List<Score>> getScoreboard() {
+        return new GenericResponse<>(true, "Scoreboard", gameService.getScoreboard());
     }
 
     @PostMapping(path = "/solve",
@@ -47,7 +48,7 @@ public class GameController {
             @AuthenticationPrincipal UserDetails user
     ) {
         log.debug("Got solve on logger!");
-        boolean result = gameService.solveTask(solveDto.getFlag(), user.getUsername());
+        boolean result = gameService.submitFlag(solveDto.getFlag(), solveDto.getTaskId(), user.getUsername());
         return new GenericResponse<>(result, "Flag submission result", result);
     }
 }

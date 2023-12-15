@@ -11,5 +11,5 @@ import lombok.*;
 @NoArgsConstructor
 public class CategoryDto {
     @NotNull
-        private String name;
+    private String name;
 }

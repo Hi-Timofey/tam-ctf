@@ -1,8 +1,5 @@
 package ru.katok.tamctf.service;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import ru.katok.tamctf.service.interfaces.IRedisService;
@@ -12,7 +9,7 @@ import ru.katok.tamctf.service.interfaces.IRedisService;
 @Deprecated(since = "19.11.2023", forRemoval = false)
 public class RedisService implements IRedisService {
 
-   private  JedisPool jedisPool;
+    private JedisPool jedisPool;
 
     public void initStateDefaults() {
         try (Jedis jedis = jedisPool.getResource()) {

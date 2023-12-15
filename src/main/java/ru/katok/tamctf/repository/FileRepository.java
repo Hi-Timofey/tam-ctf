@@ -1,4 +1,3 @@
-
 package ru.katok.tamctf.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;

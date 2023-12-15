@@ -56,7 +56,7 @@ public class TaskService implements ITaskService {
                 .category(category)
                 .build();
 
-//        telegramService.sendNewTaskNotification(task);
+//        telegramServidce.sendNewTaskNotification(task); //TODO;
         return MappingUtil.mapToTaskDto(taskRepository.save(task));
     }
 
@@ -90,7 +90,8 @@ public class TaskService implements ITaskService {
 //    }
     @Override
     public void deleteTask(Long id) {
-        taskRepository.delete(taskRepository.getById(id));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("no such task with id: " + id));
+        taskRepository.delete(task);
     }
 }
 

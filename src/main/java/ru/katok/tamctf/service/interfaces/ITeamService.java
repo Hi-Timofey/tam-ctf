@@ -15,6 +15,8 @@ public interface ITeamService {
 
     TeamDto createNewTeamWithCaptainName(TeamDto newTeam, String username) throws TeamTypeError;
 
+    TeamDto createNewTeam(TeamDto newTeam) throws TeamTypeError;
+
     TeamDto getTeamById(Long id) throws TeamNotFoundException;
 
     boolean joinTeamWithToken(String inviteCode, String username);

@@ -1,15 +1,11 @@
 package ru.katok.tamctf.api.rest.admin;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.config.PlatformConfig;
-import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.service.GameService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -17,6 +13,7 @@ import java.util.List;
 public class PlatformConfigurationController {
 
     private final GameService gameService;
+
     @ResponseBody
     @GetMapping(path = "config", produces = MediaType.APPLICATION_JSON_VALUE)
     public GenericResponse<PlatformConfig> getPlatformConfig() {

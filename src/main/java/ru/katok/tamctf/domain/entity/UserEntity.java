@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -44,7 +43,7 @@ public class UserEntity extends TimeStampMixin {
     private Set<RoleEntity> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", nullable = true)
+    @JoinColumn(name = "team_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonBackReference
     private Team team;

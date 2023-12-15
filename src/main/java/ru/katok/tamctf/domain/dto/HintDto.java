@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HintDto{
+public class HintDto {
 
     private String text;
 

@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"  lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Index</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
-    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <link rel="shortcut icon" th:href="@{resources/favicon.ico}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{resources/css/style.css}"/>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 </head>
 
-<body id = "body">
+<body id="body">
 
 <div th:insert="~{general :: navigation}"></div>
 
-    <div class="text-center">
-        Welcome to TAM-CTF main screen!
-    </div>
+<div class="text-center">
+    Welcome to TAM-CTF main screen!
+</div>
 
 </body>
 </html>

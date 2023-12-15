@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
-    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <link rel="shortcut icon" th:href="@{resources/favicon.ico}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{resources/css/style.css}"/>
     <title>Sign up</title>
-    <link rel="shortcut icon" type="image/png" th:href="@{resources/favicon.ico}"/>
-    <link th:href="@{resources/css/style.css}" rel="stylesheet" />
+    <link rel="shortcut icon" th:href="@{resources/favicon.ico}" type="image/png"/>
+    <link rel="stylesheet" th:href="@{resources/css/style.css}"/>
 </head>
 <body id="body">
 
 <div th:insert="~{general :: navigation}"></div>
 
 <div class="content-center">
-<div id="card">Sign up TAM-CTF
-<form th:action="@{/api/v1/signup}" method="post">
-    <div>
-        <label>
-            <input  class="form-control"
-                    type="text" name="username"
-                   placeholder="Username"/>
-        </label>
+    <div id="card">Sign up TAM-CTF
+        <form method="post" th:action="@{/api/v1/signup}">
+            <div>
+                <label>
+                    <input class="form-control"
+                           name="username" placeholder="Username"
+                           type="text"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input class="form-control" name="email" placeholder="Email" type="text"/>
+                </label>
+            </div>
+            <div>
+                <label for="password">
+                    <input class="form-control" id="password" name="password" placeholder="Password" required="required"
+                           type="password" value=""/>
+                </label>
+            </div>
+            <div>
+                <label for="matchPassword">
+                    <input class="form-control" id="matchPassword" name="matchingPassword" placeholder="Confirm password" required="required"
+                           type="password" value=""/>
+                </label>
+            </div>
+            <input type="submit" value="Sign Up"/>
+            <!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+        </form>
     </div>
-    <div>
-        <label>
-            <input class="form-control" type="text" name="email" placeholder="Email"/>
-        </label>
-    </div>
-    <div>
-        <label for="password">
-            <input class="form-control" id="password"  name="password"  value="" type="password" required="required" placeholder="Password"/>
-        </label>
-    </div>
-    <div>
-        <label for="matchPassword">
-            <input class="form-control" id="matchPassword" name="matchingPassword" value="" type="password" required="required" placeholder="Confirm password"/>
-        </label>
-    </div>
-    <input type="submit" value="Sign Up" />
-    <!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-</form>
-</div>
 </div>
 </body>
 </html>

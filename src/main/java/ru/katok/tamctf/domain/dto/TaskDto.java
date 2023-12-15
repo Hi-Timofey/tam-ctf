@@ -12,6 +12,10 @@ import ru.katok.tamctf.domain.entity.TaskDifficulty;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskDto {
+
+
+    @NotNull
+    private Long id;
     @NotNull
     @Size(min = 1)
     private String name;
@@ -37,13 +41,11 @@ public class TaskDto {
     private String author;
 
     @Nullable
-    private double scoreInitial;
-
+    private int scoreInitial;
     @Nullable
-    private double scoreDelay;
-
+    private int scoreDelay;
     @Nullable
-    private double scoreMinimum;
+    private int scoreMinimum;
 
     @NotNull
     @Size(min = 1)

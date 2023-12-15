@@ -1,6 +1,5 @@
 package ru.katok.tamctf.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

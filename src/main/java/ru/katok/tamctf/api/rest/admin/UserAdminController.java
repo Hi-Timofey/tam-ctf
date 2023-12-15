@@ -10,7 +10,7 @@ import ru.katok.tamctf.service.UserService;
 
 import java.util.List;
 
-@RestController()
+@RestController
 @RequestMapping("/api/v1/admin")
 @AllArgsConstructor
 public class UserAdminController {
@@ -21,24 +21,26 @@ public class UserAdminController {
     public @ResponseBody GenericResponse<List<UserDto>> getAllUsers() {
         return new GenericResponse<>(true, "ok", userService.getAll());
     }
-//    @PostMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public @ResponseBody UserEntity newUser(@RequestBody UserEntity newUser) {
-//        return userService.save(newUser);
-//    }
+
+    @PostMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<UserDto> createUser(@RequestBody UserDto newUser) {
+        UserDto user = userService.createNewUserAccount(newUser);
+        return new GenericResponse<>(true, "New user has been created", user);
+    }
 
     @PatchMapping(path = "users/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public @ResponseBody GenericResponse<EditUserDto> editUserById(@RequestBody EditUserDto userDto, @PathVariable Long id){
+    public @ResponseBody GenericResponse<EditUserDto> editUserById(@RequestBody EditUserDto userDto, @PathVariable Long id) {
         // TODO: Write code here
         // UserDto user = userService.editUserById(id, userDto);
-        return new GenericResponse<>( false, "Not implemented", userDto/*user*/);
+        return new GenericResponse<>(false, "Not implemented", userDto/*user*/);
     }
 
     @GetMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<UserDto> getUserById(@PathVariable Long id) {
-        return new GenericResponse<>( true, "ok", userService.getUserById(id));
+        return new GenericResponse<>(true, "ok", userService.getUserById(id));
     }
 
     @DeleteMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
