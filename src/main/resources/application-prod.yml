@@ -1,0 +1,28 @@
+server:
+  port: '8080'
+  error:
+    include-stacktrace: never
+spring:
+  datasource:
+    url: 'jdbc:postgresql://postgres:5432/ctf'
+    username: ctf
+    password: ctf
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+ctfconfig:
+  ctf-title: TAM-CTF
+  flag-wrapper: CTF
+  game-start-time: '2023-09-10T00:22:00'
+  freeze-start-time: '2024-09-10T00:22:00'
+  game-end-time: '2025-09-10T00:22:00'
