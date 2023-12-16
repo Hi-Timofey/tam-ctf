@@ -1,9 +1,9 @@
 package ru.katok.tamctf.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
@@ -23,8 +24,7 @@ import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    @Autowired
-    UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -34,21 +34,23 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((csrf) -> csrf
+                .csrf(csrf -> csrf
                         .csrfTokenRepository(new CookieCsrfTokenRepository())
-                        .disable()
-                ).authorizeHttpRequests(requests -> requests
+                        .disable())
+                .exceptionHandling(customizer -> customizer
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/*", "/api/v1/login", "/api/v1/signup", "/api/v1/config").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/admin/**").hasRole("MODERATOR")
                         .requestMatchers("/api/v1/*").hasRole("USER")
                         .requestMatchers("/resources/**").permitAll() //css & js
-                        .anyRequest().authenticated()
-                ).formLogin((form) -> form
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
                                 .loginPage("/login").permitAll()
-                                .defaultSuccessUrl("/index")
-                        //TODO: сделать переход при разлогировании в index.html
-                ).logout((logout) -> logout
+                        .defaultSuccessUrl("/index")
+                )
+                .logout(logout -> logout
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .permitAll()
@@ -78,7 +80,7 @@ public class WebSecurityConfig {
 
 
     @Bean
-    public AuthenticationManager daoAuthenticationProvider() {
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(userDetailsService);

@@ -19,6 +19,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDto {
 
+    private Long id;
+
     private String username;
     @JsonIgnore
     private String password;
