@@ -9,22 +9,26 @@ import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
 import ru.katok.tamctf.domain.error.TeamNotFoundException;
+import ru.katok.tamctf.service.errors.TelegramBotException;
 
 import java.util.logging.Logger;
 @Service("telegramService")
-@Transactional
 public class TelegramService {
     private static final Logger log = Logger.getLogger(TelegramService.class.getName());
-    private static final String telegramToken = "6928169899:AAESYQLwNhxPpLZRpbF7CgzyRC5-XEo8PiQ";
-    private static final String chatId = "-1002018884307";
+    private static final String telegramToken = System.getenv("BOT_TOKEN");
+    private static final String chatId = System.getenv("BOT_TARGET_CHAT_ID");
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     public boolean sendMessage(String text) {
-        String messageUrl="https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id="+chatId+"&text="+text;
-        ResponseEntity<String> response
-                = restTemplate.getForEntity(messageUrl, String.class);
-        return response.getStatusCode() == HttpStatus.OK;
+        try {
+            String messageUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+            ResponseEntity<String> response
+                    = restTemplate.getForEntity(messageUrl, String.class);
+            return response.getStatusCode() == HttpStatus.OK;
+        }catch (TelegramBotException e) {
+            return false;
+        }
     }
     public boolean registerFirstBlood(String Team, String Task){
         return sendMessage("Task_created");
@@ -41,13 +45,17 @@ public class TelegramService {
         return ok;
     }
     public boolean registerTask(String task, String category){
-       return sendMessage("New task here: %s In category: %s".formatted(task,category));
+       return sendMessage("New task: %s in category: %s".formatted(task,category));
     }
-    public void newTaskTelegramNotification(Task task){
-        boolean ok;
-        log.info("New task tg notification triggered on: %s".formatted(task.getName()));
-        ok = registerTask(task.getName(), task.getCategory().getName());
-        log.info("TASK notification status : %s".formatted(ok));
+    public boolean newTaskTelegramNotification(Task task){
+        if(task.isActive()){
+            boolean ok;
+            log.info("New task tg notification triggered on: %s".formatted(task.getName()));
+            ok = registerTask(task.getName(), task.getCategory().getName());
+            log.info("TASK notification status : %s".formatted(ok));
+            return ok;
+        }
+        return false;
     }
 
 }
