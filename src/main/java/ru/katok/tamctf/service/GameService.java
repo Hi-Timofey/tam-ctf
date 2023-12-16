@@ -1,5 +1,10 @@
 package ru.katok.tamctf.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
@@ -31,6 +36,7 @@ public class GameService implements IGameService {
     private final SubmissionRepository submissionRepository;
 
     private PlatformConfig platformConfig;
+    private ObjectMapper objectMapper;
 
 
     private String unpackFlagInFormat(String flag) {
@@ -219,6 +225,22 @@ public class GameService implements IGameService {
     public List<CategoryDto> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .map(MappingUtil::mapToCategoryDto).toList();
+    }
+
+    //TODO::Лол, метод сейв не подходит для редактирования категории,
+    // CrudeRep думает что мы создаем наый объек, надо фиксить
+    // @DrunkardKirA
+    public Category applyPatchToCategory(JsonPatch patch, Category category) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(category, JsonNode.class));
+        return objectMapper.treeToValue(patched, Category.class);
+    }
+
+    public CategoryDto editCategoryByName(String name, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Optional<Category> optionalCategory = categoryRepository.findByName(name);
+        Category category = optionalCategory.get();
+        Category patchedCategory = applyPatchToCategory(patch, category);
+        categoryRepository.save(patchedCategory);
+        return MappingUtil.mapToCategoryDto(patchedCategory);
     }
 
 }

@@ -1,13 +1,12 @@
 package ru.katok.tamctf.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +26,6 @@ public class UserEntity extends TimeStampMixin {
     @Column(unique = true, length = 128)
     private String username;
 
-    @JsonIgnore
     private String password;
 
     private String email;
@@ -38,14 +36,13 @@ public class UserEntity extends TimeStampMixin {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @JsonManagedReference
     @Singular
-    private Set<RoleEntity> roles;
+    private List<RoleEntity> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JsonBackReference
+    @JsonBackReference(value = "user-team")
     private Team team;
 
     @Column(columnDefinition = "boolean default false")
