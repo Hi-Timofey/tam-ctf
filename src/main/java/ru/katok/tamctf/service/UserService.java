@@ -1,5 +1,10 @@
 package ru.katok.tamctf.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +29,10 @@ import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 @Service("userDetailsService")
@@ -35,7 +43,7 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TeamRepository teamRepository;
-
+    private final ObjectMapper objectMapper;
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         return User.builder().username(user.getUsername()).password(user.getPassword()).disabled(!user.isActive()).accountExpired(false).credentialsExpired(false).accountLocked(false).authorities(getAuthorities(user.getRoles())).build();
@@ -101,7 +109,7 @@ public class UserService implements IUserService {
         }
         UserEntity user = MappingUtil.mapToUserFromSignUp(newUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(roleRepository.findByName("ROLE_USER")));
+        user.setRoles(List.of(roleRepository.findByName("ROLE_USER")));
         user.setActive(true);
         return MappingUtil.mapToUserDto(userRepository.save(user));
     }
@@ -148,4 +156,22 @@ public class UserService implements IUserService {
     public boolean changeUserPassword(String oldPassword, String newPassword) {
         return false;
     }
+
+    //TODO::  принципе окей, только поле password олжно хэшироваться а в остальном все ворк
+// @DrinlardLirA
+    public UserEntity applyPatchToUser(JsonPatch patch, UserEntity user) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(user, JsonNode.class));
+        return objectMapper.treeToValue(patched, UserEntity.class);
+    }
+
+    @Override
+    public UserDto editUserById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        UserEntity user = userEntity.get();
+        UserEntity patchedUser = userRepository.save(applyPatchToUser(patch, user));
+        return MappingUtil.mapToUserDto(patchedUser);
+    }
+
+
 }
+

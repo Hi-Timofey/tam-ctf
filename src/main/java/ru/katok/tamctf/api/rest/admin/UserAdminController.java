@@ -1,9 +1,11 @@
 package ru.katok.tamctf.api.rest.admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.katok.tamctf.api.dto.admin.EditUserDto;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.service.UserService;
@@ -29,13 +31,14 @@ public class UserAdminController {
     }
 
     @PatchMapping(path = "users/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            consumes = "application/json-patch+json",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public @ResponseBody GenericResponse<EditUserDto> editUserById(@RequestBody EditUserDto userDto, @PathVariable Long id) {
-        // TODO: Write code here
-        // UserDto user = userService.editUserById(id, userDto);
-        return new GenericResponse<>(false, "Not implemented", userDto/*user*/);
+    public @ResponseBody GenericResponse<UserDto> editUserById(
+            @RequestBody JsonPatch patch, @PathVariable Long id)
+            throws JsonPatchException, JsonProcessingException {
+        UserDto user = userService.editUserById(id, patch);
+        return new GenericResponse<>(true, "UPDATED", user);
     }
 
     @GetMapping(path = "users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
