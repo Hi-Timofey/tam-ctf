@@ -12,7 +12,9 @@ import ru.katok.tamctf.repository.PermissionRepository;
 import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.UserRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("ALL")
 @Component
@@ -45,7 +47,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound("ROLE_USER", userPrivileges);
 
         // == create initial user
-        createUserIfNotFound("admin", "admin", Collections.singleton(adminRole));
+        createUserIfNotFound("admin", "admin", List.of(adminRole));
 
         alreadySetup = true;
     }
@@ -60,7 +62,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return privilege;
     }
 
-    private RoleEntity createRoleIfNotFound(String name, Collection<Permission> privileges) {
+    private RoleEntity createRoleIfNotFound(String name, List<Permission> privileges) {
 
         RoleEntity role = roleRepository.findByName(name);
         if (role == null) {
@@ -72,7 +74,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
 
-    private UserEntity createUserIfNotFound(final String username, final String password, final Set<RoleEntity> roles) {
+    private UserEntity createUserIfNotFound(final String username, final String password, final List<RoleEntity> roles) {
         UserEntity user = userRepository.findByUsernameAndActive(username, true);
         if (user == null) {
             user = new UserEntity();

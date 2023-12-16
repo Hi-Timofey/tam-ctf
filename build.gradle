@@ -26,6 +26,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'com.github.java-json-tools:json-patch:1.13'  //123
+
+    implementation 'com.squareup.retrofit2:converter-jackson:2.7.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
+
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.0'
 
     implementation "com.giffing.bucket4j.spring.boot.starter:bucket4j-spring-boot-starter:0.10.0"
@@ -51,7 +59,6 @@ dependencies {
     testCompileOnly('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
 }
-
 
 
 tasks.named("bootRun") {

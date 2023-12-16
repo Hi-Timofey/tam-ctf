@@ -1,5 +1,8 @@
 package ru.katok.tamctf.service.interfaces;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.katok.tamctf.api.dto.SignUpDto;
 import ru.katok.tamctf.domain.dto.UserDto;
@@ -24,4 +27,6 @@ public interface IUserService extends UserDetailsService {
     boolean recoverUser(String email);
 
     boolean changeUserPassword(String oldPassword, String newPassword);
+
+    UserDto editUserById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException;
 }

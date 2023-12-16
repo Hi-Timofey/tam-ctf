@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,8 +22,8 @@ public class Permission {
     private String name;
 
     @ManyToMany(mappedBy = "permissions")
-    @JsonBackReference
-    private Collection<RoleEntity> roles;
+    @JsonBackReference(value = "role-permissions")
+    private List<RoleEntity> roles;
 
     public Permission(String name) {
         super();

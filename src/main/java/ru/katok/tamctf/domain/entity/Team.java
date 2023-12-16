@@ -42,7 +42,7 @@ public class Team {
             targetEntity = UserEntity.class,
             cascade = {CascadeType.MERGE, CascadeType.PERSIST}
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "user-team")
     private Set<UserEntity> users;
 
 

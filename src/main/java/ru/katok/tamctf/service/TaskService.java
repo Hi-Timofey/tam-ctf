@@ -1,6 +1,11 @@
 package ru.katok.tamctf.service;
 
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.TaskDto;
@@ -18,12 +23,14 @@ import ru.katok.tamctf.service.TelegramService;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service("taskService")
 public class TaskService implements ITaskService {
     private final TaskRepository taskRepository;
     private final CategoryRepository categoryRepository;
     private final TelegramService telegramService;
+    private final ObjectMapper objectMapper;
+
     @Override
     public List<TaskDto> getAll() {
         return taskRepository.findAll().stream()
@@ -73,21 +80,22 @@ public class TaskService implements ITaskService {
     public TaskDto save(Task newTask) {
         return MappingUtil.mapToTaskDto(this.taskRepository.save(newTask));
     }
-    //    @Override
-//    public void changeTaskName(Task task, String name){
-//        task.setName(name);
-//        taskRepository.save(task);
-//    }
-//    @Override
-//    public void changeTaskDescription(Task task, String description){
-//        task.setDescription(description);
-//        taskRepository.save(task);
-//    }
-//    @Override
-//    public void changeTaskFlag(Task task, String flag){
-//        task.setFlag(flag);
-//        taskRepository.save(task);
-//    }
+
+    //TODO:: Работает но не полностью, перед рефакторингом зпустить
+    // и проверить(Хочу спать , тяжело соображать)
+    // @DrunkardKirA
+    public Task applyPatchToTask(JsonPatch patch, Task task) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(task, JsonNode.class));
+        return objectMapper.treeToValue(patched, Task.class);
+    }
+
+    public TaskDto editTaskById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        Task task = optionalTask.get();
+        Task patchedTask = applyPatchToTask(patch, task);
+        taskRepository.save(patchedTask);
+        return MappingUtil.mapToTaskDto(patchedTask);
+    }
     @Override
     public void deleteTask(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("no such task with id: " + id));
