@@ -3,6 +3,11 @@ server:
   error:
     include-stacktrace: never
 spring:
+  cache:
+    cache-names:
+      - buckets
+    caffeine:
+      spec: maximumSize=1000000,expireAfterAccess=3600s
   datasource:
     url: 'jdbc:postgresql://postgres:5432/ctf'
     username: ctf
@@ -14,6 +19,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+#  cache:
+#    jcache:
+#      config: classpath:ehcache.xml
 
 logging:
   level:
@@ -26,3 +34,14 @@ ctfconfig:
   game-start-time: '2023-09-10T00:22:00'
   freeze-start-time: '2024-09-10T00:22:00'
   game-end-time: '2025-09-10T00:22:00'
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: .*
+      rate-limits:
+        - bandwidths:
+            - capacity: 5
+              time: 10
+              unit: seconds
+  cache-to-use: jcache

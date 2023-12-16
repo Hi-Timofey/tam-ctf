@@ -1,7 +1,6 @@
 package ru.katok.tamctf.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -49,9 +48,9 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                                 .loginPage("/login").permitAll()
-                                .defaultSuccessUrl("/index"))
+                        .defaultSuccessUrl("/index")
+                )
                 .logout(logout -> logout
-                        //TODO: сделать переход при разлогировании в index.html
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .permitAll()

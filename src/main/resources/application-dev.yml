@@ -1,3 +1,4 @@
+
 server:
   port: '8080'
   error:
@@ -5,6 +6,11 @@ server:
       enabled: false
     include-stacktrace: never
 spring:
+  cache:
+    cache-names:
+      - buckets
+    caffeine:
+      spec: maximumSize=1000000,expireAfterAccess=3600s
   datasource:
     url: 'jdbc:postgresql://localhost:5432/ctf'
     username: ctf
@@ -32,3 +38,26 @@ ctfconfig:
   game-start-time: '2023-09-10T00:22:00'
   freeze-start-time: '2024-09-10T00:22:00'
   game-end-time: '2025-09-10T00:22:00'
+#bucket4j:
+#  enabled: true
+#  filters:
+#    - cache-name: buckets
+#      url: ".*"
+#      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"STOP IT GET SOME HELP\" }"
+#      rate-limits:
+#        - bandwidths:
+#            - capacity: 1
+#              time: 10
+#              unit: seconds
+#
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: .*
+      rate-limits:
+        - bandwidths:
+            - capacity: 5
+              time: 10
+              unit: seconds
+  cache-to-use: jcache
