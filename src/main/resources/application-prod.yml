@@ -41,7 +41,7 @@ bucket4j:
       url: .*
       rate-limits:
         - bandwidths:
-            - capacity: 5
-              time: 10
+            - capacity: 1
+              time: 1
               unit: seconds
   cache-to-use: jcache
