@@ -1,15 +1,14 @@
 package ru.katok.tamctf.api.rest;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.katok.tamctf.api.dto.ChangePasswordDto;
@@ -64,12 +63,26 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login")
-    public @ResponseBody GenericResponse authenticateUser(
-            @RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new GenericResponse(true, "User log in successfully!...");
+    @PostMapping(path = "/login",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody GenericResponse<UserDto> authenticateUser(
+            @RequestBody LoginDto loginDto, HttpServletRequest request) {
+        String username = loginDto.getUsername();
+        String password = loginDto.getPassword();
+        try {
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(
+//                            username, password));
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            request.login(username, password);
+
+            return new GenericResponse<>(true, "User log in successfully!...", userService.findUserByUsername(loginDto.getUsername()));
+        } catch (ServletException e) {
+            return new GenericResponse<>(false, "Invalid username or password");
+
+        }
     }
 
     /**
