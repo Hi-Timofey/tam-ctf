@@ -26,7 +26,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-validation:3.1.4'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.0'
+
+    implementation "com.giffing.bucket4j.spring.boot.starter:bucket4j-spring-boot-starter:0.10.0"
+    implementation "org.springframework.boot:spring-boot-starter-cache"
+    implementation("javax.cache:cache-api:1.0.0")
+    implementation("com.github.ben-manes.caffeine:caffeine:2.8.2")
+    implementation("com.github.ben-manes.caffeine:jcache:2.8.2")
     implementation 'org.postgresql:postgresql'
     implementation 'redis.clients:jedis:3.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -44,9 +50,6 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
     testCompileOnly('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
-    implementation group: 'dwr', name: 'dwr', version: '1.1.3' //TODO add ajax request to take datas from any find methon of java with JS + HTML!
-
-
 }
 
 

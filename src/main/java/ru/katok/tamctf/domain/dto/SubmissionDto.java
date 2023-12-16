@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmissionDto {
+    private Long id;
 
     private boolean isSuccessful;
 
