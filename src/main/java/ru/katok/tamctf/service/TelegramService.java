@@ -1,6 +1,7 @@
 package ru.katok.tamctf.service;
 
-import jakarta.transaction.Transactional;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,27 @@ import ru.katok.tamctf.service.errors.TelegramBotException;
 
 import java.util.logging.Logger;
 @Service("telegramService")
+@Getter
+@Setter
 public class TelegramService {
-    private static final Logger log = Logger.getLogger(TelegramService.class.getName());
-    private static final String telegramToken = System.getenv("BOT_TOKEN");
-    private static final String chatId = System.getenv("BOT_TARGET_CHAT_ID");
+    private static Logger log;
+    private static String telegramToken;
+    private static String chatId;
+
+    TelegramService() {
+        final Logger log = Logger.getLogger(TelegramService.class.getName());
+        final String telegramToken = System.getenv("BOT_TOKEN");
+        final String chatId = System.getenv("BOT_TARGET_CHAT_ID");
+
+        //TODO: онмтруктор для заполнения полей и обработки NULL
+        // Если NULL  RuntimeExeption и  приложение не поднимается
+        // Так же обавить вариативность запуска бота в птаформ конфиг в виде bool переменной
+    }
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     public boolean sendMessage(String text) {
+        TelegramService TelegramService = new TelegramService();
         try {
             String messageUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
             ResponseEntity<String> response
