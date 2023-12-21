@@ -22,22 +22,19 @@ public class TelegramService {
     private final Logger log = Logger.getLogger(TelegramService.class.getName());
     private String telegramToken;
     private String chatId;
-    private PlatformConfig platformConfig = new PlatformConfig();
-    TelegramService() {
-        final String telegramToken = System.getenv("BOT_TOKEN");
-        final String chatId = System.getenv("BOT_TARGET_CHAT_ID");
+    private PlatformConfig platformConfig;
+    TelegramService(PlatformConfig platformConfig) {
+        this.platformConfig=platformConfig;
+        this.telegramToken = System.getenv("BOT_TOKEN");
+        this.chatId = System.getenv("BOT_TARGET_CHAT_ID");
         if((telegramToken == null || chatId == null) && platformConfig.isTelegramBotEnabled())
             throw new RuntimeException("Telegram token or chat ID is null");
-        //TODO: онмтруктор для заполнения полей и обработки NULL
-        // Если NULL  RuntimeExeption и  приложение не поднимается
-        // Так же обавить вариативность запуска бота в птаформ конфиг в виде bool переменной
     }
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     public boolean sendMessage(String text) {
-        TelegramService telegramService = new TelegramService();
-        if (telegramService.platformConfig.isTelegramBotEnabled()){
+        if (platformConfig.isTelegramBotEnabled()){
             String messageUrl = "https://api.telegram.org/bot" +  telegramToken +
                     "/sendMessage?chat_id=" + chatId + "&text=" + text;
             ResponseEntity<String> response
