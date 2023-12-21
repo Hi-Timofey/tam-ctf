@@ -2,6 +2,7 @@ package ru.katok.tamctf.service;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,14 @@ import java.util.logging.Logger;
 @Getter
 @Setter
 public class TelegramService {
-    private static Logger log;
-    private static String telegramToken;
-    private static String chatId;
-
-    private PlatformConfig platformConfig;
+    private final Logger log = Logger.getLogger(TelegramService.class.getName());
+    private String telegramToken;
+    private String chatId;
+    private PlatformConfig platformConfig = new PlatformConfig();
     TelegramService() {
-        final Logger log = Logger.getLogger(TelegramService.class.getName());
         final String telegramToken = System.getenv("BOT_TOKEN");
         final String chatId = System.getenv("BOT_TARGET_CHAT_ID");
-        if((telegramToken == null || chatId == null) && platformConfig.isTelegramBotIsEnabled())
+        if((telegramToken == null || chatId == null) && platformConfig.isTelegramBotEnabled())
             throw new RuntimeException("Telegram token or chat ID is null");
         //TODO: онмтруктор для заполнения полей и обработки NULL
         // Если NULL  RuntimeExeption и  приложение не поднимается
@@ -37,9 +36,10 @@ public class TelegramService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public boolean sendMessage(String text) {
-        TelegramService TelegramService = new TelegramService();
-        if (platformConfig.isTelegramBotIsEnabled()){
-            String messageUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
+        TelegramService telegramService = new TelegramService();
+        if (telegramService.platformConfig.isTelegramBotEnabled()){
+            String messageUrl = "https://api.telegram.org/bot" +  telegramToken +
+                    "/sendMessage?chat_id=" + chatId + "&text=" + text;
             ResponseEntity<String> response
                     = restTemplate.getForEntity(messageUrl, String.class);
             return response.getStatusCode() == HttpStatus.OK;

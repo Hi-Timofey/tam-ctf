@@ -96,7 +96,7 @@ public class GameService implements IGameService {
     //TODO: Needs refactor
     public List<Score> getScoreboard() {
         if (!isGameStarted()) {
-            log.info("User tried to get task list whil game isn't started");
+            log.info("User tried to get task list while game isn't started");
             return List.of();
         }
         List<Team> teams = teamRepository.findAll();

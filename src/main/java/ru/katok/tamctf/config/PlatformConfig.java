@@ -14,7 +14,7 @@ public class PlatformConfig {
 
     private String flagWrapper;
 
-    private boolean telegramBotIsEnabled;
+    private boolean telegramBotEnabled;
 
     private LocalDateTime gameStartTime;
 
