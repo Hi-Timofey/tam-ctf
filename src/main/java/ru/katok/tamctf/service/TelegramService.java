@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.katok.tamctf.config.PlatformConfig;
 import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
@@ -21,11 +22,13 @@ public class TelegramService {
     private static String telegramToken;
     private static String chatId;
 
+    private PlatformConfig platformConfig;
     TelegramService() {
         final Logger log = Logger.getLogger(TelegramService.class.getName());
         final String telegramToken = System.getenv("BOT_TOKEN");
         final String chatId = System.getenv("BOT_TARGET_CHAT_ID");
-
+        if((telegramToken == null || chatId == null) && platformConfig.isTelegramBotIsEnabled())
+            throw new RuntimeException("Telegram token or chat ID is null");
         //TODO: онмтруктор для заполнения полей и обработки NULL
         // Если NULL  RuntimeExeption и  приложение не поднимается
         // Так же обавить вариативность запуска бота в птаформ конфиг в виде bool переменной
@@ -35,12 +38,13 @@ public class TelegramService {
 
     public boolean sendMessage(String text) {
         TelegramService TelegramService = new TelegramService();
-        try {
+        if (platformConfig.isTelegramBotIsEnabled()){
             String messageUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" + chatId + "&text=" + text;
             ResponseEntity<String> response
                     = restTemplate.getForEntity(messageUrl, String.class);
             return response.getStatusCode() == HttpStatus.OK;
-        }catch (TelegramBotException e) {
+        }
+        else{
             return false;
         }
     }
@@ -69,6 +73,7 @@ public class TelegramService {
             log.info("TASK notification status : %s".formatted(ok));
             return ok;
         }
+        log.info("Notification not triggered: task %s is not active".formatted(task.getName()));
         return false;
     }
 

@@ -14,6 +14,8 @@ public class PlatformConfig {
 
     private String flagWrapper;
 
+    private boolean telegramBotIsEnabled;
+
     private LocalDateTime gameStartTime;
 
     private LocalDateTime freezeStartTime; // could be null for no freeze
