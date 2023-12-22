@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USERNAME:-ctf}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctf}
       POSTGRES_DB: "ctf"
+      BOT_TOKEN: ""
+      BOT_TARGET_CHAT_ID: ""
 #      REDIS_PASSWORD: "ctf"
 #      REDIS_HOST: "redis"
     ports:
