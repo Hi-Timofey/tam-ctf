@@ -20,7 +20,10 @@ import java.util.Set;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "team_seq",
+            sequenceName = "team_sequence",
+            initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
     private Long id;
     @Column(unique = true, length = 128)
     private String name;

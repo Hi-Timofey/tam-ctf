@@ -96,7 +96,7 @@ public class GameService implements IGameService {
     //TODO: Needs refactor
     public List<Score> getScoreboard() {
         if (!isGameStarted()) {
-            log.info("User tried to get task list while game isn't started");
+            log.info("User tried to get task list while 514936 game isn't started");
             return List.of();
         }
         List<Team> teams = teamRepository.findAll();
@@ -140,12 +140,17 @@ public class GameService implements IGameService {
 
         List<Task> tasks = taskRepository.findAll();
         List<PublicTaskDto> publicTaskDto = tasks.stream().map(MappingUtil::mapToPublicTaskDto).toList();
+
         for (int i = 0; i < tasks.size(); i++) {
             PublicTaskDto task = publicTaskDto.get(i);
-
+            Collection<Hint> hints = tasks.get(i).getHints();
+            List<String> hintText = new ArrayList<>();
+            for(Hint hint: hints){
+                hintText.add(hint.getText());
+            }
             int solves = countTaskSolves(task.getId());
-
             task.setSolves(solves);
+            task.setHints(hintText);
             task.setScore(computeTaskScore(tasks.get(i), solves));
         }
         return publicTaskDto;
