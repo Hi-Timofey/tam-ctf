@@ -96,7 +96,7 @@ public class GameService implements IGameService {
     //TODO: Needs refactor
     public List<Score> getScoreboard() {
         if (!isGameStarted()) {
-            log.info("User tried to get task list whil game isn't started");
+            log.info("User tried to get task list while game isn't started");
             return List.of();
         }
         List<Team> teams = teamRepository.findAll();
@@ -121,7 +121,7 @@ public class GameService implements IGameService {
         for (Score s : scores) {
             s.setScore(0);
             for (Task task : tasks) {
-                for (Submission sub : submissionRepository.findAllSuccsessfulByTask(task)) {
+                for (Submission sub : submissionRepository.findAllSuccessfulByTask(task)) {
                     if (sub.getUser().getTeam().getName().equals(s.getTeamName())) {
                         s.setScore(s.getScore() + scoreMap.get(task));
                     }
@@ -134,7 +134,7 @@ public class GameService implements IGameService {
     public List<PublicTaskDto> getAllTasks() {
 
         if (!isGameStarted()) {
-            log.info("User tried to get task list whil game isn't started");
+            log.info("User tried to get task list while game isn't started");
             return List.of();
         }
 
@@ -198,7 +198,6 @@ public class GameService implements IGameService {
                 .solverIp(null)
                 .task(task)
                 .user(userEntity)
-                .team((userEntity.getTeam()))
                 .build();
 
         String extractedFlag;

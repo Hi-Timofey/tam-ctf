@@ -18,6 +18,7 @@ import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.CategoryRepository;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.ITaskService;
+import ru.katok.tamctf.service.TelegramService;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import java.util.Optional;
 public class TaskService implements ITaskService {
     private final TaskRepository taskRepository;
     private final CategoryRepository categoryRepository;
+    private final TelegramService telegramService;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -62,7 +64,7 @@ public class TaskService implements ITaskService {
                 .category(category)
                 .build();
 
-//        telegramServidce.sendNewTaskNotification(task); //TODO;
+        telegramService.newTaskTelegramNotification(task);
         return MappingUtil.mapToTaskDto(taskRepository.save(task));
     }
 

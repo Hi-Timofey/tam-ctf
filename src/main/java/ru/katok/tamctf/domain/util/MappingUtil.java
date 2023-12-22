@@ -62,7 +62,6 @@ public class MappingUtil {
     public static SubmissionDto mapToSubmissionDto(Submission submission) {
         submissionDtoMapper.addMappings(mapper -> mapper.map(src -> src.getTask().getId(), SubmissionDto::setTaskId));
         submissionDtoMapper.addMappings(mapper -> mapper.map(src -> src.getUser().getId(), SubmissionDto::setUserId));
-        submissionDtoMapper.addMappings(mapper -> mapper.map(src -> src.getTeam().getId(), SubmissionDto::setTeamId));
         return submissionDtoMapper.map(submission);
     }
 

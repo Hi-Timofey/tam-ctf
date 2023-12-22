@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.SubmissionDto;
 import ru.katok.tamctf.domain.entity.Submission;
 import ru.katok.tamctf.domain.entity.UserEntity;
+import ru.katok.tamctf.domain.error.SubmissionNotFoundException;
 import ru.katok.tamctf.domain.error.UserNotFoundException;
 import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.SubmissionRepository;
@@ -42,12 +43,12 @@ public class SubmissionService {
                 .solverIp(submissionDto.getSolverIp())
                 .task(taskRepository.getById(submissionDto.getTaskId()))
                 .user(userRepository.getById(submissionDto.getUserId()))
-                .team(teamRepository.getById(submissionDto.getTeamId()))
                 .build();
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
 
     public void deleteSubmissionById(Long id) {
+        Submission submission = submissionRepository.findById(id).orElseThrow(() -> new SubmissionNotFoundException("no such submission with id: " + id));
         submissionRepository.delete(submissionRepository.getById(id));
     }
 }
