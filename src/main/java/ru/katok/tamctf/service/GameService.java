@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
@@ -22,6 +23,12 @@ import ru.katok.tamctf.service.errors.FlagUnpackError;
 import ru.katok.tamctf.service.errors.GameError;
 import ru.katok.tamctf.service.interfaces.IGameService;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -96,7 +103,8 @@ public class GameService implements IGameService {
     //TODO: Needs refactor
     public List<Score> getScoreboard() {
         if (!isGameStarted()) {
-            log.info("User tried to get task list while 514936 game isn't started");
+            log.info("User tried to get task list while game isn't started");
+
             return List.of();
         }
         List<Team> teams = teamRepository.findAll();
@@ -247,4 +255,93 @@ public class GameService implements IGameService {
         return MappingUtil.mapToCategoryDto(patchedCategory);
     }
 
+    public String dumpScores() throws IOException {
+        List<Score> scores = new ArrayList<>();
+        scores = getScoreboard();
+        String fileName = "scoreboard.json";
+        Path filePath = Paths.get(".", fileName);
+        Path exportedFilePath;
+        Gson gson = new Gson();
+        String customerInJson = gson.toJson(scores);
+        return customerInJson;
+    }
+
+
+    private int rowsCount(Connection con, String request) throws SQLException {
+
+        Statement st = con.createStatement();
+        ResultSet res = st.executeQuery(request);
+        res.next();
+        return res.getInt("NumberOfRows");
+    }
+
+    private int colsCount(Connection con, String request) throws SQLException {
+
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(request);
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int column_count = rsmd.getColumnCount();
+        return column_count;
+    }
+
+    @Deprecated
+    public String backUp() throws SQLException, IOException {
+
+        String url = "jdbc:postgresql://localhost:5432/ctf";
+        String user = "ctf";
+        String password = "ctf";
+        List<String> tables = new ArrayList<String>();
+        try (Connection connect = DriverManager.getConnection(url, user, password)) {
+            try {
+
+                DatabaseMetaData dataBaseMetaData = connect.getMetaData();
+                String[] types = {"TABLE"};
+                ResultSet resultSet = dataBaseMetaData.getTables(null, null, "%", types);
+                while (resultSet.next()) {
+                    tables.add(resultSet.getString(3));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            Connection con = DriverManager.getConnection(url, user, password);
+            String tempSelect = "SELECT * FROM ";
+            String tempCount = "SELECT COUNT(1) as NumberOfRows FROM ";
+            String sqlRequest;
+            String countRequest;
+
+            for (String s : tables) {
+                List<String> resultSetArray = new ArrayList<>();
+                sqlRequest = tempSelect.concat(s);
+                countRequest = tempCount.concat(s);
+                PreparedStatement pst = con.prepareStatement(sqlRequest);
+                ResultSet rs = pst.executeQuery();
+                int countOfRows = rowsCount(con, countRequest);
+                int countOfCols = colsCount(con, sqlRequest);
+                while (rs.next()) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i <= countOfCols + 1; i++) {
+                        /*                   if(rs.getObject(i) != null){*/
+                        sb.append(String.format(String.valueOf(rs.getString(i))));
+                        if (i >= countOfCols) {
+                            sb.append(";");
+                            resultSetArray.add(sb.toString());
+                            break;
+                        }
+                        sb.append(" ");
+                    }
+
+                }
+                String tempPath = ".";
+                String filePath = tempPath.concat(s).concat(".csv");
+                /* BufferedReader csvReader = new BufferedReader(new FileReader("C:\\Users\\Documents\\MyFile.csv"));*/
+                FileWriter fileWriter = new FileWriter(filePath);
+                PrintWriter printWriter = new PrintWriter(fileWriter);
+                printWriter.printf(resultSetArray.toString());
+
+                printWriter.close();
+            }
+        }
+        return tables.toString();
+    }
 }

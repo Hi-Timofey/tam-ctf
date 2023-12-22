@@ -1,5 +1,6 @@
 package ru.katok.tamctf.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Hint extends TimeStampMixin {
     private String text;
 
     @ManyToOne()
+    @JsonBackReference(value = "task-hint")
     private Task task;
 
 }

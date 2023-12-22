@@ -1,5 +1,8 @@
 package ru.katok.tamctf.api.rest.admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,17 @@ public class HintAdminController {
     public @ResponseBody GenericResponse<HintDto> createHint(@RequestBody HintDto newHint) {
         HintDto hint = hintService.createNewHint(newHint);
         return new GenericResponse<>(true, "Hint has been created", hint);
+    }
+
+    @PatchMapping(path = "hints/{id}",
+            consumes = "application/json-patch+json",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public @ResponseBody GenericResponse<HintDto> editHintsById(
+            @RequestBody JsonPatch patch, @PathVariable Long id)
+            throws JsonPatchException, JsonProcessingException {
+        HintDto hint = hintService.editHintsById(id, patch);
+        return new GenericResponse<>(true, "UPDATED", hint);
     }
 
     @DeleteMapping(path = "/hints/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
