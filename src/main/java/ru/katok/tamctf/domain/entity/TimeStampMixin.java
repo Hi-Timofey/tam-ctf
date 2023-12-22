@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class TimeStampMixin {
-    @Column(name = "created_at", nullable = true)
+    @Column(name = "created_at")
     @CreationTimestamp
     @JsonProperty("createdAt")
     private LocalDateTime createdAt;
