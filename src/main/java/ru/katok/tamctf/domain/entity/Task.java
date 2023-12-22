@@ -18,7 +18,10 @@ import java.util.Set;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "task_seq",
+            sequenceName = "task_sequence",
+            initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_seq")
     private Long id;
 
     @Column(unique = true, length = 64)

@@ -13,7 +13,10 @@ import lombok.*;
 @AllArgsConstructor
 public class Submission {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "sub_seq",
+            sequenceName = "sub_sequence",
+            initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sub_seq")
     private Long id;
 
     @Column(columnDefinition = "boolean default false")
@@ -32,8 +35,5 @@ public class Submission {
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
-    @ManyToOne()
-    private Team team;
 
 }
