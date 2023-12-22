@@ -98,7 +98,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto registerNewUserAccount(final SignUpDto newUser) throws EmailExistsException {
+    public UserDto registerNewUserAccount(final SignUpDto newUser, final String ipAddress) throws EmailExistsException {
         String username = newUser.getUsername();
         if (userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException("There is an account with that nickname: " + username);
@@ -108,6 +108,7 @@ public class UserService implements IUserService {
 
         }
         UserEntity user = MappingUtil.mapToUserFromSignUp(newUser);
+        user.setAtRegisterIp(ipAddress);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER")));
         user.setActive(true);
@@ -173,5 +174,12 @@ public class UserService implements IUserService {
     }
 
 
+    @Override
+    public void updateLoggedUserIp(String username, String ip) {
+        var user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("no such user with name: %s".formatted(username)));
+        user.setLastLoginIp(ip);
+        userRepository.save(user);
+    }
 }
 
