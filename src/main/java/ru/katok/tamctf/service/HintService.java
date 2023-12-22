@@ -21,7 +21,7 @@ import java.util.List;
 public class HintService implements IHintService {
     private final HintRepository hintRepository;
     private final TaskRepository taskRepository;
-
+    private final TelegramService telegramService;
     public List<HintDto> getAll() {
         return hintRepository.findAll().stream()
                 .map(MappingUtil::mapToHintDto).toList();
@@ -36,9 +36,9 @@ public class HintService implements IHintService {
                 .text(newHint.getText())
                 .task(task)
                 .build();
+        telegramService.newHintTelegramNotification(hint);
         return MappingUtil.mapToHintDto(hintRepository.save(hint));
     }
-
     public void deleteHintById(Long id) {
         Hint hint = hintRepository.findById(id).orElseThrow(() -> new HintNotFoundException("No hint with an id %d".formatted(id)));
         hintRepository.delete(hint);

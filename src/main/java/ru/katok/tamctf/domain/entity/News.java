@@ -16,7 +16,10 @@ import lombok.Setter;
 public class News {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "news_seq",
+            sequenceName = "news_sequence",
+            initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "news_seq")
     private Long id;
     @Enumerated(EnumType.STRING)
     private NewsType itemType;
