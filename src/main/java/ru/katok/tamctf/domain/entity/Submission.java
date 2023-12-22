@@ -1,5 +1,6 @@
 package ru.katok.tamctf.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Submission {
     private String solverIp;
 
     @ManyToOne()
+    @JsonBackReference(value = "task-submission")
     private Task task;
 
     @ManyToOne()

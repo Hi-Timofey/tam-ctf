@@ -1,5 +1,10 @@
 package ru.katok.tamctf.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.SubmissionDto;
@@ -14,6 +19,7 @@ import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 @RequiredArgsConstructor
@@ -23,6 +29,7 @@ public class SubmissionService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final TeamRepository teamRepository;
+    private final ObjectMapper objectMapper;
 
     public List<SubmissionDto> getAll() {
         return submissionRepository.findAll().stream()
@@ -46,6 +53,21 @@ public class SubmissionService {
                 .build();
         return MappingUtil.mapToSubmissionDto(submissionRepository.save(submission));
     }
+
+    public Submission applyPatchToSubmission(JsonPatch patch, Submission submission) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(submission, JsonNode.class));
+        return objectMapper.treeToValue(patched, Submission.class);
+    }
+
+
+    public SubmissionDto editSubmissionById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Optional<Submission> submission = submissionRepository.findById(id);
+        Submission sub = submission.get();
+        Submission patchedSubmission = submissionRepository.save(applyPatchToSubmission(patch, sub));
+        return MappingUtil.mapToSubmissionDto(patchedSubmission);
+    }
+
+
 
     public void deleteSubmissionById(Long id) {
         Submission submission = submissionRepository.findById(id).orElseThrow(() -> new SubmissionNotFoundException("no such submission with id: " + id));
