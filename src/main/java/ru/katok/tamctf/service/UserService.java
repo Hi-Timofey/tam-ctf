@@ -28,6 +28,7 @@ import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
+import ru.katok.tamctf.validation.PasswordPolicy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,13 +93,13 @@ public class UserService implements IUserService {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    private void changeUserPassword(UserEntity user, String password) {
+    private void changeUserEntityPasswordEncoded(UserEntity user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
 
     @Override
-    public UserDto registerNewUserAccount(final SignUpDto newUser) throws EmailExistsException {
+    public UserDto registerNewUserAccount(final SignUpDto newUser, final String ipAddress) throws EmailExistsException {
         String username = newUser.getUsername();
         if (userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistException("There is an account with that nickname: " + username);
@@ -108,6 +109,7 @@ public class UserService implements IUserService {
 
         }
         UserEntity user = MappingUtil.mapToUserFromSignUp(newUser);
+        user.setAtRegisterIp(ipAddress);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER")));
         user.setActive(true);
@@ -152,9 +154,19 @@ public class UserService implements IUserService {
         return false;
     }
 
+    private boolean checkIfValidOldPassword(final UserEntity user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
     @Override
-    public boolean changeUserPassword(String oldPassword, String newPassword) {
-        return false;
+    public boolean changeUserPassword(String username, String oldPassword, String newPassword) {
+        var user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("no such user with name: %s".formatted(username)));
+        if (!checkIfValidOldPassword(user, oldPassword )) {
+            return false;
+        }
+        changeUserEntityPasswordEncoded(user, newPassword);
+        return true;
     }
 
     //TODO::  принципе окей, только поле password олжно хэшироваться а в остальном все ворк
@@ -173,5 +185,12 @@ public class UserService implements IUserService {
     }
 
 
+    @Override
+    public void updateLoggedUserIp(String username, String ip) {
+        var user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("no such user with name: %s".formatted(username)));
+        user.setLastLoginIp(ip);
+        userRepository.save(user);
+    }
 }
 

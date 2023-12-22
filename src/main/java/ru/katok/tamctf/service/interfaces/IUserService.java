@@ -14,7 +14,7 @@ import java.util.List;
 public interface IUserService extends UserDetailsService {
     List<UserDto> getAll();
 
-    UserDto registerNewUserAccount(SignUpDto accountDto) throws EmailExistsException;
+    UserDto registerNewUserAccount(SignUpDto accountDto, String ipAddress) throws EmailExistsException;
 
     UserDto createNewUserAccount(UserDto userDto);
 
@@ -26,7 +26,8 @@ public interface IUserService extends UserDetailsService {
 
     boolean recoverUser(String email);
 
-    boolean changeUserPassword(String oldPassword, String newPassword);
+    boolean changeUserPassword(String username, String oldPassword, String newPassword);
 
     UserDto editUserById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException;
+    void updateLoggedUserIp(String username, String ip);
 }

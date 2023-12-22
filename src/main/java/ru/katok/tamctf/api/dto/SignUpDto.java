@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ru.katok.tamctf.validation.PasswordMatches;
+import ru.katok.tamctf.validation.PasswordPolicy;
 import ru.katok.tamctf.validation.ValidEmail;
 
 @Data
@@ -16,6 +17,7 @@ public class SignUpDto {
 
     @NotNull
     @Size(min = 1)
+    @PasswordPolicy
     private String password;
 
     @NotNull
