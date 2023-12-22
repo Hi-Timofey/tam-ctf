@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.katok.tamctf.config.PlatformConfig;
+import ru.katok.tamctf.domain.entity.Hint;
 import ru.katok.tamctf.domain.entity.Task;
 import ru.katok.tamctf.domain.entity.Team;
 import ru.katok.tamctf.domain.entity.UserEntity;
@@ -73,5 +74,14 @@ public class TelegramService {
         log.info("Notification not triggered: task %s is not active".formatted(task.getName()));
         return false;
     }
-
+    public boolean registerHint(String task, String hint){
+        return sendMessage("New hint for task: %s Hint: %s".formatted(task,hint));
+    }
+    public boolean newHintTelegramNotification(Hint hint){
+        boolean ok;
+        log.info("New hint tg notification triggered for task: %s".formatted(hint.getTask().getName()));
+        ok = registerHint(hint.getTask().getName(), hint.getText());
+        log.info("HINT notification status : %s".formatted(ok));
+        return ok;
+    }
 }

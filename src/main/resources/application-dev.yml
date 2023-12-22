@@ -35,7 +35,7 @@ logging:
 ctfconfig:
   ctf-title: TAM-CTF
   flag-wrapper: CTF
-  telegram-bot-is-enabled: false
+  telegram-bot-enabled: true
   game-start-time: '2023-09-10T00:22:00'
   freeze-start-time: '2024-09-10T00:22:00'
   game-end-time: '2025-09-10T00:22:00'
@@ -50,6 +50,6 @@ bucket4j:
       rate-limits:
         - bandwidths:
             - capacity: 10
-              time: 5
-              unit: seconds
+              time: 1
+              unit: minutes
   cache-to-use: jcache
