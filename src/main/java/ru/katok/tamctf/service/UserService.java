@@ -28,6 +28,7 @@ import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
+import ru.katok.tamctf.validation.PasswordPolicy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,7 +93,7 @@ public class UserService implements IUserService {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    private void changeUserPassword(UserEntity user, String password) {
+    private void changeUserEntityPasswordEncoded(UserEntity user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
@@ -153,9 +154,19 @@ public class UserService implements IUserService {
         return false;
     }
 
+    private boolean checkIfValidOldPassword(final UserEntity user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
     @Override
-    public boolean changeUserPassword(String oldPassword, String newPassword) {
-        return false;
+    public boolean changeUserPassword(String username, String oldPassword, String newPassword) {
+        var user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("no such user with name: %s".formatted(username)));
+        if (!checkIfValidOldPassword(user, oldPassword )) {
+            return false;
+        }
+        changeUserEntityPasswordEncoded(user, newPassword);
+        return true;
     }
 
     //TODO::  принципе окей, только поле password олжно хэшироваться а в остальном все ворк

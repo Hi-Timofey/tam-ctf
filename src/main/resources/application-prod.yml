@@ -31,6 +31,7 @@ logging:
 ctfconfig:
   ctf-title: TAM-CTF
   flag-wrapper: CTF
+  telegram-bot-enabled: false
   game-start-time: '2023-09-10T00:22:00'
   freeze-start-time: '2024-09-10T00:22:00'
   game-end-time: '2025-09-10T00:22:00'

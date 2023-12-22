@@ -79,21 +79,14 @@ public class AuthController {
      * @return GenericResponse
      */
     @PostMapping("/change-password")
-    public @ResponseBody GenericResponse changeUserPassword(
-            @RequestBody ChangePasswordDto changePasswordDto,
+    public @ResponseBody GenericResponse<Boolean> changeUserPassword(
+            @RequestBody @Valid ChangePasswordDto changePasswordDto,
             @AuthenticationPrincipal UserDetails user) {
         final String oldPass = changePasswordDto.getOldPassword();
         final String newPass = changePasswordDto.getNewPassword();
-
-        //TODO: Implement via 1 simple call to service
-//        var userEntity = userService.findUserByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-//
-//        if (userService.checkIfValidPassword(userEntity, oldPass)) {
-//            userService.changeUserPassword(userEntity, newPass);
-//            return new GenericResponse(true, "ok");
-//        }
-//        return new GenericResponse(false, "Incorrect password");
-        return new GenericResponse(false, "not implemented");
+        final String username = user.getUsername();
+        boolean done = userService.changeUserPassword(username,oldPass, newPass);
+        return new GenericResponse<Boolean>(done, "Result of changing password", done);
     }
 
     @GetMapping(path = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
