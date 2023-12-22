@@ -71,10 +71,6 @@ public class AuthController {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
         try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(
-//                            username, password));
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             request.login(username, password);
 

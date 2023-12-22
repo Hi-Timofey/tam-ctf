@@ -1,5 +1,10 @@
 package ru.katok.tamctf.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.katok.tamctf.domain.dto.HintDto;
@@ -12,6 +17,7 @@ import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.IHintService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @SuppressWarnings("ALL")
@@ -20,6 +26,7 @@ import java.util.List;
 public class HintService implements IHintService {
     private final HintRepository hintRepository;
     private final TaskRepository taskRepository;
+    private final ObjectMapper objectMapper;
 
     public List<HintDto> getAll() {
         return hintRepository.findAll().stream()
@@ -36,6 +43,19 @@ public class HintService implements IHintService {
                 .task(task)
                 .build();
         return MappingUtil.mapToHintDto(hintRepository.save(hint));
+    }
+
+    public Hint applyPatchToHint(JsonPatch patch, Hint hint) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(hint, JsonNode.class));
+        return objectMapper.treeToValue(patched, Hint.class);
+    }
+
+
+    public HintDto editHintsById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Optional<Hint> hintOptional = hintRepository.findById(id);
+        Hint hint = hintOptional.get();
+        Hint patchedHint = hintRepository.save(applyPatchToHint(patch, hint));
+        return MappingUtil.mapToHintDto(patchedHint);
     }
 
     public void deleteHintById(Long id) {

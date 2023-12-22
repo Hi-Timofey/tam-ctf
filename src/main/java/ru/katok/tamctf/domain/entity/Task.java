@@ -1,6 +1,7 @@
 package ru.katok.tamctf.domain.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,9 +43,11 @@ public class Task {
     private String author;
 
     @OneToMany(mappedBy = "task")
+    @JsonManagedReference(value = "task-submission")
     private Set<Submission> submissions;
 
     @OneToMany(mappedBy = "task")
+    @JsonManagedReference(value = "task-hint")
     private Collection<Hint> hints;
 
     @ManyToOne(optional = false)
