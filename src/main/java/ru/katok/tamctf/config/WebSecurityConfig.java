@@ -2,7 +2,6 @@ package ru.katok.tamctf.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,20 +21,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.katok.tamctf.security.AuthTokenFilter;
+
 @SuppressWarnings("ALL")
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig{
-    @Autowired
-    @Qualifier("userDetailsService")
     private final UserDetailsService userDetailsService;
+
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean
@@ -66,7 +76,8 @@ public class WebSecurityConfig{
                         .permitAll()
 
                 );
-//                .addFilterBefore(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -81,23 +92,31 @@ public class WebSecurityConfig{
         return roleHierarchy;
     }
 
-    @Autowired
-    public void configureGlobal(
-            AuthenticationManagerBuilder auth,
-            PasswordEncoder passwordEncoder
-    ) throws Exception {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        auth.authenticationProvider(daoAuthenticationProvider);
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-
     @Bean
-    public SpringSecurityDialect springSecurityDialect() {
-        return new SpringSecurityDialect();
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
+
+//    @Autowired
+//    public void configureGlobal(
+//            AuthenticationManagerBuilder auth,
+//            PasswordEncoder passwordEncoder
+//    ) throws Exception {
+//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+////        auth.authenticationProvider(daoAuthenticationProvider);
+////        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//    }
+
+
+//    @Bean
+//    public SpringSecurityDialect springSecurityDialect() {
+//        return new SpringSecurityDialect();
+//    }
 //    @Bean(name = "restTokenAuthenticationFilter")
 //    public TokenAuthenticationFilter restTokenAuthenticationFilter() {
 //        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter();

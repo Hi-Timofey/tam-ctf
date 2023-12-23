@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +22,7 @@ import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
+import ru.katok.tamctf.security.JwtGenerator;
 import ru.katok.tamctf.service.UserService;
 
 @SuppressWarnings("ALL")
@@ -27,7 +31,8 @@ import ru.katok.tamctf.service.UserService;
 @AllArgsConstructor
 public class AuthController {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
+    private final AuthenticationManager authenticationManager;
+    private final JwtGenerator jwtUtils;
     private final UserService userService;
 
     @PostMapping(path = "/signup",
@@ -51,20 +56,29 @@ public class AuthController {
     @PostMapping(path = "/login",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public @ResponseBody GenericResponse<UserDto> authenticateUser(
+    public @ResponseBody GenericResponse<String> authenticateUser(
             @RequestBody LoginDto loginDto, HttpServletRequest request) throws Exception {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 //        String token = tokenGenerator.getToken(username,password);
-        try {
+//        try {
+//
+//            request.login(username, password);
+//
+//            return new GenericResponse<>(true, "User log in successfully!...", userService.findUserByUsername(loginDto.getUsername()));
+//        } catch (ServletException e) {
+//            return new GenericResponse<>(false, "Invalid username or password");
+//
+//        }
 
-            request.login(username, password);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username,password));
 
-            return new GenericResponse<>(true, "User log in successfully!...", userService.findUserByUsername(loginDto.getUsername()));
-        } catch (ServletException e) {
-            return new GenericResponse<>(false, "Invalid username or password");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = userService.loadUserByUsername(username);
+        String jwt = jwtUtils.generateToken(userDetails);
+        return new GenericResponse<>(true, "User log in successfully!...", jwt);
 
-        }
     }
 
     /**
