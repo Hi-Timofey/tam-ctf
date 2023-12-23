@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,9 +48,9 @@ public class WebSecurityConfig{
                         .disable())
                 .exceptionHandling(customizer -> customizer
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .headers().frameOptions().sameOrigin()
-                .and()
-                .addFilterAfter(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .headers().frameOptions().sameOrigin()
+//                .and()
+//                .addFilterAfter(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/*", "/api/v1/login", "/api/v1/signup", "/api/v1/config").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
@@ -57,7 +58,7 @@ public class WebSecurityConfig{
                         .requestMatchers("/api/v1/*").hasRole("USER")
                         .requestMatchers("/resources/**").permitAll() //css & js
                         .anyRequest().authenticated())
-
+                .sessionManagement(sessionManagment -> sessionManagment.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(form -> form
                                 .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/index")
@@ -67,7 +68,8 @@ public class WebSecurityConfig{
                         .invalidateHttpSession(true)
                         .permitAll()
 
-                );
+                )
+                .addFilterBefore(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

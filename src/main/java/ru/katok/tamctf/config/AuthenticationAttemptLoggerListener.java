@@ -19,7 +19,11 @@ public class AuthenticationAttemptLoggerListener implements ApplicationListener<
 
     public void onApplicationEvent(AbstractAuthenticationEvent event) {
         Authentication auth = event.getAuthentication();
+        if (auth == null)
+            return;
         WebAuthenticationDetails details = (WebAuthenticationDetails) auth.getDetails();
+        if (details == null)
+            return;
         String ipAddress = details.getRemoteAddress();
         String username = auth.getName();
 

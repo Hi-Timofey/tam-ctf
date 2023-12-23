@@ -40,7 +40,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+//    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     implementation "com.giffing.bucket4j.spring.boot.starter:bucket4j-spring-boot-starter:0.10.0"
     implementation "org.springframework.boot:spring-boot-starter-cache"
     implementation("javax.cache:cache-api:1.0.0")

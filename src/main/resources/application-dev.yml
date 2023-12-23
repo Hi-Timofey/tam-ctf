@@ -53,3 +53,7 @@ bucket4j:
               time: 1
               unit: minutes
   cache-to-use: jcache
+
+jwt:
+  secret: "SECRET_STRING_HERE"
+  lifetime: 600m
