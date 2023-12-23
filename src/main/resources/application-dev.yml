@@ -6,6 +6,11 @@ server:
       enabled: false
     include-stacktrace: never
 spring:
+  data:
+    redis:
+      database: 0
+      host: localhost
+      password: ctf
   cache:
     cache-names:
       - buckets

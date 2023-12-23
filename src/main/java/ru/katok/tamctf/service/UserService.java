@@ -7,6 +7,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -28,7 +29,6 @@ import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
-import ru.katok.tamctf.validation.PasswordPolicy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,12 +39,14 @@ import java.util.Optional;
 @Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserService implements IUserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TeamRepository teamRepository;
     private final ObjectMapper objectMapper;
+    private final RedisService redisService;
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         return User.builder().username(user.getUsername()).password(user.getPassword()).disabled(!user.isActive()).accountExpired(false).credentialsExpired(false).accountLocked(false).authorities(getAuthorities(user.getRoles())).build();
@@ -191,6 +193,22 @@ public class UserService implements IUserService {
                 () -> new UserNotFoundException("no such user with name: %s".formatted(username)));
         user.setLastLoginIp(ip);
         userRepository.save(user);
+    }
+
+
+    public void ipUserBan(String userIp) {
+        redisService.setBan(userIp, true);
+        log.info("Ip {} banned from tam-ctf successfully!".format(userIp));
+    }
+
+    public void ipUserUnban(String userIp) {
+        redisService.setBan(userIp, false);
+        log.info("Ip {} unbanned from tam-ctf successfully!".format(userIp));
+    }
+
+    public List<String> getAllBanned() {
+        return redisService.getAllBannedIps();
+
     }
 }
 

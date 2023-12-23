@@ -1,18 +1,35 @@
 package ru.katok.tamctf.config;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
+import ru.katok.tamctf.security.UserIpBanInterceptor;
+import ru.katok.tamctf.service.RedisService;
 
 import java.time.Duration;
 
 //@Controller
 @Configuration
 @EnableWebMvc
+@AllArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+
+    @Autowired
+    RedisService redisService;
+
+    @Bean
+    public UserIpBanInterceptor userIpBanInterceptor() {
+        return new UserIpBanInterceptor(redisService);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userIpBanInterceptor()).addPathPatterns("/**").excludePathPatterns("/api/v1/admin/**");
+    }
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/404").setViewName("404");

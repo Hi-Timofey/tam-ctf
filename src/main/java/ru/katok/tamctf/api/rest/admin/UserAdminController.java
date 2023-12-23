@@ -6,6 +6,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.katok.tamctf.api.dto.admin.Ip;
 import ru.katok.tamctf.api.util.GenericResponse;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.service.UserService;
@@ -51,5 +52,20 @@ public class UserAdminController {
         userService.deleteUserById(id);
         return new GenericResponse<>(true, "User has been deleted");
     }
+
+    @PostMapping(path = "users/banuser",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse banUser(@RequestBody Ip ip) {
+        String targetIp = ip.getIp();
+        userService.ipUserBan(targetIp);
+        return new GenericResponse<>(true, "Ban result of user");
+    }
+
+    @GetMapping(path = "users/banned", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<List<String>> getAllBannedUsers() {
+        return new GenericResponse<>(true, "ok", userService.getAllBanned());
+    }
+
 
 }

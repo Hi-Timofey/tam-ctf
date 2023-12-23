@@ -10,8 +10,8 @@ services:
       POSTGRES_DB: "ctf"
       BOT_TOKEN: ""
       BOT_TARGET_CHAT_ID: ""
-#      REDIS_PASSWORD: "ctf"
-#      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "ctf"
+      REDIS_HOST: "redis"
     ports:
       - "8080:8080"
     build:
@@ -34,17 +34,17 @@ services:
       interval: 10s
       timeout: 2s
       retries: 5
-#  redis:
-#    container_name: redis
-#    image: redis:6.2-alpine
-#    command: redis-server --save 20 1 --loglevel warning --requirepass ctf
-#    environment:
-#      REDIS_PASSWORD: "ctf"
-#    ports:
-#      - 6379:6379
-#    healthcheck:
-#      test: [ "CMD-SHELL", "ping=\"$$(redis-cli -h \"127.0.0.1\" ping)\" && [ \"$$ping\" = 'PONG' ]" ]
-#      interval: 10s
-#      timeout: 2s
-#      retries: 2
-#    restart: always
+  redis:
+    container_name: redis
+    image: redis:6.2-bullseye
+    command: redis-server --requirepass ctf
+    environment:
+      REDIS_PASSWORD: "ctf"
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD-SHELL", "ping=\"$$(redis-cli -h \"127.0.0.1\" ping)\" && [ \"$$ping\" = 'PONG' ]" ]
+      interval: 10s
+      timeout: 2s
+      retries: 2
+    restart: always
