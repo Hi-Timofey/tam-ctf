@@ -57,7 +57,7 @@ public class AuthController {
             @RequestBody LoginDto loginDto, HttpServletRequest request) throws Exception {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
-        String token = tokenGenerator.getToken(username,password);
+//        String token = tokenGenerator.getToken(username,password);
         try {
 
             request.login(username, password);

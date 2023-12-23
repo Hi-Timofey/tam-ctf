@@ -68,8 +68,8 @@ public class WebSecurityConfig{
                         .invalidateHttpSession(true)
                         .permitAll()
 
-                )
-                .addFilterBefore(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                );
+//                .addFilterBefore(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -101,12 +101,12 @@ public class WebSecurityConfig{
     public SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
     }
-    @Bean(name = "restTokenAuthenticationFilter")
-    public TokenAuthenticationFilter restTokenAuthenticationFilter() {
-        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter();
-        AuthenticationManager tokenAuthenticationManager = new TokenAuthenticationManager();
-        ((TokenAuthenticationManager) tokenAuthenticationManager).setUserDetailsService(userDetailsService);
-        restTokenAuthenticationFilter.setAuthenticationManager(tokenAuthenticationManager);
-        return restTokenAuthenticationFilter;
-    }
+//    @Bean(name = "restTokenAuthenticationFilter")
+//    public TokenAuthenticationFilter restTokenAuthenticationFilter() {
+//        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter();
+//        AuthenticationManager tokenAuthenticationManager = new TokenAuthenticationManager();
+//        ((TokenAuthenticationManager) tokenAuthenticationManager).setUserDetailsService(userDetailsService);
+//        restTokenAuthenticationFilter.setAuthenticationManager(tokenAuthenticationManager);
+//        return restTokenAuthenticationFilter;
+//    }
 }
