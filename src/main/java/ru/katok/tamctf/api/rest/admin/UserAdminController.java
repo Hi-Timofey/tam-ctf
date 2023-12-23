@@ -19,6 +19,7 @@ public class UserAdminController {
 
     private final UserService userService;
 
+
     @GetMapping(path = "users", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody GenericResponse<List<UserDto>> getAllUsers() {
         return new GenericResponse<>(true, "ok", userService.getAll());
@@ -50,6 +51,13 @@ public class UserAdminController {
     public @ResponseBody GenericResponse deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return new GenericResponse<>(true, "User has been deleted");
+    }
+
+    @PostMapping(path = "banuser", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody GenericResponse<?> banUser(@RequestBody String userIp) {
+
+        Boolean result = userService.ipUserBan(userIp);
+        return new GenericResponse<>(true, "Ban result of user", result);
     }
 
 }

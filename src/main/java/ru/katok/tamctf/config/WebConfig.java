@@ -2,10 +2,8 @@ package ru.katok.tamctf.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
+import ru.katok.tamctf.security.UserIpBanInterceptor;
 
 import java.time.Duration;
 
@@ -30,6 +28,23 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/tasks").setViewName("tasks");
         registry.addViewController("/teams").setViewName("teams");
         registry.addViewController("/admin").setViewName("admin");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/login");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/index");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/404");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/about");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/news");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/profile");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/recovery");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/scoreboard");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/signup");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/tasks");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/teams");
+        registry.addInterceptor(new UserIpBanInterceptor()).addPathPatterns("/admin");
     }
 
     @Override

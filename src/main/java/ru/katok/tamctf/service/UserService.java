@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -28,8 +31,12 @@ import ru.katok.tamctf.repository.RoleRepository;
 import ru.katok.tamctf.repository.TeamRepository;
 import ru.katok.tamctf.repository.UserRepository;
 import ru.katok.tamctf.service.interfaces.IUserService;
-import ru.katok.tamctf.validation.PasswordPolicy;
 
+import javax.cache.Cache;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
+import javax.cache.spi.CachingProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,6 +46,9 @@ import java.util.Optional;
 @Service("userDetailsService")
 @RequiredArgsConstructor
 @Transactional
+@Getter
+@Setter
+@Slf4j
 public class UserService implements IUserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -191,6 +201,46 @@ public class UserService implements IUserService {
                 () -> new UserNotFoundException("no such user with name: %s".formatted(username)));
         user.setLastLoginIp(ip);
         userRepository.save(user);
+    }
+  /*  private Boolean isCacheCreated = false;
+    private Cache<String, Boolean> cache;
+    public Boolean ipUserBan(String userIp){
+        CachingProvider cachingProvider = Caching.getCachingProvider();
+        CacheManager cacheManager = cachingProvider.getCacheManager();
+        CacheLoader cacheLoader;
+        MutableConfiguration<String, Boolean> config = new MutableConfiguration<>();
+        Cache<String, Boolean> cache = cacheManager
+                .createCache("simpleCache", config);
+        cache.put("key1", true);
+        cache.put("key2", false);
+        cacheManager.close();
+        return true;
+    }*/
+
+    private Boolean isCacheCreated = false;
+    private Cache<String, Boolean> cache;
+
+    public Boolean ipUserBan(String userIp) {
+        if (isCacheCreated == false) {
+            CachingProvider cachingProvider = Caching.getCachingProvider();
+            CacheManager cacheManager = cachingProvider.getCacheManager();
+            MutableConfiguration<String, Boolean> config = new MutableConfiguration<>();
+            cache = cacheManager.createCache("userIpCache", config);
+            isCacheCreated = true;
+        } else {
+            if (cache.get(userIp)) {
+                log.error("Ip is already banned!");
+                return false;
+            }
+        }
+        try {
+            cache.put(userIp, true);
+            log.info("Ip is baned");
+            return true;
+        } catch (Exception e) {
+            log.error("Cache add error!!!");
+            return false;
+        }
     }
 }
 
