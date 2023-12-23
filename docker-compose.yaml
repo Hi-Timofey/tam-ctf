@@ -38,6 +38,9 @@ services:
     container_name: redis
     image: redis:6.2-bullseye
     command: redis-server --requirepass ctf
+#    build:
+#      context: ./
+#      dockerfile: ./docker/redis.Dockerfile
     environment:
       REDIS_PASSWORD: "ctf"
     ports:

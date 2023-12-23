@@ -3,6 +3,11 @@ server:
   error:
     include-stacktrace: never
 spring:
+  data:
+    redis:
+      database: 0
+      host: redis
+      password: ctf
   cache:
     cache-names:
       - buckets
