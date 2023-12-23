@@ -20,7 +20,6 @@ import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.service.UserService;
-import ru.katok.tamctf.security.TokenGenerator;
 
 @SuppressWarnings("ALL")
 @RestController
@@ -29,7 +28,6 @@ import ru.katok.tamctf.security.TokenGenerator;
 public class AuthController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final TokenGenerator tokenGenerator;
     private final UserService userService;
 
     @PostMapping(path = "/signup",

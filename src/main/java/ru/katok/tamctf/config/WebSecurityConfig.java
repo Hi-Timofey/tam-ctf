@@ -20,11 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
-import ru.katok.tamctf.security.TokenAuthenticationFilter;
-import ru.katok.tamctf.security.TokenAuthenticationManager;
 @SuppressWarnings("ALL")
 @Configuration
 @EnableWebSecurity
