@@ -1,5 +1,10 @@
 package ru.katok.tamctf.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -28,7 +33,7 @@ public class TeamService implements ITeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
+    private final ObjectMapper objectMapper;
 
     @Override
     public List<TeamDto> getAll() {
@@ -157,6 +162,18 @@ public class TeamService implements ITeamService {
     public void deleteTeam(Long id) {
         Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("no such team with id: " + id));
         teamRepository.delete(team);
+    }
+    public Team applyPatchToTeam(JsonPatch patch, Team team) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(team, JsonNode.class));
+        return objectMapper.treeToValue(patched, Team.class);
+    }
+
+    @Override
+    public TeamDto editTeamById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Optional<Team> teamEntity = teamRepository.findById(id);
+        Team team = teamEntity.get();
+        Team patchedTeam = teamRepository.save(applyPatchToTeam(patch, team));
+        return MappingUtil.mapToTeamDto(patchedTeam);
     }
 }
 

@@ -20,6 +20,7 @@ import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.error.EmailExistsException;
 import ru.katok.tamctf.domain.error.UserAlreadyExistException;
 import ru.katok.tamctf.service.UserService;
+import ru.katok.tamctf.security.TokenGenerator;
 
 @SuppressWarnings("ALL")
 @RestController
@@ -28,7 +29,7 @@ import ru.katok.tamctf.service.UserService;
 public class AuthController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-
+    private final TokenGenerator tokenGenerator;
     private final UserService userService;
 
     @PostMapping(path = "/signup",
@@ -53,9 +54,10 @@ public class AuthController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public @ResponseBody GenericResponse<UserDto> authenticateUser(
-            @RequestBody LoginDto loginDto, HttpServletRequest request) {
+            @RequestBody LoginDto loginDto, HttpServletRequest request) throws Exception {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
+        String token = tokenGenerator.getToken(username,password);
         try {
 
             request.login(username, password);

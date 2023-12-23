@@ -2,11 +2,13 @@ package ru.katok.tamctf.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,15 +19,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
-
+import ru.katok.tamctf.security.TokenAuthenticationFilter;
+import ru.katok.tamctf.security.TokenAuthenticationManager;
 @SuppressWarnings("ALL")
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig {
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class WebSecurityConfig{
+    @Autowired
+    @Qualifier("userDetailsService")
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -41,6 +47,9 @@ public class WebSecurityConfig {
                         .disable())
                 .exceptionHandling(customizer -> customizer
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .addFilterAfter(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/*", "/api/v1/login", "/api/v1/signup", "/api/v1/config").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
@@ -48,6 +57,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/*").hasRole("USER")
                         .requestMatchers("/resources/**").permitAll() //css & js
                         .anyRequest().authenticated())
+
                 .formLogin(form -> form
                                 .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/index")
@@ -88,5 +98,13 @@ public class WebSecurityConfig {
     @Bean
     public SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
+    }
+    @Bean(name = "restTokenAuthenticationFilter")
+    public TokenAuthenticationFilter restTokenAuthenticationFilter() {
+        TokenAuthenticationFilter restTokenAuthenticationFilter = new TokenAuthenticationFilter();
+        AuthenticationManager tokenAuthenticationManager = new TokenAuthenticationManager();
+        ((TokenAuthenticationManager) tokenAuthenticationManager).setUserDetailsService(userDetailsService);
+        restTokenAuthenticationFilter.setAuthenticationManager(tokenAuthenticationManager);
+        return restTokenAuthenticationFilter;
     }
 }

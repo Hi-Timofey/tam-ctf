@@ -18,7 +18,6 @@ import ru.katok.tamctf.domain.util.MappingUtil;
 import ru.katok.tamctf.repository.CategoryRepository;
 import ru.katok.tamctf.repository.TaskRepository;
 import ru.katok.tamctf.service.interfaces.ITaskService;
-import ru.katok.tamctf.service.TelegramService;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,5 +1,8 @@
 package ru.katok.tamctf.service.interfaces;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import ru.katok.tamctf.domain.dto.TeamDto;
 import ru.katok.tamctf.domain.dto.UserDto;
 import ru.katok.tamctf.domain.error.TeamNotFoundException;
@@ -24,4 +27,7 @@ public interface ITeamService {
     boolean removeUserFromTeam(String username, String teamName);
 
     void deleteTeam(Long id);
+
+
+    TeamDto editTeamById(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException;
 }

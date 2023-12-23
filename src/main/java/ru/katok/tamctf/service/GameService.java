@@ -40,6 +40,7 @@ public class GameService implements IGameService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
+    private final HintRepository hintRepository;
     private final SubmissionRepository submissionRepository;
 
     private PlatformConfig platformConfig;
