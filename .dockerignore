@@ -1,0 +1,38 @@
+# Build artifacts
+target                  # Maven build output
+build                   # Gradle build output
+*.jar                   # Standalone JARs (outside target/build)
+*.class                 # Compiled Java classes
+# Version control
+.git
+.gitignore
+# Documentation and misc
+*.md
+LICENSE
+# Docker-related files
+Dockerfile
+.dockerignore
+docker-compose.yml
+# IDE files
+.idea                   # IntelliJ IDEA
+*.iml                   # IntelliJ module files
+.classpath              # Eclipse
+.project                # Eclipse project files
+.settings               # Eclipse settings
+.vscode                 # VS Code settings
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+# Test-related files
+src/test                # Test sources (if not needed in image)
+test-output
+# Local dependency caches
+.m2                     # Maven local repository (if mounted)
+.gradle                 # Gradle cache (if mounted)
+# Sensitive files
+application.properties  # Config with secrets
+.env                    # Environment variable files
+*.key                   # Private keys
+*.pem                   # Certificates
+README.md
